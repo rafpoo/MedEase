@@ -43,11 +43,11 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_margin="4dp"
         android:text="Selamat Pagi"
         android:textColor="#FED006"
-        android:textStyle="bold"
         android:textSize="36sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/textView"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
@@ -55,6 +55,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="32dp"
         android:background="@drawable/bottom_background_light_green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="parent"
@@ -105,7 +106,7 @@
                             app:layout_constraintEnd_toEndOf="@+id/imageView2"
                             app:layout_constraintStart_toStartOf="@+id/imageView2"
                             app:layout_constraintTop_toTopOf="@+id/imageView2"
-                            app:srcCompat="@drawable/appointment"
+                            app:srcCompat="@drawable/list_konsul"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -113,7 +114,7 @@
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Buat Pertemuan"
+                        android:text="Lihat Konsultasi"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
@@ -151,7 +152,7 @@
                             app:layout_constraintEnd_toEndOf="@+id/imageView2"
                             app:layout_constraintStart_toStartOf="@+id/imageView2"
                             app:layout_constraintTop_toTopOf="@+id/imageView2"
-                            app:srcCompat="@drawable/appointment"
+                            app:srcCompat="@drawable/btn_1"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -159,7 +160,7 @@
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Buat Pertemuan"
+                        android:text="Beli Obat"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
@@ -197,7 +198,7 @@
                             app:layout_constraintEnd_toEndOf="@+id/imageView2"
                             app:layout_constraintStart_toStartOf="@+id/imageView2"
                             app:layout_constraintTop_toTopOf="@+id/imageView2"
-                            app:srcCompat="@drawable/appointment"
+                            app:srcCompat="@drawable/konsul"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -205,7 +206,7 @@
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Buat Pertemuan"
+                        android:text="Konsul Online"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
@@ -250,7 +251,7 @@
                             app:layout_constraintEnd_toEndOf="@+id/imageView2"
                             app:layout_constraintStart_toStartOf="@+id/imageView2"
                             app:layout_constraintTop_toTopOf="@+id/imageView2"
-                            app:srcCompat="@drawable/appointment"
+                            app:srcCompat="@drawable/tambah_appointment"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -258,7 +259,7 @@
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Buat Pertemuan"
+                        android:text="Buat Janji"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
@@ -296,7 +297,7 @@
                             app:layout_constraintEnd_toEndOf="@+id/imageView2"
                             app:layout_constraintStart_toStartOf="@+id/imageView2"
                             app:layout_constraintTop_toTopOf="@+id/imageView2"
-                            app:srcCompat="@drawable/appointment"
+                            app:srcCompat="@drawable/water_drop_24px"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -304,7 +305,7 @@
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Buat Pertemuan"
+                        android:text="Prediksi WQI"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
@@ -342,7 +343,7 @@
                             app:layout_constraintEnd_toEndOf="@+id/imageView2"
                             app:layout_constraintStart_toStartOf="@+id/imageView2"
                             app:layout_constraintTop_toTopOf="@+id/imageView2"
-                            app:srcCompat="@drawable/appointment"
+                            app:srcCompat="@drawable/btn_6"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -350,7 +351,7 @@
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Buat Pertemuan"
+                        android:text="Logout"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
@@ -371,31 +372,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tableLayout">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/circle_white" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/green_banner" />
-
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
-                android:text="Kelayakan Minum"
+                android:text="Daftar Appointment"
                 android:textColor="#ffffff"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -407,7 +390,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="4dp"
-                android:text="Pelajari lebih banyak disini"
+                android:text="Tidak ada appointment hari ini"
                 android:textColor="#ffffff"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
