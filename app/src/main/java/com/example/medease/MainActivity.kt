@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Tombol untuk menuju halaman pemesanan obat
-        val btnOrderMeds: Button = findViewById(R.id.btnOrderMeds)
+        val btnOrderMeds: ConstraintLayout = findViewById(R.id.cardBeliObat)
         btnOrderMeds.setOnClickListener {
             val intent = Intent(this, OrderMeds::class.java)
             startActivity(intent)
