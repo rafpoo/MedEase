@@ -1,10 +1,14 @@
 package com.example.medease
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.medease.databinding.ActivityDoctorDashboardBinding
+import com.example.medease.fragments.DoctorCalendarFragment
+import com.example.medease.fragments.DoctorMailboxFragment
+import com.example.medease.ui.doctor.*
 
 class DoctorDashboardActivity : AppCompatActivity() {
 
@@ -15,26 +19,84 @@ class DoctorDashboardActivity : AppCompatActivity() {
         binding = ActivityDoctorDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Klik menu Jadwal
+        // --- Default tampilan: dashboard utama (home) ---
+        showDashboard()
+
+        // --- Handle tombol back gesture ---
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (supportFragmentManager.backStackEntryCount > 0) {
+                    supportFragmentManager.popBackStack()
+                    showDashboard()
+                } else {
+                    finish()
+                }
+            }
+        })
+
+        // --- Handle Bottom Navigation ---
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    showDashboard()
+                    true
+                }
+                R.id.nav_mailbox -> {
+                    openFragmentFullScreen(DoctorMailboxFragment())
+                    true
+                }
+                R.id.nav_calendar -> {
+                    openFragmentFullScreen(DoctorCalendarFragment())
+                    true
+                }
+                R.id.nav_profile -> {
+                    openFragmentFullScreen(DoctorProfileFragment())
+                    true
+                }
+                else -> false
+            }
+        }
+
+        // --- Klik Card di Dashboard ---
         binding.cardViewSchedule.setOnClickListener {
-            Toast.makeText(this, "Buka Jadwal Dokter", Toast.LENGTH_SHORT).show()
-            // Contoh: startActivity(Intent(this, DoctorScheduleActivity::class.java))
+            openFragmentFullScreen(DoctorScheduleFragment())
         }
-
-        // Klik menu Konsultasi
         binding.cardConsultation.setOnClickListener {
-            Toast.makeText(this, "Buka Konsultasi", Toast.LENGTH_SHORT).show()
+            openFragmentFullScreen(DoctorConsultationsFragment())
         }
-
-        // Klik menu Permintaan
         binding.cardRequests.setOnClickListener {
-            Toast.makeText(this, "Buka Reservasi Pasien", Toast.LENGTH_SHORT).show()
+            openFragmentFullScreen(DoctorAppointmentsFragment())
         }
-
-        // Klik menu Profil
         binding.cardProfile.setOnClickListener {
-            Toast.makeText(this, "Buka Profil Dokter", Toast.LENGTH_SHORT).show()
+            openFragmentFullScreen(DoctorProfileFragment())
         }
+    }
 
+    private fun openFragmentFullScreen(fragment: Fragment) {
+        // Sembunyikan dashboard utama
+        binding.scrollViewDashboard.visibility = View.GONE
+
+        // Pastikan FrameLayout muncul
+        binding.fragmentContainer.visibility = View.VISIBLE
+
+        supportFragmentManager.beginTransaction()
+            .setCustomAnimations(
+                android.R.anim.fade_in,
+                android.R.anim.fade_out,
+                android.R.anim.fade_in,
+                android.R.anim.fade_out
+            )
+            .replace(R.id.fragment_container, fragment)
+            .addToBackStack(null)
+            .commit()
+    }
+
+    private fun showDashboard() {
+        // Tampilkan dashboard, sembunyikan fragment
+        binding.scrollViewDashboard.visibility = View.VISIBLE
+        binding.fragmentContainer.visibility = View.GONE
+
+        // Bersihkan fragment stack
+        supportFragmentManager.popBackStack(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 }
