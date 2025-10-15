@@ -58,9 +58,9 @@
         android:layout_marginTop="32dp"
         android:background="@drawable/bottom_background_light_green"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TableLayout
             android:id="@+id/tableLayout"
@@ -70,11 +70,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <!-- ROW 1 -->
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center">
 
+                <!-- Kartu 1 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -82,12 +84,13 @@
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cardLihatKonsultasi"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/white_btn_background">
 
                         <ImageView
-                            android:id="@+id/imageView2"
+                            android:id="@+id/imageView2_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
@@ -98,29 +101,29 @@
                             app:srcCompat="@drawable/circle_green" />
 
                         <ImageView
-                            android:id="@+id/imageView9"
+                            android:id="@+id/imageView9_1"
                             android:layout_width="38dp"
                             android:layout_height="46dp"
                             android:contentDescription="@string/icon1"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                            app:layout_constraintStart_toStartOf="@+id/imageView2"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView2_1"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView2_1"
+                            app:layout_constraintStart_toStartOf="@+id/imageView2_1"
+                            app:layout_constraintTop_toTopOf="@+id/imageView2_1"
                             app:srcCompat="@drawable/list_konsul"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/textView3_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Lihat Konsultasi"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
-
                 </LinearLayout>
 
+                <!-- Kartu 2 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -128,12 +131,13 @@
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cardBeliObat"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/white_btn_background">
 
                         <ImageView
-                            android:id="@+id/imageView2"
+                            android:id="@+id/imageView2_2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
@@ -144,29 +148,29 @@
                             app:srcCompat="@drawable/circle_green" />
 
                         <ImageView
-                            android:id="@+id/imageView9"
+                            android:id="@+id/imageView9_2"
                             android:layout_width="38dp"
                             android:layout_height="46dp"
                             android:contentDescription="@string/icon1"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                            app:layout_constraintStart_toStartOf="@+id/imageView2"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView2_2"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView2_2"
+                            app:layout_constraintStart_toStartOf="@+id/imageView2_2"
+                            app:layout_constraintTop_toTopOf="@+id/imageView2_2"
                             app:srcCompat="@drawable/btn_1"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/textView3_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Beli Obat"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
-
                 </LinearLayout>
 
+                <!-- Kartu 3 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -174,12 +178,13 @@
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cardKonsulOnline"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/white_btn_background">
 
                         <ImageView
-                            android:id="@+id/imageView2"
+                            android:id="@+id/imageView2_3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
@@ -190,36 +195,36 @@
                             app:srcCompat="@drawable/circle_green" />
 
                         <ImageView
-                            android:id="@+id/imageView9"
+                            android:id="@+id/imageView9_3"
                             android:layout_width="38dp"
                             android:layout_height="46dp"
                             android:contentDescription="@string/icon1"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                            app:layout_constraintStart_toStartOf="@+id/imageView2"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView2_3"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView2_3"
+                            app:layout_constraintStart_toStartOf="@+id/imageView2_3"
+                            app:layout_constraintTop_toTopOf="@+id/imageView2_3"
                             app:srcCompat="@drawable/konsul"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/textView3_3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Konsul Online"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
-
                 </LinearLayout>
-
             </TableRow>
 
+            <!-- ROW 2 -->
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center">
 
+                <!-- Kartu 4 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -227,12 +232,13 @@
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cardBuatJanji"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/white_btn_background">
 
                         <ImageView
-                            android:id="@+id/imageView2"
+                            android:id="@+id/imageView2_4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
@@ -243,29 +249,29 @@
                             app:srcCompat="@drawable/circle_green" />
 
                         <ImageView
-                            android:id="@+id/imageView9"
+                            android:id="@+id/imageView9_4"
                             android:layout_width="38dp"
                             android:layout_height="46dp"
                             android:contentDescription="@string/icon1"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                            app:layout_constraintStart_toStartOf="@+id/imageView2"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView2_4"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView2_4"
+                            app:layout_constraintStart_toStartOf="@+id/imageView2_4"
+                            app:layout_constraintTop_toTopOf="@+id/imageView2_4"
                             app:srcCompat="@drawable/tambah_appointment"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/textView3_4"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Buat Janji"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
-
                 </LinearLayout>
 
+                <!-- Kartu 5 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -273,12 +279,13 @@
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cardPrediksiWQI"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/white_btn_background">
 
                         <ImageView
-                            android:id="@+id/imageView2"
+                            android:id="@+id/imageView2_5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
@@ -289,29 +296,29 @@
                             app:srcCompat="@drawable/circle_green" />
 
                         <ImageView
-                            android:id="@+id/imageView9"
+                            android:id="@+id/imageView9_5"
                             android:layout_width="38dp"
                             android:layout_height="46dp"
                             android:contentDescription="@string/icon1"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                            app:layout_constraintStart_toStartOf="@+id/imageView2"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView2_5"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView2_5"
+                            app:layout_constraintStart_toStartOf="@+id/imageView2_5"
+                            app:layout_constraintTop_toTopOf="@+id/imageView2_5"
                             app:srcCompat="@drawable/water_drop_24px"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/textView3_5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Prediksi WQI"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
-
                 </LinearLayout>
 
+                <!-- Kartu 6 -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -319,12 +326,13 @@
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cardLogout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/white_btn_background">
 
                         <ImageView
-                            android:id="@+id/imageView2"
+                            android:id="@+id/imageView2_6"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
@@ -335,31 +343,28 @@
                             app:srcCompat="@drawable/circle_green" />
 
                         <ImageView
-                            android:id="@+id/imageView9"
+                            android:id="@+id/imageView9_6"
                             android:layout_width="38dp"
                             android:layout_height="46dp"
                             android:contentDescription="@string/icon1"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView2"
-                            app:layout_constraintStart_toStartOf="@+id/imageView2"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2"
+                            app:layout_constraintBottom_toBottomOf="@+id/imageView2_6"
+                            app:layout_constraintEnd_toEndOf="@+id/imageView2_6"
+                            app:layout_constraintStart_toStartOf="@+id/imageView2_6"
+                            app:layout_constraintTop_toTopOf="@+id/imageView2_6"
                             app:srcCompat="@drawable/btn_6"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/textView3"
+                        android:id="@+id/textView3_6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="Logout"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
-
                 </LinearLayout>
-
             </TableRow>
-
         </TableLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -395,7 +400,5 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
