@@ -1,4 +1,4 @@
-package com.example.medease.ui.doctor
+package com.example.medease.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

@@ -6,9 +6,13 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.medease.databinding.ActivityDoctorDashboardBinding
+import com.example.medease.fragments.DoctorAppointmentsFragment
 import com.example.medease.fragments.DoctorCalendarFragment
+import com.example.medease.fragments.DoctorConsultationsFragment
 import com.example.medease.fragments.DoctorMailboxFragment
-import com.example.medease.ui.doctor.*
+import com.example.medease.fragments.DoctorProfileFragment
+import com.example.medease.fragments.DoctorScheduleFragment
+
 
 class DoctorDashboardActivity : AppCompatActivity() {
 
