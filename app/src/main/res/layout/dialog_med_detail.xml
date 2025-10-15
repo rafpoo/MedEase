@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_dialog"
+    android:padding="20dp">
+
+    <!-- Nama Obat -->
+    <TextView
+        android:id="@+id/tvMedName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nama Obat"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/teal_700"
+        android:gravity="center"
+        android:layout_marginBottom="8dp" />
+
+    <View
+        android:layout_width="60dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center"
+        android:background="@color/teal_400"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/tvMedDesc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Deskripsi obat akan tampil di sini."
+        android:textSize="15sp"
+        android:textColor="#555"
+        android:lineSpacingExtra="4dp"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/tvMedPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rp0"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/teal_600"
+        android:gravity="center"
+        android:layout_marginBottom="20dp" />
+
+    <!-- Quantity Selector -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:padding="6dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_quantity_box">
+
+        <android.widget.Button
+            android:id="@+id/btnDecrease"
+            android:layout_width="41dp"
+            android:layout_height="36dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="-"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_teal_rounded"
+            android:layout_marginEnd="6dp" />
+
+        <EditText
+            android:id="@+id/etQuantity"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:gravity="center"
+            android:text="1"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:background="@null" />
+
+        <android.widget.Button
+            android:id="@+id/btnIncrease"
+            android:layout_width="41dp"
+            android:layout_height="36dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="+"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/bg_teal_rounded"
+            android:layout_marginStart="6dp" />
+    </LinearLayout>
+
+
+    <!-- Tombol aksi -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/btnAddToCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Masukkan Keranjang"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/teal_400"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:layout_marginEnd="8dp"
+            android:elevation="3dp" />
+
+        <Button
+            android:id="@+id/btnClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tutup"
+            android:textAllCaps="false"
+            android:backgroundTint="#ECECEC"
+            android:textColor="#444"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:elevation="2dp" />
+    </LinearLayout>
+</LinearLayout>
