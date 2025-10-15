@@ -1,5 +1,6 @@
 package com.example.medease
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
 import android.os.Bundle
@@ -8,11 +9,10 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class OrderMeds : AppCompatActivity() {
 
@@ -22,13 +22,13 @@ class OrderMeds : AppCompatActivity() {
     private lateinit var tvCartCount: TextView
 
     private val allMeds = listOf(
-        Med("Paracetamol 500mg", "Obat penurun panas dan pereda nyeri", "Rp15.000"),
-        Med("Amoxicillin 500mg", "Antibiotik untuk infeksi bakteri", "Rp35.000"),
-        Med("Vitamin C 1000mg", "Suplemen daya tahan tubuh", "Rp50.000"),
-        Med("Ibuprofen 200mg", "Pereda nyeri dan antiinflamasi", "Rp25.000"),
-        Med("Obat Batuk Sirup", "Sirup untuk batuk berdahak", "Rp28.000"),
-        Med("Antasida", "Untuk meredakan sakit maag", "Rp10.000"),
-        Med("Cetirizine 10mg", "Antihistamin untuk alergi", "Rp20.000")
+        Med("Paracetamol 500mg", "Obat penurun panas dan pereda nyeri", 15000),
+        Med("Amoxicillin 500mg", "Antibiotik untuk infeksi bakteri", 35000),
+        Med("Vitamin C 1000mg", "Suplemen daya tahan tubuh", 50000),
+        Med("Ibuprofen 200mg", "Pereda nyeri dan antiinflamasi", 25000),
+        Med("Obat Batuk Sirup", "Sirup untuk batuk berdahak", 28000),
+        Med("Antasida", "Untuk meredakan sakit maag", 10000),
+        Med("Cetirizine 10mg", "Antihistamin untuk alergi", 20000)
     )
 
     private var filteredMeds = allMeds.toMutableList()
@@ -39,8 +39,6 @@ class OrderMeds : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_meds)
 
-        // ✅ pastikan activity_order_meds.xml punya id berikut:
-        // rvMeds, searchBar, btnCheckout, tvCartCount
         rvMeds = findViewById(R.id.rvMeds)
         searchBar = findViewById(R.id.searchBar)
         btnCheckout = findViewById(R.id.btnCheckout)
@@ -50,7 +48,7 @@ class OrderMeds : AppCompatActivity() {
         rvMeds.layoutManager = LinearLayoutManager(this)
         rvMeds.adapter = adapter
 
-        // fitur pencarian
+        // 🔍 Fitur pencarian
         searchBar.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -65,20 +63,73 @@ class OrderMeds : AppCompatActivity() {
             }
         })
 
-        // tombol checkout
+        // 🛒 Tombol checkout (buka bottom sheet keranjang)
         btnCheckout.setOnClickListener {
-            val message = if (cart.isEmpty()) {
-                "Keranjang kamu kosong 😅"
+            val bottomSheetView = layoutInflater.inflate(R.layout.bottom_cart, null)
+            val dialog = BottomSheetDialog(this)
+            dialog.setContentView(bottomSheetView)
+
+            val rvCart = bottomSheetView.findViewById<RecyclerView>(R.id.rvCart)
+            val tvEmptyCart = bottomSheetView.findViewById<TextView>(R.id.tvEmptyCart)
+            val tvTotalItem = bottomSheetView.findViewById<TextView>(R.id.tvTotalItem)
+            val tvTotalPrice = bottomSheetView.findViewById<TextView>(R.id.tvTotalPrice) // 🔹 total harga
+            val layoutCartButtons = bottomSheetView.findViewById<LinearLayout>(R.id.layoutCartButtons)
+            val btnClose = bottomSheetView.findViewById<Button>(R.id.btnCloseCart)
+            val btnCheckoutCart = bottomSheetView.findViewById<Button>(R.id.btnCheckoutCart)
+
+            val totalQty = cart.values.sum()
+            val totalPrice = cart.entries.sumOf { it.key.price * it.value }
+
+            if (cart.isEmpty()) {
+                rvCart.visibility = View.GONE
+                tvEmptyCart.visibility = View.VISIBLE
+                tvTotalItem.text = "Total: 0 item"
+                tvTotalPrice.text = "Total Harga: Rp0"
+                layoutCartButtons.visibility = View.GONE
             } else {
-                cart.entries.joinToString("\n") {
-                    "- ${it.key.name} x${it.value}"
-                } + "\n\nTotal item: $totalItems"
+                rvCart.visibility = View.VISIBLE
+                tvEmptyCart.visibility = View.GONE
+                layoutCartButtons.visibility = View.VISIBLE
+
+                val adapterCart = CartAdapter(cart) {
+                    tvCartCount.text = "${cart.values.sum()} item"
+                    tvTotalItem.text = "Total: ${cart.values.sum()} item"
+                    val totalHargaBaru = cart.entries.sumOf { it.key.price * it.value }
+                    tvTotalPrice.text = "Total Harga: Rp$totalHargaBaru"
+
+                    if (cart.isEmpty()) {
+                        rvCart.visibility = View.GONE
+                        tvEmptyCart.visibility = View.VISIBLE
+                        layoutCartButtons.visibility = View.GONE
+                    }
+                }
+                rvCart.layoutManager = LinearLayoutManager(this)
+                rvCart.adapter = adapterCart
+
+                tvTotalItem.text = "Total: $totalQty item"
+                tvTotalPrice.text = "Total Harga: Rp$totalPrice"
             }
-            AlertDialog.Builder(this)
-                .setTitle("Keranjang Obat")
-                .setMessage(message)
-                .setPositiveButton("OK", null)
-                .show()
+
+            btnClose.setOnClickListener { dialog.dismiss() }
+
+            btnCheckoutCart.setOnClickListener {
+                val intent = Intent(this, CheckoutPage::class.java)
+                intent.putExtra("cart_data", HashMap(cart))
+                startActivityForResult(intent, 1001)
+                dialog.dismiss()
+            }
+
+            dialog.show()
+        }
+    }
+
+    // ✅ RESET keranjang setelah kembali dari Checkout
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 1001 && resultCode == RESULT_OK) {
+            cart.clear()
+            totalItems = 0
+            tvCartCount.text = "0 item"
         }
     }
 
@@ -95,7 +146,7 @@ class OrderMeds : AppCompatActivity() {
 
         tvName.text = med.name
         tvDesc.text = med.desc
-        tvPrice.text = med.price
+        tvPrice.text = "Rp${med.price}"
 
         var qty = 1
         etQty.setText(qty.toString())
@@ -118,7 +169,7 @@ class OrderMeds : AppCompatActivity() {
 
         btnAdd.setOnClickListener {
             cart[med] = (cart[med] ?: 0) + qty
-            totalItems += qty
+            totalItems = cart.values.sum()
             tvCartCount.text = "$totalItems item"
             dialog.dismiss()
         }
@@ -127,37 +178,89 @@ class OrderMeds : AppCompatActivity() {
 
         dialog.show()
     }
-}
 
-// data & adapter
-data class Med(val name: String, val desc: String, val price: String)
+    // 🧾 Data class & Adapter
+    data class Med(val name: String, val desc: String, val price: Int) : java.io.Serializable
 
-class MedAdapter(
-    private val items: List<Med>,
-    private val onClick: (Med) -> Unit
-) : RecyclerView.Adapter<MedAdapter.MedVH>() {
+    class MedAdapter(
+        private val items: List<Med>,
+        private val onClick: (Med) -> Unit
+    ) : RecyclerView.Adapter<MedAdapter.MedVH>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedVH {
-        val v = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_med_card, parent, false)
-        return MedVH(v)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MedVH {
+            val v = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_med_card, parent, false)
+            return MedVH(v)
+        }
+
+        override fun onBindViewHolder(holder: MedVH, position: Int) {
+            holder.bind(items[position], onClick)
+        }
+
+        override fun getItemCount(): Int = items.size
+
+        class MedVH(v: View) : RecyclerView.ViewHolder(v) {
+            private val tvName: TextView = v.findViewById(R.id.tvMedName)
+            private val tvPrice: TextView = v.findViewById(R.id.tvMedPrice)
+            private val btnDetail: Button = v.findViewById(R.id.btnDetail)
+
+            fun bind(med: Med, onClick: (Med) -> Unit) {
+                tvName.text = med.name
+                tvPrice.text = "Rp${med.price}"
+                btnDetail.setOnClickListener { onClick(med) }
+            }
+        }
     }
 
-    override fun onBindViewHolder(holder: MedVH, position: Int) {
-        holder.bind(items[position], onClick)
-    }
+    class CartAdapter(
+        private val cart: MutableMap<Med, Int>,
+        private val onQuantityChanged: () -> Unit
+    ) : RecyclerView.Adapter<CartAdapter.CartVH>() {
 
-    override fun getItemCount(): Int = items.size
+        private val items get() = cart.keys.toList()
 
-    class MedVH(v: View) : RecyclerView.ViewHolder(v) {
-        private val tvName: TextView = v.findViewById(R.id.tvMedName)
-        private val tvPrice: TextView = v.findViewById(R.id.tvMedPrice)
-        private val btnDetail: Button = v.findViewById(R.id.btnDetail)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartVH {
+            val v = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_cart, parent, false)
+            return CartVH(v)
+        }
 
-        fun bind(med: Med, onClick: (Med) -> Unit) {
-            tvName.text = med.name
-            tvPrice.text = med.price
-            btnDetail.setOnClickListener { onClick(med) }
+        override fun onBindViewHolder(holder: CartVH, position: Int) {
+            val med = items[position]
+            val qty = cart[med] ?: 0
+            holder.bind(med, qty, cart, onQuantityChanged)
+        }
+
+        override fun getItemCount(): Int = items.size
+
+        class CartVH(v: View) : RecyclerView.ViewHolder(v) {
+            private val tvName: TextView = v.findViewById(R.id.tvCartMedName)
+            private val tvQty: TextView = v.findViewById(R.id.tvCartQty)
+            private val btnInc: Button = v.findViewById(R.id.btnCartIncrease)
+            private val btnDec: Button = v.findViewById(R.id.btnCartDecrease)
+
+            fun bind(
+                med: Med,
+                qty: Int,
+                cart: MutableMap<Med, Int>,
+                onQuantityChanged: () -> Unit
+            ) {
+                tvName.text = med.name
+                tvQty.text = qty.toString()
+
+                btnInc.setOnClickListener {
+                    cart[med] = (cart[med] ?: 0) + 1
+                    tvQty.text = cart[med].toString()
+                    onQuantityChanged()
+                }
+
+                btnDec.setOnClickListener {
+                    val current = (cart[med] ?: 0) - 1
+                    if (current <= 0) cart.remove(med)
+                    else cart[med] = current
+                    onQuantityChanged()
+                }
+            }
         }
     }
 }

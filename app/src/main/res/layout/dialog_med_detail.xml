@@ -54,21 +54,20 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_gravity="center"
-        android:background="@drawable/bg_quantity_box"
         android:padding="6dp"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bg_quantity_box">
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnDecrease"
-            android:layout_width="36dp"
+            android:layout_width="41dp"
             android:layout_height="36dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
             android:text="-"
             android:textSize="18sp"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/teal_400"
-            android:fontFamily="sans-serif-medium"
-            android:stateListAnimator="@null"
-            android:elevation="0dp"
+            android:background="@drawable/bg_teal_rounded"
             android:layout_marginEnd="6dp" />
 
         <EditText
@@ -82,19 +81,19 @@
             android:textColor="@android:color/black"
             android:background="@null" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnIncrease"
-            android:layout_width="36dp"
+            android:layout_width="41dp"
             android:layout_height="36dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
             android:text="+"
             android:textSize="18sp"
             android:textColor="@android:color/white"
-            android:backgroundTint="@color/teal_400"
-            android:fontFamily="sans-serif-medium"
-            android:stateListAnimator="@null"
-            android:elevation="0dp"
+            android:background="@drawable/bg_teal_rounded"
             android:layout_marginStart="6dp" />
     </LinearLayout>
+
 
     <!-- Tombol aksi -->
     <LinearLayout
