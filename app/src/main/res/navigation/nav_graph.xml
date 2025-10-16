@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.medease.ui.dashboard.DashboardFragment"
+        android:label="Dashboard"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboardFragment_to_orderMedsFragment"
+            app:destination="@id/orderMedsFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderMedsFragment"
+        android:name="com.example.medease.OrderMedsFragment"
+        android:label="Order Obat"
+        tools:layout="@layout/fragment_order_meds">
+        <action
+            android:id="@+id/action_orderMeds_to_orderStatus"
+            app:destination="@id/orderStatusFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderStatusFragment"
+        android:name="com.example.medease.OrderStatusFragment"
+        android:label="Status Pesanan"
+        tools:layout="@layout/fragment_order_status" />
+
+
+</navigation>

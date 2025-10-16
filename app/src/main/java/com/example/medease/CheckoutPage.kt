@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.text.NumberFormat
@@ -22,7 +21,7 @@ class CheckoutPage : AppCompatActivity() {
     private lateinit var etNotes: EditText
     private lateinit var btnPayNow: Button
 
-    private var cart = mutableMapOf<OrderMeds.Med, Int>()
+    private var cart = mutableMapOf<OrderMedsFragment.Med, Int>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +34,7 @@ class CheckoutPage : AppCompatActivity() {
         btnPayNow = findViewById(R.id.btnPayNow)
 
         @Suppress("UNCHECKED_CAST")
-        val receivedCart = intent.getSerializableExtra("cart_data") as? HashMap<OrderMeds.Med, Int>
+        val receivedCart = intent.getSerializableExtra("cart_data") as? HashMap<OrderMedsFragment.Med, Int>
         if (receivedCart != null) cart = receivedCart.toMutableMap()
 
         rvCart.layoutManager = LinearLayoutManager(this)
@@ -66,7 +65,7 @@ class CheckoutPage : AppCompatActivity() {
             // Langsung tampilkan alert + lanjut ke OrderStatus
             Toast.makeText(this, "Pesanan sedang dikirim ke $address 🚚", Toast.LENGTH_LONG).show()
 
-            val intent = Intent(this, OrderStatus::class.java).apply {
+            val intent = Intent(this, OrderStatusFragment::class.java).apply {
                 putExtra("delivery_address", address)
                 putExtra("order_details", details)
                 putExtra("total_price", formatRupiah(total))
@@ -96,7 +95,7 @@ class CheckoutPage : AppCompatActivity() {
     }
 
     class CartAdapter(
-        private val cart: MutableMap<OrderMeds.Med, Int>,
+        private val cart: MutableMap<OrderMedsFragment.Med, Int>,
         private val onQuantityChanged: () -> Unit
     ) : RecyclerView.Adapter<CartAdapter.CartVH>() {
 
@@ -122,9 +121,9 @@ class CheckoutPage : AppCompatActivity() {
             private val btnDec: Button = v.findViewById(R.id.btnCartDecrease)
 
             fun bind(
-                med: OrderMeds.Med,
+                med: OrderMedsFragment.Med,
                 qty: Int,
-                cart: MutableMap<OrderMeds.Med, Int>,
+                cart: MutableMap<OrderMedsFragment.Med, Int>,
                 onQuantityChanged: () -> Unit
             ) {
                 tvName.text = med.name

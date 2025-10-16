@@ -13,13 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MedEase">
         <activity
-            android:name=".OrderStatus"
+            android:name=".OrderStatusFragment"
             android:exported="false" />
         <activity
             android:name=".CheckoutPage"
             android:exported="false" />
         <activity
-            android:name=".OrderMeds"
+            android:name=".OrderMedsFragment"
             android:exported="false" />
 
         <meta-data
