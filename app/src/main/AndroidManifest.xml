@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MedEase">
         <activity
+            android:name=".MakeAppointment"
+            android:exported="false" />
+        <activity
             android:name=".OrderStatus"
             android:exported="false" />
         <activity

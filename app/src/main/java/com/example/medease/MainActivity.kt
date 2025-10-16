@@ -16,5 +16,10 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, OrderMeds::class.java)
             startActivity(intent)
         }
+        val btnMakeApt: Button = findViewById(R.id.btnMakeApt)
+        btnMakeApt.setOnClickListener {
+            val intent = Intent(this, MakeAppointment::class.java)
+            startActivity(intent)
+        }
     }
 }
