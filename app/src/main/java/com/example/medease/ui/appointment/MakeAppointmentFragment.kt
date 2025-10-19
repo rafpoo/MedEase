@@ -1,13 +1,18 @@
-package com.example.medease
+package com.example.medease.ui.appointment
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.example.medease.R
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MakeAppointment : AppCompatActivity() {
+class MakeAppointmentFragment : Fragment() {
 
     private lateinit var spinnerCategory: Spinner
     private lateinit var spinnerDoctor: Spinner
@@ -16,7 +21,6 @@ class MakeAppointment : AppCompatActivity() {
     private lateinit var tvPickDate: TextView
     private lateinit var btnConfirm: Button
 
-    // Info dokter di bawah spinner
     private lateinit var imgDoctor: ImageView
     private lateinit var tvDoctorName: TextView
     private lateinit var tvDoctorCategory: TextView
@@ -28,7 +32,7 @@ class MakeAppointment : AppCompatActivity() {
     private var selectedTime = ""
     private var selectedDate = ""
 
-    // --- Data kategori, dokter, jam & deskripsi ---
+    // Data kategori, dokter, jam & deskripsi
     private val doctorData = mapOf(
         "General Practitioner" to mapOf(
             "Dr. Sarah Tan" to listOf("09:00 - 09:30", "09:30 - 10:00", "10:00 - 10:30"),
@@ -49,66 +53,77 @@ class MakeAppointment : AppCompatActivity() {
 
     private val doctorInfo = mapOf(
         "Dr. Sarah Tan" to DoctorProfile("Dr. Sarah Tan", "General Practitioner",
-            "Experienced GP specializing in preventive medicine and teleconsultation.", android.R.drawable.ic_menu_myplaces),
+            "Experienced GP specializing in preventive medicine and teleconsultation.", R.drawable.ic_doctor),
         "Dr. Agus Wirawan" to DoctorProfile("Dr. Agus Wirawan", "General Practitioner",
-            "10+ years experience handling general health and chronic illness management.", android.R.drawable.ic_menu_myplaces),
+            "10+ years experience handling general health and chronic illness management.", R.drawable.ic_doctor),
         "Dr. Budi Santoso" to DoctorProfile("Dr. Budi Santoso", "Dentist",
-            "Expert in dental surgery and smile reconstruction. Known for gentle touch.", android.R.drawable.ic_menu_myplaces),
+            "Expert in dental surgery and smile reconstruction. Known for gentle touch.", R.drawable.ic_doctor),
         "Dr. Rina Kurnia" to DoctorProfile("Dr. Rina Kurnia", "Dentist",
-            "Professional aesthetic dentist specializing in veneers & whitening.", android.R.drawable.ic_menu_myplaces),
+            "Professional aesthetic dentist specializing in veneers & whitening.", R.drawable.ic_doctor),
         "Dr. Lisa Kusuma" to DoctorProfile("Dr. Lisa Kusuma", "Cardiologist",
-            "Heart specialist with focus on non-invasive cardiac care and diagnostics.", android.R.drawable.ic_menu_myplaces),
+            "Heart specialist with focus on non-invasive cardiac care and diagnostics.", R.drawable.ic_doctor),
         "Dr. Dita Melani" to DoctorProfile("Dr. Dita Melani", "Pediatrician",
-            "Caring pediatrician passionate about children’s growth and nutrition.", android.R.drawable.ic_menu_myplaces),
+            "Caring pediatrician passionate about children’s growth and nutrition.", R.drawable.ic_doctor),
         "Dr. Andi Wirawan" to DoctorProfile("Dr. Andi Wirawan", "Pediatrician",
-            "Friendly pediatrician focusing on early development and immunization.", android.R.drawable.ic_menu_myplaces)
+            "Friendly pediatrician focusing on early development and immunization.", R.drawable.ic_doctor)
     )
 
     data class DoctorProfile(val name: String, val category: String, val description: String, val imageRes: Int)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_make_appointment)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_make_appointment, container, false)
+    }
 
-        // 🔹 Inisialisasi View
-        spinnerCategory = findViewById(R.id.spinnerCategory)
-        spinnerDoctor = findViewById(R.id.spinnerDoctor)
-        spinnerTime = findViewById(R.id.spinnerTime)
-        etNote = findViewById(R.id.etNote)
-        btnConfirm = findViewById(R.id.btnConfirm)
-        tvPickDate = findViewById(R.id.tvPickDate)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        imgDoctor = findViewById(R.id.imgDoctor)
-        tvDoctorName = findViewById(R.id.tvDoctorName)
-        tvDoctorCategory = findViewById(R.id.tvDoctorCategory)
-        tvDoctorDesc = findViewById(R.id.tvDoctorDesc)
-        layoutDoctorInfo = findViewById(R.id.layoutDoctorInfo)
+        // Inisialisasi View dari layout
+        spinnerCategory = view.findViewById(R.id.spinnerCategory)
+        spinnerDoctor = view.findViewById(R.id.spinnerDoctor)
+        spinnerTime = view.findViewById(R.id.spinnerTime)
+        etNote = view.findViewById(R.id.etNote)
+        btnConfirm = view.findViewById(R.id.btnConfirm)
+        tvPickDate = view.findViewById(R.id.tvPickDate)
 
-        // --- Spinner Kategori ---
+        imgDoctor = view.findViewById(R.id.imgDoctor)
+        tvDoctorName = view.findViewById(R.id.tvDoctorName)
+        tvDoctorCategory = view.findViewById(R.id.tvDoctorCategory)
+        tvDoctorDesc = view.findViewById(R.id.tvDoctorDesc)
+        layoutDoctorInfo = view.findViewById(R.id.layoutDoctorInfo)
+
+        setupSpinners()
+        setupDatePicker()
+        setupConfirmButton()
+    }
+
+    private fun setupSpinners() {
         val categories = doctorData.keys.toList()
-        spinnerCategory.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, categories)
+        spinnerCategory.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories)
 
         spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedCategory = categories[position]
                 val doctors = doctorData[selectedCategory]?.keys?.toList() ?: listOf()
-                spinnerDoctor.adapter = ArrayAdapter(this@MakeAppointment, android.R.layout.simple_spinner_dropdown_item, doctors)
+                spinnerDoctor.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, doctors)
                 spinnerTime.adapter = null
-                layoutDoctorInfo.visibility = android.view.View.GONE
+                layoutDoctorInfo.visibility = View.GONE
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // --- Spinner Dokter ---
         spinnerDoctor.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedDoctor = spinnerDoctor.selectedItem.toString()
                 val times = doctorData[selectedCategory]?.get(selectedDoctor) ?: listOf()
-                spinnerTime.adapter = ArrayAdapter(this@MakeAppointment, android.R.layout.simple_spinner_dropdown_item, times)
+                spinnerTime.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, times)
 
                 doctorInfo[selectedDoctor]?.let { profile ->
-                    layoutDoctorInfo.visibility = android.view.View.VISIBLE
+                    layoutDoctorInfo.visibility = View.VISIBLE
                     imgDoctor.setImageResource(profile.imageRes)
                     tvDoctorName.text = profile.name
                     tvDoctorCategory.text = profile.category
@@ -119,24 +134,25 @@ class MakeAppointment : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
-        // --- Spinner Jam ---
         spinnerTime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>?, view: android.view.View?, position: Int, id: Long) {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedTime = spinnerTime.selectedItem.toString()
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+    }
 
-        // --- Pilih Tanggal ---
+    private fun setupDatePicker() {
         tvPickDate.setOnClickListener {
             val calendar = Calendar.getInstance()
-            val datePicker = DatePickerDialog(this,
+            val datePicker = DatePickerDialog(
+                requireContext(),
                 { _, year, month, day ->
-                    val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
                     calendar.set(year, month, day)
+                    val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
                     selectedDate = sdf.format(calendar.time)
                     tvPickDate.text = selectedDate
-                    tvPickDate.setTextColor(getColor(android.R.color.black))
+                    tvPickDate.setTextColor(resources.getColor(R.color.black))
                 },
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
@@ -145,12 +161,13 @@ class MakeAppointment : AppCompatActivity() {
             datePicker.datePicker.minDate = System.currentTimeMillis()
             datePicker.show()
         }
+    }
 
-        // --- Tombol Konfirmasi ---
+    private fun setupConfirmButton() {
         btnConfirm.setOnClickListener {
             val note = etNote.text.toString()
             if (selectedCategory.isEmpty() || selectedDoctor.isEmpty() || selectedTime.isEmpty() || selectedDate.isEmpty()) {
-                Toast.makeText(this, "Please complete all selections!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Please complete all selections!", Toast.LENGTH_SHORT).show()
             } else {
                 val summary = """
                     ✅ Appointment Created!
@@ -160,8 +177,10 @@ class MakeAppointment : AppCompatActivity() {
                     • Time: $selectedTime
                     • Note: $note
                 """.trimIndent()
-                Toast.makeText(this, summary, Toast.LENGTH_LONG).show()
-                finish()
+                Toast.makeText(requireContext(), summary, Toast.LENGTH_LONG).show()
+
+                // Gunakan Navigation Component untuk kembali
+                findNavController().navigateUp()
             }
         }
     }

@@ -13,20 +13,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MedEase">
         <activity
-            android:name=".MakeAppointment"
+            android:name=".ui.appointment.MakeAppointment"
             android:exported="false" />
-        <activity
-            android:name=".ui.order.OrderStatusFragment"
-            android:exported="false" />
-        <activity
-            android:name=".ui.order.CheckoutFragment"
-            android:exported="false" />
-        <activity
-            android:name=".ui.order.OrderMedsFragment"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".ui.order.OrderStatusFragment"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".ui.order.CheckoutFragment"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".ui.order.OrderMedsFragment"-->
+<!--            android:exported="false" />-->
 
     <activity
-        android:name=".DoctorDashboardActivity"
+        android:name=".MainActivity"
         android:exported="true">
         <!-- INI yang bikin dashboard tampil pertama -->
         <intent-filter>
@@ -34,10 +34,6 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
-
-    <activity
-        android:name=".MainActivity"
-        android:exported="false" />
 
 </application>
 

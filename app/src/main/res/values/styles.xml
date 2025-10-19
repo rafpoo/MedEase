@@ -4,6 +4,7 @@
     <style name="NoActiveIndicator" parent="">
         <item name="android:color">@android:color/transparent</item>
         <item name="android:alpha">0.0</item>
+    </style>
 
     <style name="RoundedDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="android:background">@drawable/bg_card_rounded</item>

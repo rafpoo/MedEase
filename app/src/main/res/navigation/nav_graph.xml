@@ -15,6 +15,10 @@
         <action
             android:id="@+id/action_dashboardFragment_to_orderMedsFragment"
             app:destination="@id/orderMedsFragment" />
+
+        <action
+            android:id="@+id/action_dashboardFragment_to_makeAppointmentFragment"
+            app:destination="@id/makeAppointmentFragment" />
     </fragment>
 
     <!-- Order Obat -->
@@ -46,4 +50,11 @@
         android:label="Status Pesanan"
         tools:layout="@layout/fragment_order_status" />
 
+
+
+    <fragment
+        android:id="@+id/makeAppointmentFragment"
+        android:name="com.example.medease.ui.appointment.MakeAppointmentFragment"
+        android:label="Buat Janji"
+        tools:layout="@layout/fragment_make_appointment" />
 </navigation>

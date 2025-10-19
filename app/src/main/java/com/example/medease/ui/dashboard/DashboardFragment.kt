@@ -23,6 +23,10 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(R.id.action_dashboardFragment_to_orderMedsFragment)
         }
 
+        binding.cardBuatJanji.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_makeAppointmentFragment)
+        }
+
         return binding.root
     }
 
