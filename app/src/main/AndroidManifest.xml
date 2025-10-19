@@ -4,14 +4,26 @@
     package="com.example.medease">
 
     <application
-    android:allowBackup="true"
-    android:dataExtractionRules="@xml/data_extraction_rules"
-    android:fullBackupContent="@xml/backup_rules"
-    android:icon="@mipmap/ic_launcher"
-    android:label="@string/app_name"
-    android:roundIcon="@mipmap/ic_launcher_round"
-    android:supportsRtl="true"
-    android:theme="@style/Theme.MedEase">
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MedEase">
+        <activity
+            android:name=".MakeAppointment"
+            android:exported="false" />
+        <activity
+            android:name=".ui.order.OrderStatusFragment"
+            android:exported="false" />
+        <activity
+            android:name=".ui.order.CheckoutFragment"
+            android:exported="false" />
+        <activity
+            android:name=".ui.order.OrderMedsFragment"
+            android:exported="false" />
 
     <activity
         android:name=".DoctorDashboardActivity"
