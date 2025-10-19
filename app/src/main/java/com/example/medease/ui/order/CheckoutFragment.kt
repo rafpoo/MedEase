@@ -1,19 +1,23 @@
-package com.example.medease
+package com.example.medease.ui.order
 
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.medease.R
 import java.text.NumberFormat
-import java.util.*
+import java.util.HashMap
+import java.util.Locale
 
-class CheckoutPage : AppCompatActivity() {
+class CheckoutFragment : Fragment() {
 
     private lateinit var rvCart: RecyclerView
     private lateinit var tvTotalPrice: TextView
@@ -23,21 +27,25 @@ class CheckoutPage : AppCompatActivity() {
 
     private var cart = mutableMapOf<OrderMedsFragment.Med, Int>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_checkout_page)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_checkout, container, false)
 
-        rvCart = findViewById(R.id.rvCheckoutCart)
-        tvTotalPrice = findViewById(R.id.tvTotalPrice)
-        etAddress = findViewById(R.id.etAddress)
-        etNotes = findViewById(R.id.etNotes)
-        btnPayNow = findViewById(R.id.btnPayNow)
+        rvCart = view.findViewById(R.id.rvCheckoutCart)
+        tvTotalPrice = view.findViewById(R.id.tvTotalPrice)
+        etAddress = view.findViewById(R.id.etAddress)
+        etNotes = view.findViewById(R.id.etNotes)
+        btnPayNow = view.findViewById(R.id.btnPayNow)
 
+        // Ambil data cart dari arguments
         @Suppress("UNCHECKED_CAST")
-        val receivedCart = intent.getSerializableExtra("cart_data") as? HashMap<OrderMedsFragment.Med, Int>
+        val receivedCart =
+            arguments?.getSerializable("cartData") as? HashMap<OrderMedsFragment.Med, Int>
         if (receivedCart != null) cart = receivedCart.toMutableMap()
 
-        rvCart.layoutManager = LinearLayoutManager(this)
+        rvCart.layoutManager = LinearLayoutManager(requireContext())
         val adapter = CartAdapter(cart) {
             updateTotalPrice()
         }
@@ -48,38 +56,41 @@ class CheckoutPage : AppCompatActivity() {
         btnPayNow.setOnClickListener {
             val address = etAddress.text.toString().trim()
             if (address.isEmpty()) {
-                Toast.makeText(this, "Alamat tidak boleh kosong!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Alamat tidak boleh kosong!", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
             val note = etNotes.text.toString().trim()
 
-            // Hitung total dan buat string rincian pesanan
+            // Hitung total
             val total = cart.entries.sumOf { it.key.price * it.value }
+
+            // Buat string rincian pesanan
             val details = buildString {
                 cart.forEach { (med, qty) ->
                     append("- ${med.name} x$qty\n")
                 }
             }
 
-            // Langsung tampilkan alert + lanjut ke OrderStatus
-            Toast.makeText(this, "Pesanan sedang dikirim ke $address 🚚", Toast.LENGTH_LONG).show()
+            Toast.makeText(
+                requireContext(),
+                "Pesanan sedang dikirim ke $address 🚚",
+                Toast.LENGTH_LONG
+            ).show()
 
-            val intent = Intent(this, OrderStatusFragment::class.java).apply {
-                putExtra("delivery_address", address)
-                putExtra("order_details", details)
-                putExtra("total_price", formatRupiah(total))
-                putExtra("order_note", note)
+            // Kirim data ke halaman OrderStatusFragment via navigation
+            val bundle = Bundle().apply {
+                putString("delivery_address", address)
+                putString("order_details", details)
+                putString("total_price", formatRupiah(total))
+                putString("order_note", note)
             }
 
-            // reset cart di OrderMeds
-            val resultIntent = Intent()
-            resultIntent.putExtra("checkout_message", "Pesanan sedang dikirim ke $address")
-            setResult(Activity.RESULT_OK, resultIntent)
-
-            startActivity(intent)
-            finish()
+            findNavController().navigate(R.id.action_checkout_to_orderStatus, bundle)
         }
+
+        return view
     }
 
     private fun updateTotalPrice() {
@@ -102,7 +113,8 @@ class CheckoutPage : AppCompatActivity() {
         private val items get() = cart.keys.toList()
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartVH {
-            val v = LayoutInflater.from(parent.context).inflate(R.layout.item_cart, parent, false)
+            val v = LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_cart, parent, false)
             return CartVH(v)
         }
 

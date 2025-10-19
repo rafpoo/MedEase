@@ -1,4 +1,4 @@
-package com.example.medease
+package com.example.medease.ui.order
 
 import android.os.Bundle
 import android.view.LayoutInflater

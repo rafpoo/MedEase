@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="@color/white"
-    tools:context=".OrderMedsFragment">
+    tools:context=".ui.order.OrderMedsFragment">
 
     <!-- Search bar -->
     <EditText

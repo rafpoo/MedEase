@@ -1,35 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/dashboardFragment"
-    xmlns:tools="http://schemas.android.com/tools">
+    app:startDestination="@id/dashboardFragment">
 
+    <!-- Dashboard -->
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.example.medease.ui.dashboard.DashboardFragment"
         android:label="Dashboard"
         tools:layout="@layout/fragment_dashboard">
+
         <action
             android:id="@+id/action_dashboardFragment_to_orderMedsFragment"
-            app:destination="@id/orderMedsFragment"/>
+            app:destination="@id/orderMedsFragment" />
     </fragment>
 
+    <!-- Order Obat -->
     <fragment
         android:id="@+id/orderMedsFragment"
-        android:name="com.example.medease.OrderMedsFragment"
-        android:label="Order Obat"
-        tools:layout="@layout/fragment_order_meds">
+        android:name="com.example.medease.ui.order.OrderMedsFragment"
+        android:label="Order Obat">
+
         <action
-            android:id="@+id/action_orderMeds_to_orderStatus"
+            android:id="@+id/action_orderMeds_to_checkout"
+            app:destination="@id/checkoutFragment" />
+    </fragment>
+
+    <!-- Checkout -->
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.example.medease.ui.order.CheckoutFragment"
+        android:label="Checkout">
+
+        <action
+            android:id="@+id/action_checkout_to_orderStatus"
             app:destination="@id/orderStatusFragment" />
     </fragment>
 
+    <!-- 🟢 Order Status (ini yang belum ada di punyamu) -->
     <fragment
         android:id="@+id/orderStatusFragment"
-        android:name="com.example.medease.OrderStatusFragment"
+        android:name="com.example.medease.ui.order.OrderStatusFragment"
         android:label="Status Pesanan"
         tools:layout="@layout/fragment_order_status" />
-
 
 </navigation>
