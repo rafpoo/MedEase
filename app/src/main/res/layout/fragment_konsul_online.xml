@@ -82,7 +82,7 @@
                             android:id="@+id/tv_patient_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Andi Saputra"
+                            android:text="Doctor Bryan"
                             android:textColor="#222222"
                             android:textSize="16sp"
                             android:textStyle="bold" />
@@ -91,7 +91,7 @@
                             android:id="@+id/tv_last_message"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Baik dok, saya akan datang besok pagi."
+                            android:text="Sama-sama."
                             android:textColor="#666666"
                             android:textSize="14sp"
                             android:maxLines="1"
