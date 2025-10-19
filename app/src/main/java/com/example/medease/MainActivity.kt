@@ -21,16 +21,16 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Tombol untuk menuju halaman pemesanan obat
-        val btnOrderMeds: Button = findViewById(R.id.btnOrderMeds)
-        btnOrderMeds.setOnClickListener {
-            val intent = Intent(this, OrderMeds::class.java)
-            startActivity(intent)
-        }
-        val btnMakeApt: Button = findViewById(R.id.btnMakeApt)
-        btnMakeApt.setOnClickListener {
-            val intent = Intent(this, MakeAppointment::class.java)
-            startActivity(intent)
-        }
+//        val btnOrderMeds: Button = findViewById(R.id.btnOrderMeds)
+//        btnOrderMeds.setOnClickListener {
+//            val intent = Intent(this, OrderMeds::class.java)
+//            startActivity(intent)
+//        }
+//        val btnMakeApt: Button = findViewById(R.id.btnMakeApt)
+//        btnMakeApt.setOnClickListener {
+//            val intent = Intent(this, MakeAppointment::class.java)
+//            startActivity(intent)
+//        }
         // 🔹 Temukan NavHostFragment dari layout
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
