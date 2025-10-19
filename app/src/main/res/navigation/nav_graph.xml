@@ -5,7 +5,7 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/dashboardFragment">
 
-    <!-- Dashboard -->
+    <!-- 🏠 Dashboard -->
     <fragment
         android:id="@+id/dashboardFragment"
         android:name="com.example.medease.ui.dashboard.DashboardFragment"
@@ -19,42 +19,67 @@
         <action
             android:id="@+id/action_dashboardFragment_to_makeAppointmentFragment"
             app:destination="@id/makeAppointmentFragment" />
+
+        <action
+            android:id="@+id/action_dashboardFragment_to_manageAppointmentFragment"
+            app:destination="@id/manageAppointmentFragment" />
     </fragment>
 
-    <!-- Order Obat -->
+    <!-- 💊 Order Obat -->
     <fragment
         android:id="@+id/orderMedsFragment"
         android:name="com.example.medease.ui.order.OrderMedsFragment"
         android:label="Order Obat">
-
         <action
             android:id="@+id/action_orderMeds_to_checkout"
             app:destination="@id/checkoutFragment" />
     </fragment>
 
-    <!-- Checkout -->
+    <!-- 🧾 Checkout -->
     <fragment
         android:id="@+id/checkoutFragment"
         android:name="com.example.medease.ui.order.CheckoutFragment"
         android:label="Checkout">
-
         <action
             android:id="@+id/action_checkout_to_orderStatus"
             app:destination="@id/orderStatusFragment" />
     </fragment>
 
-    <!-- 🟢 Order Status (ini yang belum ada di punyamu) -->
+    <!-- ✅ Status Pesanan -->
     <fragment
         android:id="@+id/orderStatusFragment"
         android:name="com.example.medease.ui.order.OrderStatusFragment"
         android:label="Status Pesanan"
         tools:layout="@layout/fragment_order_status" />
 
-
-
+    <!-- 🗓️ Buat Janji -->
     <fragment
         android:id="@+id/makeAppointmentFragment"
         android:name="com.example.medease.ui.appointment.MakeAppointmentFragment"
         android:label="Buat Janji"
         tools:layout="@layout/fragment_make_appointment" />
+
+    <!-- 📋 Kelola Appointment -->
+    <fragment
+        android:id="@+id/manageAppointmentFragment"
+        android:name="com.example.medease.ui.appointment.ManageAppointmentFragment"
+        android:label="Manage Appointment"
+        tools:layout="@layout/fragment_manage_appointment">
+
+        <action
+            android:id="@+id/action_manageAppointmentFragment_to_editAppointmentFragment"
+            app:destination="@id/editAppointmentFragment" />
+    </fragment>
+
+    <!-- ✏️ Edit Appointment -->
+    <fragment
+        android:id="@+id/editAppointmentFragment"
+        android:name="com.example.medease.ui.appointment.EditAppointmentFragment"
+        android:label="Edit Appointment"
+        tools:layout="@layout/fragment_edit_appointment">
+        <argument
+            android:name="appointmentId"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

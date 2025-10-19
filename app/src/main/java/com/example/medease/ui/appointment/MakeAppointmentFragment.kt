@@ -176,7 +176,7 @@ class MakeAppointmentFragment : Fragment() {
                 ).show()
             } else {
                 val newAppointment = Appointment(
-                    doctorName = selectedDoctor,
+                    doctor = selectedDoctor,
                     category = selectedCategory,
                     date = selectedDate,
                     time = selectedTime,

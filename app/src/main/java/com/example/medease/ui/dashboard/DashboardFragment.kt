@@ -42,6 +42,10 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(R.id.action_dashboardFragment_to_makeAppointmentFragment)
         }
 
+        binding.cardLihatKonsultasi.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_manageAppointmentFragment)
+        }
+
         // 🔹 Load data dari repository
         val list = AppointmentRepository.getAppointments()
 
