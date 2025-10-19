@@ -114,7 +114,7 @@
                             android:id="@+id/tv_today_appointments"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="8"
+                            android:text="1"
                             android:textColor="#00897B"
                             android:textSize="28sp"
                             android:textStyle="bold" />
@@ -147,7 +147,7 @@
                             android:id="@+id/tv_pending_requests"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="3"
+                            android:text="1"
                             android:textColor="#FB8C00"
                             android:textSize="28sp"
                             android:textStyle="bold" />
