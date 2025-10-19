@@ -1,14 +1,28 @@
-**Deskripsi Aplikasi**: <br />
-Aplikasi yang kami bangun memiliki nama MedEase, berasal dari 2 kata yaitu medis dan easy. Singkatnya, aplikasi kami dibuat dengan tujuan untuk memberikan kemudahan akses bagi para pasien di suatu klinik untuk bisa melakukan reservasi dan konsultasi dengan dokter. Target user aplikasi kami adalah seluruh masyarakat Indonesia yang membutuhkan tenaga medis dari klinik yang bersangkutan.
+MedEase
+- kelompok g - 
 
-**Untuk login sebagai user = gunakan username: user, password: 12345<br/>
-wuntuk login sebagai dokter = gunakan username: doctor, password: 12345**<br/>
+Rafael Nicholas Po (92399)
+Benedict Bryan H.P. (94709)
+Davis Ariel (94994)
+Ezequiel Emeraldo (159857)
 
-**Kelompok G**:<br />
-1. Rafael Nicholas Po (00000092399) <br />
-2. Davis Ariel (00000094994) <br />
-3. Benedict Bryan H.P. (00000094709) <br />
-4. Ezequiel Emeraldo (00000159857) <br />
+Aplikasi kami merupakan aplikasi medis yang memudahkan user untuk melakukan reservasi dan konsultasi online pada suatu klinik.
 
+Untuk login sebagai user = gunakan username: user, password: 12345
+untuk login sebagai dokter = gunakan username: doctor, password: 12345
 
+Fitur-fitur user:
+- Lihat konsultasi
+- Buat janji
+- Beli obat
+- Konsul online
+- Logout
+
+Fitur-fitur dokter:
+- Lihat jadwal harian
+- Konsultasi pasien
+- Reservasi pasien
+- Profil 
+- Mailbox 
+- Kalender
 
