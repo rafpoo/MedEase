@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical"
-    android:padding="24dp"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnOrderMeds"
-        android:layout_width="wrap_content"
+    <!-- 🔹 AppBarLayout supaya toolbar bisa ikut scroll behavior -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pesan Obat Sekarang"
-        android:backgroundTint="@color/teal_700"
-        android:textColor="@android:color/white"
-        android:textAllCaps="false"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="12dp"
-        android:layout_marginTop="16dp" />
-    <Button
-        android:id="@+id/btnMakeApt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Buat Janji Sekarang"
-        android:backgroundTint="@color/teal_700"
-        android:textColor="@android:color/white"
-        android:textAllCaps="false"
-        android:paddingHorizontal="24dp"
-        android:paddingVertical="12dp"
-        android:layout_marginTop="16dp" />
-</LinearLayout>
+        android:theme="@style/ThemeOverlay.Material3.ActionBar">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/mainToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/teal_600"
+            android:titleTextColor="@color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- 🔹 Tempat fragment ditampilkan -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

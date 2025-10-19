@@ -16,13 +16,13 @@
             android:name=".MakeAppointment"
             android:exported="false" />
         <activity
-            android:name=".OrderStatus"
+            android:name=".ui.order.OrderStatusFragment"
             android:exported="false" />
         <activity
-            android:name=".CheckoutPage"
+            android:name=".ui.order.CheckoutFragment"
             android:exported="false" />
         <activity
-            android:name=".OrderMeds"
+            android:name=".ui.order.OrderMedsFragment"
             android:exported="false" />
 
         <meta-data
