@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_bottom_sheet"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvCartTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Keranjang Obat 🛒"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/teal_700"
+        android:gravity="center"
+        android:layout_marginBottom="12dp"/>
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="3dp"
+        android:layout_gravity="center"
+        android:background="@color/teal_400"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/tvEmptyCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Keranjang kamu kosong 😅"
+        android:textColor="#555"
+        android:gravity="center"
+        android:textSize="16sp"
+        android:visibility="gone"
+        android:padding="8dp" />
+
+    <!-- Daftar isi keranjang -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:nestedScrollingEnabled="false"
+        android:layout_marginBottom="12dp"/>
+
+    <TextView
+        android:id="@+id/tvTotalItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total: 0 item"
+        android:textStyle="bold"
+        android:textColor="@color/teal_700"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginBottom="4dp" />
+
+    <!-- 🔹 Tambahan total harga -->
+    <TextView
+        android:id="@+id/tvTotalPrice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Total Harga: Rp0"
+        android:textStyle="bold"
+        android:textColor="@color/teal_700"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_marginBottom="12dp" />
+
+    <!-- Tombol Tutup & Checkout -->
+    <LinearLayout
+        android:id="@+id/layoutCartButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <Button
+            android:id="@+id/btnCloseCart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Tutup"
+            android:textAllCaps="false"
+            android:backgroundTint="#ECECEC"
+            android:textColor="#444"
+            android:layout_marginEnd="8dp"/>
+
+        <Button
+            android:id="@+id/btnCheckoutCart"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Checkout"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/teal_700"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+
+</LinearLayout>

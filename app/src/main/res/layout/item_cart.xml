@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="8dp"
+    android:background="@drawable/bg_card_light">
+
+    <TextView
+        android:id="@+id/tvCartMedName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Paracetamol"
+        android:textColor="@android:color/black"
+        android:textSize="15sp" />
+
+    <android.widget.Button
+        android:id="@+id/btnCartDecrease"
+        android:layout_width="37dp"
+        android:layout_height="32dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text="-"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/bg_teal_rounded"
+        android:layout_marginEnd="6dp" />
+
+    <TextView
+        android:id="@+id/tvCartQty"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="1"
+        android:textSize="16sp"
+        android:textColor="@android:color/black" />
+
+    <android.widget.Button
+        android:id="@+id/btnCartIncrease"
+        android:layout_width="37dp"
+        android:layout_height="32dp"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:text="+"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/bg_teal_rounded"
+        android:layout_marginStart="6dp" />
+</LinearLayout>

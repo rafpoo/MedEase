@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="24dp"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Profil Dokter"
+            android:textColor="#1db7ad"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
+            android:id="@+id/et_edit_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nama Lengkap"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/et_edit_education"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Pendidikan"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/et_edit_specialization"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Spesialisasi"
+            android:layout_marginTop="8dp" />
+
+        <EditText
+            android:id="@+id/et_edit_schedule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Jadwal Kerja"
+            android:layout_marginTop="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/btn_cancel_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Batal"
+                android:textColor="#666666"
+                android:backgroundTint="#EEEEEE"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/btn_save_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Simpan"
+                android:textColor="#FFFFFF"
+                android:backgroundTint="#1db7ad" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
