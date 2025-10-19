@@ -54,6 +54,10 @@ class DashboardFragment : Fragment() {
             startActivity(intent)
         }
 
+        binding.cardKonsulOnline.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_KonsulOnlineFragment)
+        }
+
         // 🔹 Load data dari repository
         val list = AppointmentRepository.getAppointments()
 

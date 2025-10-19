@@ -23,6 +23,10 @@
         <action
             android:id="@+id/action_dashboardFragment_to_manageAppointmentFragment"
             app:destination="@id/manageAppointmentFragment" />
+
+        <action
+            android:id="@+id/action_dashboardFragment_to_KonsulOnlineFragment"
+            app:destination="@id/konsulOnlineFragment"/>
     </fragment>
 
     <!-- 💊 Order Obat -->
@@ -81,5 +85,11 @@
             android:name="appointmentId"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/konsulOnlineFragment"
+        android:name="com.example.medease.ui.appointment.KonsulOnlineFragment"
+        android:label="Konsultasi Online"
+        tools:layout="@layout/fragment_konsul_online" />
 
 </navigation>
