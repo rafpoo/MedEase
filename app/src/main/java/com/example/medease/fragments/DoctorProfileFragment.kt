@@ -2,6 +2,7 @@ package com.example.medease.fragments
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.medease.R
+import com.example.medease.ui.login.LoginActivity
 
 class DoctorProfileFragment : Fragment() {
 
@@ -49,6 +51,10 @@ class DoctorProfileFragment : Fragment() {
             // TODO: arahkan ke halaman login nanti
             clearProfileData()
             loadProfileData()
+
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
         return view

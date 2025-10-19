@@ -1,10 +1,12 @@
-package com.example.medease
+package com.example.medease.ui.doctor
 
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.example.medease.R
 import com.example.medease.databinding.ActivityDoctorDashboardBinding
 import com.example.medease.fragments.DoctorAppointmentsFragment
 import com.example.medease.fragments.DoctorCalendarFragment
@@ -12,7 +14,6 @@ import com.example.medease.fragments.DoctorConsultationsFragment
 import com.example.medease.fragments.DoctorMailboxFragment
 import com.example.medease.fragments.DoctorProfileFragment
 import com.example.medease.fragments.DoctorScheduleFragment
-
 
 class DoctorDashboardActivity : AppCompatActivity() {
 
@@ -101,6 +102,6 @@ class DoctorDashboardActivity : AppCompatActivity() {
         binding.fragmentContainer.visibility = View.GONE
 
         // Bersihkan fragment stack
-        supportFragmentManager.popBackStack(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
 }

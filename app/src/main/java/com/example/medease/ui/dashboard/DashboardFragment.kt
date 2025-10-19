@@ -1,5 +1,6 @@
 package com.example.medease.ui.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import com.example.medease.R
 import com.example.medease.adapter.AppointmentAdapter
 import com.example.medease.databinding.FragmentDashboardBinding
 import com.example.medease.repository.AppointmentRepository
+import com.example.medease.ui.login.LoginActivity
 
 class DashboardFragment : Fragment() {
 
@@ -44,6 +46,12 @@ class DashboardFragment : Fragment() {
 
         binding.cardLihatKonsultasi.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_manageAppointmentFragment)
+        }
+
+        binding.cardLogout.setOnClickListener {
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
         // 🔹 Load data dari repository
