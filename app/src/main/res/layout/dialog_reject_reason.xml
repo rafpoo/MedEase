@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pilih alasan penolakan:"
+        android:textSize="16sp"
+        android:textColor="#222222"
+        android:layout_marginBottom="12dp" />
+
+    <RadioGroup
+        android:id="@+id/radio_group_reasons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/rb_not_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tidak sesuai bidang saya" />
+
+        <RadioButton
+            android:id="@+id/rb_full_schedule"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jadwal saya sudah penuh" />
+
+        <RadioButton
+            android:id="@+id/rb_unavailable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Saya sedang tidak tersedia" />
+    </RadioGroup>
+
+</LinearLayout>
