@@ -1,8 +1,8 @@
 **Deskripsi Aplikasi**: <br />
 Aplikasi yang kami bangun memiliki nama MedEase, berasal dari 2 kata yaitu medis dan easy. Singkatnya, aplikasi kami dibuat dengan tujuan untuk memberikan kemudahan akses bagi para pasien di suatu klinik untuk bisa melakukan reservasi dan konsultasi dengan dokter. Target user aplikasi kami adalah seluruh masyarakat Indonesia yang membutuhkan tenaga medis dari klinik yang bersangkutan.
 
-**Untuk login sebagai user = gunakan username: user, password: 12345
-untuk login sebagai dokter = gunakan username: doctor, password: 12345**
+**Untuk login sebagai user = gunakan username: user, password: 12345<br/>
+wuntuk login sebagai dokter = gunakan username: doctor, password: 12345**<br/>
 
 **Kelompok G**:<br />
 1. Rafael Nicholas Po (00000092399) <br />
