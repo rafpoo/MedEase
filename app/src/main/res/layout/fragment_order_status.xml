@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F4F8"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Header -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🚚 Status Pengiriman"
+            android:textColor="@color/teal_700"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Card Container -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_glass_card"
+            android:orientation="vertical"
+            android:elevation="4dp"
+            android:padding="20dp"
+            android:layout_marginBottom="24dp">
+
+            <!-- Alamat -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📍 Alamat Pengiriman"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#333"
+                android:layout_marginBottom="6dp" />
+
+            <TextView
+                android:id="@+id/tvDeliveryAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Jl. Contoh No. 123, Jakarta"
+                android:textColor="#555"
+                android:textSize="15sp"
+                android:layout_marginBottom="12dp" />
+
+            <!-- Map Container -->
+            <FrameLayout
+                android:id="@+id/mapContainer"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:background="@drawable/bg_map_placeholder"
+                android:layout_marginBottom="20dp"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clipToOutline="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="🗺️ Map driver sedang dimuat..."
+                    android:textColor="#666"
+                    android:textStyle="italic"
+                    android:layout_gravity="center" />
+            </FrameLayout>
+
+            <!-- Detail Pesanan -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="🧾 Detail Pesanan"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#333"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tvDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2x Paracetamol, 1x Vitamin C"
+                android:textColor="#555"
+                android:textSize="15sp"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/tvNotes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Catatan: Tolong diantar ke pos satpam"
+                android:textColor="#777"
+                android:textSize="14sp"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:id="@+id/tvTotalPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="💰 Total: Rp 72.000"
+                android:textStyle="bold"
+                android:textColor="@color/teal_700"
+                android:textSize="16sp"
+                android:layout_marginBottom="24dp" />
+
+            <!-- Progress -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Progres Pengiriman"
+                android:textStyle="bold"
+                android:textColor="#333"
+                android:textSize="16sp"
+                android:layout_marginBottom="8dp" />
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progressStatus"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:progress="65"
+                app:indicatorColor="@color/teal_700"
+                app:trackColor="#DDEEEF"
+                android:layout_marginBottom="12dp" />
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Status: 📦 Kurir sedang menuju lokasi"
+                android:textColor="#444"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

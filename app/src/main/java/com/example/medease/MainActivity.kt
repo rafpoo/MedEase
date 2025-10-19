@@ -1,20 +1,44 @@
 package com.example.medease
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.example.medease.databinding.ActivityMainBinding
+import com.google.android.material.appbar.MaterialToolbar
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+
+        // 🔹 Temukan NavHostFragment dari layout
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+
+        // 🔹 Hubungkan toolbar dengan NavController
+        val toolbar = findViewById<MaterialToolbar>(R.id.mainToolbar)
+        setSupportActionBar(toolbar) // penting agar navigation icon bisa tampil otomatis
+
+        // 🔹 Setup toolbar supaya ikut navigasi (tampil title & tombol back otomatis)
+        setupActionBarWithNavController(navController)
+
+        // Jika kamu ingin bottom nav / drawer, baru gunakan:
+        // toolbar.setupWithNavController(navController)
+        // tapi untuk toolbar saja, setupActionBarWithNavController lebih tepat
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        // 🔙 Handle tombol back (arrow di toolbar)
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

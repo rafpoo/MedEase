@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white"
+    tools:context=".ui.order.OrderMedsFragment">
+
+    <!-- Search bar -->
+    <EditText
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Cari obat..."
+        android:padding="12dp"
+        android:background="@drawable/bg_search_bar"
+        android:drawableStart="@android:drawable/ic_menu_search"
+        android:drawablePadding="8dp"
+        android:textColorHint="#888"
+        android:textColor="@android:color/black"
+        android:imeOptions="actionSearch" />
+
+    <!-- List obat -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMeds"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="12dp"
+        tools:listitem="@layout/item_med_card" />
+
+    <!-- Bottom bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="8dp"
+        android:paddingHorizontal="12dp"
+        android:background="@color/teal_600">
+
+        <!-- Cart count di kiri -->
+        <TextView
+            android:id="@+id/tvCartCount"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="0 item"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <!-- Tombol checkout di kanan -->
+        <Button
+            android:id="@+id/btnCheckout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lihat Keranjang"
+            android:backgroundTint="@color/teal_400"
+            android:textColor="@android:color/white"
+            android:textAllCaps="false"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="2dp" />
+    </LinearLayout>
+
+</LinearLayout>
