@@ -9,6 +9,8 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.medease.R
+import com.example.medease.data.model.Appointment
+import com.example.medease.repository.AppointmentRepository
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -167,19 +169,27 @@ class MakeAppointmentFragment : Fragment() {
         btnConfirm.setOnClickListener {
             val note = etNote.text.toString()
             if (selectedCategory.isEmpty() || selectedDoctor.isEmpty() || selectedTime.isEmpty() || selectedDate.isEmpty()) {
-                Toast.makeText(requireContext(), "Please complete all selections!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Please complete all selections!",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
-                val summary = """
-                    ✅ Appointment Created!
-                    • Category: $selectedCategory
-                    • Doctor: $selectedDoctor
-                    • Date: $selectedDate
-                    • Time: $selectedTime
-                    • Note: $note
-                """.trimIndent()
-                Toast.makeText(requireContext(), summary, Toast.LENGTH_LONG).show()
+                val newAppointment = Appointment(
+                    doctorName = selectedDoctor,
+                    category = selectedCategory,
+                    date = selectedDate,
+                    time = selectedTime,
+                    note = note
+                )
 
-                // Gunakan Navigation Component untuk kembali
+                AppointmentRepository.addAppointment(newAppointment)
+
+                Toast.makeText(
+                    requireContext(),
+                    "Appointment Created Successfully!",
+                    Toast.LENGTH_SHORT
+                ).show()
                 findNavController().navigateUp()
             }
         }
