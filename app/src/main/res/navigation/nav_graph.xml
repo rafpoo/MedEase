@@ -90,6 +90,24 @@
         android:id="@+id/konsulOnlineFragment"
         android:name="com.example.medease.ui.appointment.KonsulOnlineFragment"
         android:label="Konsultasi Online"
-        tools:layout="@layout/fragment_konsul_online" />
+        tools:layout="@layout/fragment_konsul_online">
+
+        <action
+            android:id="@+id/action_konsulOnlineFragment_to_chatRoomFragment"
+            app:destination="@id/chatRoomFragment" />
+    </fragment>
+
+
+
+    <fragment
+        android:id="@+id/chatRoomFragment"
+        android:name="com.example.medease.ui.appointment.ChatRoomFragment"
+        android:label="Chat Room">
+
+        <argument
+            android:name="chatId"
+            app:argType="string" />
+    </fragment>
+
 
 </navigation>
