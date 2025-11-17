@@ -6,10 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.medease.R
 import com.example.medease.adapter.ManageAppointmentAdapter
+import com.example.medease.database.AppointmentViewModel
+import com.example.medease.database.AppointmentViewModelFactory
+import com.example.medease.database.TotalDatabase
 import com.example.medease.databinding.FragmentManageAppointmentBinding
 import com.example.medease.repository.AppointmentRepository
 
@@ -17,6 +20,8 @@ class ManageAppointmentFragment : Fragment() {
 
     private var _binding: FragmentManageAppointmentBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var viewModel: AppointmentViewModel
     private lateinit var adapter: ManageAppointmentAdapter
 
     override fun onCreateView(
@@ -31,23 +36,24 @@ class ManageAppointmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        // 🔹 Ambil data dari repository
-        val appointments = AppointmentRepository.getAppointments()
+        // 🔹 Init ViewModel
+        val appContext = requireContext().applicationContext
+        val db = TotalDatabase.getInstance(appContext)
+        val repo = AppointmentRepository(db.appointmentDao())
+        val factory = AppointmentViewModelFactory(repo)
+        viewModel = ViewModelProvider(this, factory)[AppointmentViewModel::class.java]
 
         // 🔹 Setup RecyclerView
         adapter = ManageAppointmentAdapter(
-            appointments,
+            emptyList(),
             onEdit = { appointment ->
-                // Navigasi ke fragment edit (bisa kamu buat nanti)
-                val action = ManageAppointmentFragmentDirections
-                    .actionManageAppointmentFragmentToEditAppointmentFragment(appointment.id.toString())
+                val action =
+                    ManageAppointmentFragmentDirections
+                        .actionManageAppointmentFragmentToEditAppointmentFragment(appointment.id)
                 findNavController().navigate(action)
-
             },
             onDelete = { appointment ->
-                AppointmentRepository.deleteAppointment(appointment.id)
-                adapter.updateData(AppointmentRepository.getAppointments())
+                viewModel.delete(appointment)
                 Toast.makeText(requireContext(), "Appointment deleted", Toast.LENGTH_SHORT).show()
             }
         )
@@ -55,8 +61,14 @@ class ManageAppointmentFragment : Fragment() {
         binding.rvManageAppointments.layoutManager = LinearLayoutManager(requireContext())
         binding.rvManageAppointments.adapter = adapter
 
-        binding.tvNoData.visibility =
-            if (appointments.isEmpty()) View.VISIBLE else View.GONE
+        // 🔹 Observe data dari ViewModel
+        viewModel.appointments.observe(viewLifecycleOwner) { list ->
+            adapter.updateData(list)
+            binding.tvNoData.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
+        }
+
+        // 🔹 Load data pertama
+        viewModel.loadAll()
     }
 
     override fun onDestroyView() {
