@@ -1,8 +1,9 @@
 plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.kapt")
+    id("androidx.navigation.safeargs")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
-    id("androidx.navigation.safeargs.kotlin")
 }
 
 secrets {
@@ -52,12 +53,14 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
+    val roomVersion = "2.6.0"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    kapt("androidx.room:room-compiler:$roomVersion")
+
     implementation("de.hdodenhof:circleimageview:3.1.0")
     // Jetpack Navigation (kalau mau pakai)
     implementation("androidx.navigation:navigation-fragment-ktx:2.8.3")

@@ -7,14 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.medease.R
 import com.example.medease.data.model.Appointment
+import com.example.medease.database.AppointmentViewModel
+import com.example.medease.database.AppointmentViewModelFactory
+import com.example.medease.database.TotalDatabase
 import com.example.medease.repository.AppointmentRepository
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MakeAppointmentFragment : Fragment() {
+    private lateinit var viewModel: AppointmentViewModel
 
     private lateinit var spinnerCategory: Spinner
     private lateinit var spinnerDoctor: Spinner
@@ -82,6 +87,16 @@ class MakeAppointmentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //inisiasi view model
+        val appContext = requireContext().applicationContext
+
+        val db = TotalDatabase.getInstance(appContext)  // pakai singleton
+        val repository = AppointmentRepository(db.appointmentDao())
+
+        val factory = AppointmentViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory)[AppointmentViewModel::class.java]
+
 
         // Inisialisasi View dari layout
         spinnerCategory = view.findViewById(R.id.spinnerCategory)
@@ -168,30 +183,35 @@ class MakeAppointmentFragment : Fragment() {
     private fun setupConfirmButton() {
         btnConfirm.setOnClickListener {
             val note = etNote.text.toString()
+
             if (selectedCategory.isEmpty() || selectedDoctor.isEmpty() || selectedTime.isEmpty() || selectedDate.isEmpty()) {
                 Toast.makeText(
                     requireContext(),
                     "Please complete all selections!",
                     Toast.LENGTH_SHORT
                 ).show()
-            } else {
-                val newAppointment = Appointment(
-                    doctor = selectedDoctor,
-                    category = selectedCategory,
-                    date = selectedDate,
-                    time = selectedTime,
-                    note = note
-                )
-
-                AppointmentRepository.addAppointment(newAppointment)
-
-                Toast.makeText(
-                    requireContext(),
-                    "Appointment Created Successfully!",
-                    Toast.LENGTH_SHORT
-                ).show()
-                findNavController().navigateUp()
+                return@setOnClickListener
             }
+
+            val newAppointment = Appointment(
+                doctor = selectedDoctor,
+                category = selectedCategory,
+                date = selectedDate,
+                time = selectedTime,
+                note = note
+            )
+
+            // PAKAI VIEWMODEL → ROOM
+            viewModel.insert(newAppointment)
+
+            Toast.makeText(
+                requireContext(),
+                "Appointment Created Successfully!",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            findNavController().navigateUp()
         }
     }
+
 }

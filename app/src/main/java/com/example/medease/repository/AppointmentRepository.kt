@@ -1,36 +1,27 @@
 package com.example.medease.repository
 
 import com.example.medease.data.model.Appointment
+import com.example.medease.database.dao.AppointmentDao
 
-object AppointmentRepository {
+class AppointmentRepository(private val dao: AppointmentDao) {
 
-    private val appointments = mutableListOf<Appointment>()
-    private var nextId = 1
-
-    fun addAppointment(appointment: Appointment) {
-        appointment.id = nextId++
-        appointments.add(appointment)
+    suspend fun insert(appointment: Appointment) {
+        dao.insert(appointment)
     }
 
-    fun getAppointments(): List<Appointment> = appointments
-
-    fun getAppointmentById(id: Int): Appointment? {
-        return appointments.find { it.id == id }
+    suspend fun update(appointment: Appointment) {
+        dao.update(appointment)
     }
 
-    // Tambahkan fungsi ini di bawah ↓↓↓
-    fun updateAppointment(updatedAppointment: Appointment) {
-        val index = appointments.indexOfFirst { it.id == updatedAppointment.id }
-        if (index != -1) {
-            appointments[index] = updatedAppointment
-        }
+    suspend fun delete(appointment: Appointment) {
+        dao.delete(appointment)
     }
 
-    fun deleteAppointment(id: Int) {
-        appointments.removeIf { it.id == id }
+    suspend fun getById(id: Int): Appointment? {
+        return dao.getById(id)
     }
 
-    fun clearAll() {
-        appointments.clear()
+    suspend fun getAll(): List<Appointment> {
+        return dao.getAll()
     }
 }

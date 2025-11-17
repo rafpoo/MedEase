@@ -7,15 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.room.Room
 import com.example.medease.R
 import com.example.medease.data.model.Appointment
+import com.example.medease.database.AppointmentViewModel
+import com.example.medease.database.AppointmentViewModelFactory
+import com.example.medease.database.TotalDatabase
 import com.example.medease.repository.AppointmentRepository
 import java.text.SimpleDateFormat
 import java.util.*
 
 class EditAppointmentFragment : Fragment() {
+    private lateinit var viewModel: AppointmentViewModel
 
     private val args: EditAppointmentFragmentArgs by navArgs()
 
@@ -31,7 +37,7 @@ class EditAppointmentFragment : Fragment() {
     private var selectedTime = ""
     private var selectedDate = ""
 
-    private var appointmentId: Int = -1
+    private var appointmentId: Int = args.appointmentId
     private var currentAppointment: Appointment? = null
 
     // Dummy data (sama seperti di MakeAppointmentFragment)
@@ -58,6 +64,16 @@ class EditAppointmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val appContext = requireContext().applicationContext
+
+        val db = TotalDatabase.getInstance(appContext)  // pakai singleton
+        val repository = AppointmentRepository(db.appointmentDao())
+
+        val factory = AppointmentViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory)[AppointmentViewModel::class.java]
+
+
+
         spinnerCategory = view.findViewById(R.id.spinnerCategory)
         spinnerDoctor = view.findViewById(R.id.spinnerDoctor)
         spinnerTime = view.findViewById(R.id.spinnerTime)
@@ -65,8 +81,16 @@ class EditAppointmentFragment : Fragment() {
         tvPickDate = view.findViewById(R.id.tvPickDate)
         btnSave = view.findViewById(R.id.btnSave)
 
-        appointmentId = args.appointmentId.toIntOrNull() ?: -1
-        currentAppointment = AppointmentRepository.getAppointmentById(appointmentId)
+        appointmentId = args.appointmentId
+
+        viewModel.getById(appointmentId)
+        viewModel.selectedAppointment.observe(viewLifecycleOwner) { appointment ->
+            if (appointment != null) {
+                currentAppointment = appointment
+                populateFields(appointment)
+            }
+        }
+
 
         setupSpinners()
         setupDatePicker()
@@ -164,7 +188,8 @@ class EditAppointmentFragment : Fragment() {
             note = note
         )
 
-        AppointmentRepository.updateAppointment(updatedAppointment)
+        viewModel.update(updatedAppointment)
+
         Toast.makeText(requireContext(), "Appointment updated!", Toast.LENGTH_SHORT).show()
         findNavController().navigateUp()
     }
@@ -182,4 +207,19 @@ class EditAppointmentFragment : Fragment() {
     private fun getTimeIndex(time: String): Int {
         return timeSlots.indexOf(time).coerceAtLeast(0)
     }
+
+    private fun populateFields(appointment: Appointment) {
+        selectedCategory = appointment.category
+        selectedDoctor = appointment.doctor
+        selectedTime = appointment.time
+        selectedDate = appointment.date
+
+        spinnerCategory.setSelection(getCategoryIndex(appointment.category))
+        spinnerDoctor.setSelection(getDoctorIndex(appointment.doctor))
+        spinnerTime.setSelection(getTimeIndex(appointment.time))
+
+        etNote.setText(appointment.note)
+        tvPickDate.text = appointment.date
+    }
+
 }

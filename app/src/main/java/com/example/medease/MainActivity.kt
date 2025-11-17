@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -15,6 +16,10 @@ import com.google.android.material.appbar.MaterialToolbar
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
+
+    private val viewModel by lazy {
+        ViewModelProvider(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
