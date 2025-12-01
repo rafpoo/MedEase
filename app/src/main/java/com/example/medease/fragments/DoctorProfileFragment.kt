@@ -12,7 +12,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.medease.R
-import com.example.medease.ui.login.LoginActivity
+import com.example.medease.ui.auth.LoginActivity
 
 class DoctorProfileFragment : Fragment() {
 

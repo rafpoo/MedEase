@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medease.R
@@ -15,8 +14,7 @@ import com.example.medease.database.AppointmentViewModel
 import com.example.medease.database.TotalDatabase
 import com.example.medease.databinding.FragmentDashboardBinding
 import com.example.medease.repository.AppointmentRepository
-import com.example.medease.ui.login.LoginActivity
-import kotlinx.coroutines.launch
+import com.example.medease.ui.auth.LoginActivity
 
 class DashboardFragment : Fragment() {
 

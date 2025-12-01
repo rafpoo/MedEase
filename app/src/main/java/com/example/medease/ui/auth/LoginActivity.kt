@@ -1,4 +1,4 @@
-package com.example.medease.ui.login
+package com.example.medease.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -62,7 +62,9 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnRegister.setOnClickListener {
-            Toast.makeText(this, "Fitur register belum tersedia", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 }
