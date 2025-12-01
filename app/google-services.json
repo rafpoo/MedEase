@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "704276383988",
+    "project_id": "medease-e7f6f",
+    "storage_bucket": "medease-e7f6f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:704276383988:android:e9cbbc0d903ff2a54bb6a1",
+        "android_client_info": {
+          "package_name": "com.example.medease"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXAjWzFJHrjE4nF9YnXhy9j4AeIOqHeqE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

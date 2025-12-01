@@ -21,9 +21,10 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class EditAppointmentFragment : Fragment() {
-    private lateinit var viewModel: AppointmentViewModel
 
     private val args: EditAppointmentFragmentArgs by navArgs()
+
+    private lateinit var viewModel: AppointmentViewModel
 
     private lateinit var spinnerCategory: Spinner
     private lateinit var spinnerDoctor: Spinner
@@ -37,8 +38,9 @@ class EditAppointmentFragment : Fragment() {
     private var selectedTime = ""
     private var selectedDate = ""
 
-    private var appointmentId: Int = args.appointmentId
+    private var appointmentId: Int = -1
     private var currentAppointment: Appointment? = null
+
 
     // Dummy data (sama seperti di MakeAppointmentFragment)
     private val doctorData = mapOf(
