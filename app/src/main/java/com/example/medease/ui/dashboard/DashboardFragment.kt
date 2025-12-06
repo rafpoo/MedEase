@@ -10,11 +10,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medease.R
 import com.example.medease.adapter.AppointmentAdapter
-import com.example.medease.database.AppointmentViewModel
-import com.example.medease.database.TotalDatabase
+import com.example.medease.database.viewModels.AppointmentViewModel
 import com.example.medease.databinding.FragmentDashboardBinding
-import com.example.medease.repository.AppointmentRepository
 import com.example.medease.ui.auth.LoginActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class DashboardFragment : Fragment() {
 
@@ -23,6 +22,8 @@ class DashboardFragment : Fragment() {
 
     private lateinit var viewModel: AppointmentViewModel
     private lateinit var adapter: AppointmentAdapter
+
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,9 +38,7 @@ class DashboardFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // INIT VIEWMODEL
-        val dao = TotalDatabase.getInstance(requireContext()).appointmentDao()
-        val repo = AppointmentRepository(dao)
-        viewModel = AppointmentViewModel(repo)
+        viewModel = AppointmentViewModel()
 
         // SETUP RECYCLER VIEW
         adapter = AppointmentAdapter(emptyList())
@@ -54,7 +53,9 @@ class DashboardFragment : Fragment() {
         }
 
         // LOAD DATA
-        viewModel.loadAll()
+        auth = FirebaseAuth.getInstance()
+        val userId = auth.currentUser?.uid ?: ""
+        viewModel.loadAppointments(userId)
 
         // Navigasi
         binding.cardBeliObat.setOnClickListener {

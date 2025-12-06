@@ -11,10 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.medease.R
 import com.example.medease.data.model.Appointment
-import com.example.medease.database.AppointmentViewModel
-import com.example.medease.database.AppointmentViewModelFactory
-import com.example.medease.database.TotalDatabase
-import com.example.medease.repository.AppointmentRepository
+import com.example.medease.database.repositories.AppointmentRepository
+import com.example.medease.database.viewModels.AppointmentViewModel
+import com.example.medease.database.viewModels.AppointmentViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -91,8 +90,7 @@ class MakeAppointmentFragment : Fragment() {
         //inisiasi view model
         val appContext = requireContext().applicationContext
 
-        val db = TotalDatabase.getInstance(appContext)  // pakai singleton
-        val repository = AppointmentRepository(db.appointmentDao())
+        val repository = AppointmentRepository()
 
         val factory = AppointmentViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[AppointmentViewModel::class.java]
@@ -202,7 +200,21 @@ class MakeAppointmentFragment : Fragment() {
             )
 
             // PAKAI VIEWMODEL → ROOM
-            viewModel.insert(newAppointment)
+            viewModel.createAppointment(newAppointment) { success ->
+                if (success) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Appointment Created Successfully!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "Appointment Creation Failed!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
 
             Toast.makeText(
                 requireContext(),
