@@ -5,23 +5,16 @@ import com.example.medease.database.dao.AppointmentDao
 
 class AppointmentRepository(private val dao: AppointmentDao) {
 
-    suspend fun insert(appointment: Appointment) {
-        dao.insert(appointment)
-    }
+    suspend fun insert(a: Appointment) = dao.insert(a)
 
-    suspend fun update(appointment: Appointment) {
-        dao.update(appointment)
-    }
+    suspend fun update(a: Appointment) = dao.update(a)
 
-    suspend fun delete(appointment: Appointment) {
-        dao.delete(appointment)
-    }
+    suspend fun delete(a: Appointment) = dao.delete(a)
 
-    suspend fun getById(id: Int): Appointment? {
-        return dao.getById(id)
-    }
+    suspend fun getAll(): List<Appointment> = dao.getAll()
 
-    suspend fun getAll(): List<Appointment> {
-        return dao.getAll()
-    }
+    suspend fun getById(id: Int): Appointment? = dao.getById(id)
+
+    suspend fun updateStatus(id: Int, status: String) =
+        dao.updateStatus(id, status)
 }

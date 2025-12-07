@@ -23,6 +23,9 @@ data class Appointment(
     val time: String,
 
     @ColumnInfo(name = "note")
-    val note: String
-)
+    val note: String,
 
+    // NEW: status = pending / accepted / rejected
+    @ColumnInfo(name = "status")
+    var status: String = "pending"
+)

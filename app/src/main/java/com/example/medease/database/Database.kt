@@ -7,8 +7,9 @@ import androidx.room.RoomDatabase
 import com.example.medease.data.model.Appointment
 import com.example.medease.database.dao.AppointmentDao
 
-@Database(entities = [Appointment::class], version = 1)
+@Database(entities = [Appointment::class], version = 2)
 abstract class TotalDatabase : RoomDatabase() {
+
     abstract fun appointmentDao(): AppointmentDao
 
     companion object {
@@ -20,9 +21,12 @@ abstract class TotalDatabase : RoomDatabase() {
                     context.applicationContext,
                     TotalDatabase::class.java,
                     "total_db"
-                ).build().also { INSTANCE = it }
+                )
+                    .fallbackToDestructiveMigration() // FIX CRASH
+                    .build().also { INSTANCE = it }
             }
         }
     }
 }
+
 

@@ -1,4 +1,4 @@
-package com.example.medease.ui.doctor
+package com.example.medease.ui.admin
 
 import android.os.Bundle
 import android.view.View
@@ -11,6 +11,9 @@ import com.example.medease.databinding.ActivityAdminDashboardBinding
 import com.example.medease.fragments.AppointmentsFragment
 import com.example.medease.fragments.CalendarFragment
 import com.example.medease.fragments.ScheduleFragment
+import android.content.Intent
+import com.example.medease.ui.login.LoginActivity
+
 
 class AdminDashboardActivity : AppCompatActivity() {
 
@@ -61,6 +64,13 @@ class AdminDashboardActivity : AppCompatActivity() {
         binding.cardRequests.setOnClickListener {
             openFragmentFullScreen(AppointmentsFragment())
         }
+        binding.btnLogoutAdmin.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+
 
     }
 
