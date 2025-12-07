@@ -5,13 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medease.R
 
-class DoctorCalendarFragment : Fragment() {
+class CalendarFragment : Fragment() {
 
     private lateinit var calendarView: CalendarView
     private lateinit var recyclerView: RecyclerView

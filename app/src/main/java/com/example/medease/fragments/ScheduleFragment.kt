@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.medease.R
 
-class DoctorConsultationsFragment : Fragment() {
+class ScheduleFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_doctor_consultations, container, false)
+        return inflater.inflate(R.layout.fragment_doctor_schedule, container, false)
     }
 }

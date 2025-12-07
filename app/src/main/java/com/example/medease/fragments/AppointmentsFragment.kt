@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.example.medease.R
 
-class DoctorAppointmentsFragment : Fragment() {
+class AppointmentsFragment : Fragment() {
 
     private var appointmentStatus: String? = null // null = belum ada keputusan
 

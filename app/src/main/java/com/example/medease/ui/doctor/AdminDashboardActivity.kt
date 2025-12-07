@@ -7,21 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.medease.R
-import com.example.medease.databinding.ActivityDoctorDashboardBinding
-import com.example.medease.fragments.DoctorAppointmentsFragment
-import com.example.medease.fragments.DoctorCalendarFragment
-import com.example.medease.fragments.DoctorConsultationsFragment
-import com.example.medease.fragments.DoctorMailboxFragment
-import com.example.medease.fragments.DoctorProfileFragment
-import com.example.medease.fragments.DoctorScheduleFragment
+import com.example.medease.databinding.ActivityAdminDashboardBinding
+import com.example.medease.fragments.AppointmentsFragment
+import com.example.medease.fragments.CalendarFragment
+import com.example.medease.fragments.ScheduleFragment
 
-class DoctorDashboardActivity : AppCompatActivity() {
+class AdminDashboardActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityDoctorDashboardBinding
+    private lateinit var binding: ActivityAdminDashboardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityDoctorDashboardBinding.inflate(layoutInflater)
+        binding = ActivityAdminDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // --- Default tampilan: dashboard utama (home) ---
@@ -46,35 +43,25 @@ class DoctorDashboardActivity : AppCompatActivity() {
                     showDashboard()
                     true
                 }
-                R.id.nav_mailbox -> {
-                    openFragmentFullScreen(DoctorMailboxFragment())
-                    true
-                }
+
                 R.id.nav_calendar -> {
-                    openFragmentFullScreen(DoctorCalendarFragment())
+                    openFragmentFullScreen(CalendarFragment())
                     true
                 }
-                R.id.nav_profile -> {
-                    openFragmentFullScreen(DoctorProfileFragment())
-                    true
-                }
+
                 else -> false
             }
         }
 
         // --- Klik Card di Dashboard ---
         binding.cardViewSchedule.setOnClickListener {
-            openFragmentFullScreen(DoctorScheduleFragment())
+            openFragmentFullScreen(ScheduleFragment())
         }
-        binding.cardConsultation.setOnClickListener {
-            openFragmentFullScreen(DoctorConsultationsFragment())
-        }
+
         binding.cardRequests.setOnClickListener {
-            openFragmentFullScreen(DoctorAppointmentsFragment())
+            openFragmentFullScreen(AppointmentsFragment())
         }
-        binding.cardProfile.setOnClickListener {
-            openFragmentFullScreen(DoctorProfileFragment())
-        }
+
     }
 
     private fun openFragmentFullScreen(fragment: Fragment) {
