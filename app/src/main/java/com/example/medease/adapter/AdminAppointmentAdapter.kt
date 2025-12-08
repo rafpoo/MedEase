@@ -1,6 +1,8 @@
 package com.example.medease.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -18,11 +20,29 @@ class AdminAppointmentAdapter(
 
         fun bind(data: Appointment) {
             binding.tvUserName.text = data.userId
+            binding.tvDate.text = data.date
+            binding.tvTime.text = data.time
             binding.tvDescription.text = data.note
-            binding.tvDate.text = "Tanggal: ${data.date}"
-            binding.tvTime.text = "Jam: ${data.time}"
-            binding.tvStatus.text = data.status
 
+            // === STATUS VISUAL ===
+            when (data.status) {
+                "accepted" -> {
+                    binding.tvStatus.visibility = View.VISIBLE
+                    binding.tvStatus.text = "Diterima"
+                    binding.tvStatus.setBackgroundColor(Color.parseColor("#1DBF73"))
+                }
+                "declined" -> {
+                    binding.tvStatus.visibility = View.VISIBLE
+                    binding.tvStatus.text = "Ditolak"
+                    binding.tvStatus.setBackgroundColor(Color.parseColor("#D9534F"))
+                }
+                else -> {
+                    binding.tvStatus.visibility = View.GONE
+                }
+            }
+
+
+            // === ONCLICK BUTTON ===
             binding.btnAccept.setOnClickListener { onAccept(data) }
             binding.btnDecline.setOnClickListener { onDecline(data) }
         }

@@ -40,8 +40,6 @@ class AppointmentViewModel : ViewModel() {
         }
     }
 
-
-
     fun loadAppointments(userId: String) {
         repo.getAppointmentsByUser(userId) {
             _userAppointments.postValue(it)
