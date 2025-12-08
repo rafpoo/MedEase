@@ -13,6 +13,7 @@ import com.example.medease.MainActivity
 import com.example.medease.R
 import com.example.medease.data.model.User
 import com.example.medease.database.viewModels.UserViewModel
+import com.example.medease.ui.doctor.AdminDashboardActivity
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -58,22 +59,39 @@ class RegisterActivity: AppCompatActivity() {
             val txtFullName = fullName.text.toString()
             val txtPhoneNumber = etPhoneNumber.text.toString()
 
-
-            if (TextUtils.isEmpty(txtEmail) || TextUtils.isEmpty(txtPassword)) {
+            if (txtEmail.isEmpty() || txtPassword.isEmpty()) {
                 Toast.makeText(this, "Mohon isi semua field", Toast.LENGTH_SHORT).show()
-            } else if (txtPassword.length <= 6) {
-                Toast.makeText(this, "Password harus lebih dari 6 karakter", Toast.LENGTH_SHORT).show()
-            } else if (txtPassword != txtConfirmPassword) {
+                return@setOnClickListener
+            }
+
+            if (txtPassword.length < 6) {
+                Toast.makeText(this, "Password minimal 6 karakter", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (txtPassword != txtConfirmPassword) {
                 Toast.makeText(this, "Password tidak sama!", Toast.LENGTH_SHORT).show()
-            } else {
-                val newUser = User(
-                    nama = txtFullName,
-                    noHp = txtPhoneNumber,
-                    email = txtEmail
-                )
-                registerUser(txtEmail, txtPassword, newUser)
+                return@setOnClickListener
+            }
+
+            val user = User(
+                id = "",
+                nama = txtFullName,
+                noHp = txtPhoneNumber,
+                email = txtEmail,
+                role = "user"
+            )
+
+            userViewModel.registerUser(txtEmail, txtPassword, user) { success, error ->
+                if (success) {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                } else {
+                    Toast.makeText(this, "Registrasi gagal: $error", Toast.LENGTH_SHORT).show()
+                }
             }
         }
+
 
         backToLoginButton.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
@@ -81,34 +99,21 @@ class RegisterActivity: AppCompatActivity() {
         }
     }
 
-    public override fun onStart() {
+    override fun onStart() {
         super.onStart()
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            userViewModel.loadUserRole(currentUser.uid)
+            userViewModel.role.observe(this) { role ->
+                when (role) {
+                    "admin" -> startActivity(Intent(this, AdminDashboardActivity::class.java))
+                    "user"  -> startActivity(Intent(this, MainActivity::class.java))
+                }
+                finish()
+            }
         }
     }
 
-    private fun registerUser(email: String, password: String, newUserProps: User) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val uid = auth.currentUser!!.uid
-                    val newUser = newUserProps.copy(id = uid)
 
-                    userViewModel.addUser(newUser) { success ->
-                        if (success) {
-                            Log.d("RegisterActivity", "User berhasil disimpan ke Firestore")
-                            startActivity(Intent(this, MainActivity::class.java))
-                            finish()
-                        } else {
-                            Toast.makeText(this, "Gagal menyimpan user ke Firestore", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                } else {
-                    Toast.makeText(this, "Registrasi gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
-    }
+
 }

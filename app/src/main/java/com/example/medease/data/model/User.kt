@@ -5,5 +5,6 @@ data class User(
     val nama: String? = "",
     val email: String? = "",
     val noHp: String? = "",
-    val appointments: List<Appointment>? = null
+    val appointments: List<Appointment>? = null,
+    val role: String = "user"
 )

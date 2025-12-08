@@ -11,29 +11,36 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.medease.MainActivity
 import com.example.medease.R
 import com.example.medease.database.viewModels.UserViewModel
+import com.example.medease.ui.doctor.AdminDashboardActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var etUsername: EditText
-    private lateinit var etPassword: EditText
-    private lateinit var btnLogin: Button
-    private lateinit var btnRegister: Button
     private lateinit var auth: FirebaseAuth
     private lateinit var userViewModel: UserViewModel
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        etUsername = findViewById(R.id.etUsername)
-        etPassword = findViewById(R.id.etPassword)
-        btnLogin = findViewById(R.id.btnLogin)
-        btnRegister = findViewById(R.id.btnRegister)
         auth = FirebaseAuth.getInstance()
-
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
+
+        val etUsername = findViewById<EditText>(R.id.etUsername)
+        val etPassword = findViewById<EditText>(R.id.etPassword)
+        val btnLogin = findViewById<Button>(R.id.btnLogin)
+        val btnRegister = findViewById<Button>(R.id.btnRegister)
+
+        // Observe role HANYA SEKALI
+        userViewModel.role.observe(this) { role ->
+            if (role != null) {
+                when (role) {
+                    "admin" -> startActivity(Intent(this, AdminDashboardActivity::class.java))
+                    "user"  -> startActivity(Intent(this, MainActivity::class.java))
+                }
+                finish()
+            }
+        }
 
         btnLogin.setOnClickListener {
             val email = etUsername.text.toString().trim()
@@ -48,9 +55,7 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnRegister.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            startActivity(intent)
-            finish()
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
     }
 
@@ -59,27 +64,20 @@ class LoginActivity : AppCompatActivity() {
 
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            // Auto-check role via ViewModel
+            userViewModel.loadUserRole(currentUser.uid)
         }
     }
 
     private fun login(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    userViewModel.loadCurrentUser() { success ->
-                        if (success) {
-                            Log.d("LoginActivity", "User berhasil login")
-                            startActivity(Intent(this, MainActivity::class.java))
-                            finish()
-                        } else {
-                            Toast.makeText(this, "Gagal fetch user", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                } else {
-                    Toast.makeText(this, "Login gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                }
+            .addOnSuccessListener {
+                val uid = auth.currentUser?.uid ?: return@addOnSuccessListener
+                userViewModel.loadUserRole(uid)
+            }
+            .addOnFailureListener {
+                Toast.makeText(this, "Login gagal: ${it.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }
+

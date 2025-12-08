@@ -12,9 +12,21 @@ class UserRepository {
     var currentUser: User? = null
         private set
 
-    fun addUser(user: User, onResult: (Boolean) -> Unit) {
+    fun getUserRole(uid: String, onResult: (String?) -> Unit) {
         db.collection("users")
-            .document(user.id)       // WAJIB: gunakan UID
+            .document(uid)
+            .get()
+            .addOnSuccessListener { doc ->
+                onResult(doc.getString("role"))
+            }
+            .addOnFailureListener {
+                onResult(null)
+            }
+    }
+
+    fun addUser(user: User, uid: String, onResult: (Boolean) -> Unit) {
+        db.collection("users")
+            .document(uid)
             .set(user)
             .addOnSuccessListener { onResult(true) }
             .addOnFailureListener { onResult(false) }
