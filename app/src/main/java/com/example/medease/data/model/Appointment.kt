@@ -19,6 +19,7 @@ data class Appointment(
 
     val note: String = "",
 
-    val isApproved: Boolean = false
-)
+    val status: String = "pending",
 
+    val adminNote: String? = null
+)

@@ -71,7 +71,6 @@ class EditAppointmentFragment : Fragment() {
         viewModel = ViewModelProvider(this, factory)[AppointmentViewModel::class.java]
 
 
-
         spinnerCategory = view.findViewById(R.id.spinnerCategory)
         spinnerDoctor = view.findViewById(R.id.spinnerDoctor)
         spinnerTime = view.findViewById(R.id.spinnerTime)

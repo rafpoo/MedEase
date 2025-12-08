@@ -62,7 +62,7 @@ class ManageAppointmentFragment : Fragment() {
         binding.rvManageAppointments.adapter = adapter
 
         // 🔹 Observe data dari ViewModel
-        viewModel.appointments.observe(viewLifecycleOwner) { list ->
+        viewModel.userAppointments.observe(viewLifecycleOwner) { list ->
             adapter.updateData(list)
             binding.tvNoData.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
         }
