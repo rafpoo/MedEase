@@ -40,6 +40,15 @@
             android:inputType="textPersonName"
             android:layout_marginTop="16dp" />
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/etPhoneNumber"
+            android:hint="Phone Number"
+            android:inputType="phone"
+            android:layout_marginTop="16dp" />
+
+
         <!-- Password -->
         <EditText
             android:id="@+id/etRegisterPassword"

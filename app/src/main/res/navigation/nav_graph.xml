@@ -83,7 +83,7 @@
         tools:layout="@layout/fragment_edit_appointment">
         <argument
             android:name="appointmentId"
-            app:argType="integer" />
+            app:argType="string" />
     </fragment>
 
     <fragment

@@ -10,20 +10,20 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.room.Room
 import com.example.medease.R
 import com.example.medease.data.model.Appointment
-import com.example.medease.database.AppointmentViewModel
-import com.example.medease.database.AppointmentViewModelFactory
-import com.example.medease.database.TotalDatabase
-import com.example.medease.repository.AppointmentRepository
+import com.example.medease.database.viewModels.AppointmentViewModel
+import com.example.medease.database.viewModels.AppointmentViewModelFactory
+import com.example.medease.database.repositories.AppointmentRepository
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
 
 class EditAppointmentFragment : Fragment() {
-    private lateinit var viewModel: AppointmentViewModel
 
     private val args: EditAppointmentFragmentArgs by navArgs()
+
+    private lateinit var viewModel: AppointmentViewModel
 
     private lateinit var spinnerCategory: Spinner
     private lateinit var spinnerDoctor: Spinner
@@ -37,8 +37,9 @@ class EditAppointmentFragment : Fragment() {
     private var selectedTime = ""
     private var selectedDate = ""
 
-    private var appointmentId: Int = args.appointmentId
+    private var appointmentId: String = ""
     private var currentAppointment: Appointment? = null
+
 
     // Dummy data (sama seperti di MakeAppointmentFragment)
     private val doctorData = mapOf(
@@ -64,10 +65,7 @@ class EditAppointmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val appContext = requireContext().applicationContext
-
-        val db = TotalDatabase.getInstance(appContext)  // pakai singleton
-        val repository = AppointmentRepository(db.appointmentDao())
+        val repository = AppointmentRepository()
 
         val factory = AppointmentViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[AppointmentViewModel::class.java]
@@ -84,7 +82,7 @@ class EditAppointmentFragment : Fragment() {
         appointmentId = args.appointmentId
 
         viewModel.getById(appointmentId)
-        viewModel.selectedAppointment.observe(viewLifecycleOwner) { appointment ->
+        viewModel.appointment.observe(viewLifecycleOwner) { appointment ->
             if (appointment != null) {
                 currentAppointment = appointment
                 populateFields(appointment)
@@ -174,7 +172,9 @@ class EditAppointmentFragment : Fragment() {
     private fun saveChanges() {
         val note = etNote.text.toString()
 
-        if (selectedCategory.isEmpty() || selectedDoctor.isEmpty() || selectedTime.isEmpty() || selectedDate.isEmpty()) {
+        if (selectedCategory.isEmpty() || selectedDoctor.isEmpty() ||
+            selectedTime.isEmpty() || selectedDate.isEmpty()) {
+
             Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
         }
@@ -185,14 +185,22 @@ class EditAppointmentFragment : Fragment() {
             category = selectedCategory,
             date = selectedDate,
             time = selectedTime,
-            note = note
+            note = note,
+            userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         )
 
-        viewModel.update(updatedAppointment)
+        viewModel.updateAppointment(updatedAppointment) { success ->
+            if (!isAdded) return@updateAppointment  // 🛑 Cegah crash jika fragment sudah detached
 
-        Toast.makeText(requireContext(), "Appointment updated!", Toast.LENGTH_SHORT).show()
-        findNavController().navigateUp()
+            if (success) {
+                Toast.makeText(requireContext(), "Update berhasil", Toast.LENGTH_SHORT).show()
+                findNavController().navigateUp()    // ⬅ Pindahkan ke sini
+            } else {
+                Toast.makeText(requireContext(), "Update gagal", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
+
 
     private fun getCategoryIndex(category: String): Int {
         val list = doctorData.keys.toList()

@@ -4,25 +4,21 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "appointments")
 data class Appointment(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "id")
-    var id: Int = 0,
+    val id: String = "",
 
-    @ColumnInfo(name = "doctor")
-    val doctor: String,
+    val userId: String = "",
 
-    @ColumnInfo(name = "category")
-    val category: String,
+    val doctor: String = "",
 
-    @ColumnInfo(name = "date")
-    val date: String,
+    val category: String = "",
 
-    @ColumnInfo(name = "time")
-    val time: String,
+    val date: String = "",
 
-    @ColumnInfo(name = "note")
-    val note: String
+    val time: String = "",
+
+    val note: String = "",
+
+    val isApproved: Boolean = false
 )
 
