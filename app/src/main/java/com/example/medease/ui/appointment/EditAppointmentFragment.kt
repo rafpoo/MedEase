@@ -15,6 +15,7 @@ import com.example.medease.data.model.Appointment
 import com.example.medease.database.viewModels.AppointmentViewModel
 import com.example.medease.database.viewModels.AppointmentViewModelFactory
 import com.example.medease.database.repositories.AppointmentRepository
+import com.example.medease.utils.showConfirmDialog
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
@@ -106,7 +107,21 @@ class EditAppointmentFragment : Fragment() {
         }
 
         btnSave.setOnClickListener {
-            saveChanges()
+//            holder.btnDelete.setOnClickListener {
+//                showConfirmDialog(holder.itemView.context, "Hapus appointment ini?") {
+//                    onDelete(appointment)
+//                }
+//            }
+//
+//            holder.btnEdit.setOnClickListener {
+//                showConfirmDialog(holder.itemView.context, "Edit appointment ini?") {
+//                    onEdit(appointment)
+//                }
+//            }
+            showConfirmDialog(requireContext()) {
+                saveChanges()
+            }
+
         }
     }
 

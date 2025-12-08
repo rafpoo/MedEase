@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medease.R
 import com.example.medease.data.model.Appointment
+import com.example.medease.utils.showConfirmDialog
 
 class ManageAppointmentAdapter(
     private var appointments: List<Appointment>,
@@ -22,6 +23,7 @@ class ManageAppointmentAdapter(
         val btnEdit: Button = view.findViewById(R.id.btnEdit)
         val btnDelete: Button = view.findViewById(R.id.btnDelete)
         val tvStatus: TextView = view.findViewById(R.id.tvStatus)
+        val tvNote: TextView = view.findViewById(R.id.tvNote)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,9 +39,20 @@ class ManageAppointmentAdapter(
 
         holder.tvDoctor.text = appointment.doctor
         holder.tvDateTime.text = "${appointment.date} • ${appointment.time}"
+        holder.tvNote.text = appointment.note
 
-        holder.btnEdit.setOnClickListener { onEdit(appointment) }
-        holder.btnDelete.setOnClickListener { onDelete(appointment) }
+        holder.btnDelete.setOnClickListener {
+            showConfirmDialog(holder.itemView.context, "Hapus appointment ini?") {
+                onDelete(appointment)
+            }
+        }
+
+        holder.btnEdit.setOnClickListener {
+            showConfirmDialog(holder.itemView.context, "Edit appointment ini?") {
+                onEdit(appointment)
+            }
+        }
+
 
         when (appointment.status) {
 
