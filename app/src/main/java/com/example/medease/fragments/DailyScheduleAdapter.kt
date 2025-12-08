@@ -27,7 +27,7 @@ class DailyScheduleAdapter(private var schedules: MutableList<ScheduleItem>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = schedules[position]
-        holder.patientName.text = "Nama Pasien: ${item.patientName}"
+        holder.patientName.text = "Spesialis: ${item.patientName}"
         holder.appointmentTime.text = "Pukul: ${item.time}"
         holder.notes.text = "Catatan: ${item.notes}"
     }

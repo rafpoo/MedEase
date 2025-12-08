@@ -10,6 +10,7 @@ import com.example.medease.data.model.Appointment
 
 @Dao
 interface AppointmentDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(appointment: Appointment)
 
@@ -27,4 +28,13 @@ interface AppointmentDao {
 
     @Query("SELECT * FROM appointments WHERE id = :id")
     suspend fun getById(id: Int): Appointment?
+
+    @Query("SELECT * FROM appointments WHERE date = :date")
+    suspend fun getAppointmentsByDate(date: String): List<Appointment>
+
+    @Query("SELECT * FROM appointments WHERE status = 'pending'")
+    suspend fun getPendingAppointments(): List<Appointment>
+
+    @Query("SELECT * FROM appointments WHERE date = :date AND status = 'accepted'")
+    suspend fun getAcceptedAppointmentsByDate(date: String): List<Appointment>
 }

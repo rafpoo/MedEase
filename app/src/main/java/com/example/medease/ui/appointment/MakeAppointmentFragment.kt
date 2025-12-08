@@ -166,8 +166,10 @@ class MakeAppointmentFragment : Fragment() {
                 requireContext(),
                 { _, year, month, day ->
                     calendar.set(year, month, day)
-                    val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+
+                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                     selectedDate = sdf.format(calendar.time)
+
                     tvPickDate.text = selectedDate
                     tvPickDate.setTextColor(resources.getColor(R.color.black))
                 },
@@ -179,6 +181,7 @@ class MakeAppointmentFragment : Fragment() {
             datePicker.show()
         }
     }
+
 
     private fun setupConfirmButton() {
         btnConfirm.setOnClickListener {

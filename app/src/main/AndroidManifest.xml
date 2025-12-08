@@ -38,7 +38,7 @@
         android:name=".MainActivity"
         android:exported="true" />
         
-    <activity android:name=".ui.doctor.AdminDashboardActivity"
+    <activity android:name=".ui.admin.AdminDashboardActivity"
         android:exported="true" />
 
 
