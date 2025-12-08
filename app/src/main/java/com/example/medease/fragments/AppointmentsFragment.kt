@@ -5,68 +5,87 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.medease.R
 import com.example.medease.adapter.AdminAppointmentAdapter
-import com.example.medease.database.AppointmentViewModel
-import com.example.medease.database.AppointmentViewModelFactory
-import com.example.medease.database.TotalDatabase
-import com.example.medease.repository.AppointmentRepository
+import com.example.medease.data.model.Appointment
+import com.example.medease.database.viewModels.AppointmentViewModel
+import com.example.medease.databinding.FragmentDoctorAppointmentsBinding
 
 class AppointmentsFragment : Fragment() {
 
+    private var _binding: FragmentDoctorAppointmentsBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var viewModel: AppointmentViewModel
     private lateinit var adapter: AdminAppointmentAdapter
-    private val viewModel: AppointmentViewModel by viewModels {
-        val dao = TotalDatabase.getInstance(requireContext()).appointmentDao()
-        AppointmentViewModelFactory(AppointmentRepository(dao))
+    // cache semua appointment dari ViewModel
+    private var allAppointmentsCache: List<Appointment> = emptyList()
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentDoctorAppointmentsBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_doctor_appointments, container, false)
-
-        val rv = view.findViewById<RecyclerView>(R.id.recycler_appointments)
-        rv.layoutManager = LinearLayoutManager(requireContext())
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(requireActivity())[AppointmentViewModel::class.java]
 
         adapter = AdminAppointmentAdapter(
-            data = listOf(),
             onAccept = { appointment ->
-                viewModel.updateStatus(appointment.id, "accepted")
-                Toast.makeText(requireContext(), "Reservasi diterima", Toast.LENGTH_SHORT).show()
+                viewModel.acceptAppointment(appointment.id) { success ->
+                    if (success) Toast.makeText(requireContext(), "Appointment accepted", Toast.LENGTH_SHORT).show()
+                }
             },
-            onReject = { appointment ->
-                showRejectDialog {
-                    viewModel.updateStatus(appointment.id, "rejected")
+            onDecline = { appointment ->
+                viewModel.declineAppointment(appointment.id) { success ->
+                    if (success) Toast.makeText(requireContext(), "Appointment declined", Toast.LENGTH_SHORT).show()
                 }
             }
         )
 
-        rv.adapter = adapter
+        binding.rvAdminAppointments.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvAdminAppointments.adapter = adapter
 
-        viewModel.appointments.observe(viewLifecycleOwner) {
-            adapter.updateList(it)
+        // Observer: update cache, dan jika fragment sudah visible/resumed -> refresh UI
+        viewModel.allAppointments.observe(viewLifecycleOwner) { list ->
+            allAppointmentsCache = list ?: emptyList()
+
+            // Jika fragment sedang minimal STARTED/RESUMED, refresh pending list
+            if (viewLifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                refreshPendingList()
+            }
+            // jika belum STARTED, onResume() akan memanggil refreshPendingList()
         }
-
-        viewModel.loadAll()
-
-        return view
     }
 
-    private fun showRejectDialog(onRejected: () -> Unit) {
-        val dialog = AlertDialog.Builder(requireContext())
-            .setTitle("Tolak Reservasi?")
-            .setMessage("Yakin ingin menolak?")
-            .setPositiveButton("Ya") { _, _ -> onRejected() }
-            .setNegativeButton("Batal", null)
-            .create()
+    override fun onResume() {
+        super.onResume()
+        // selalu refresh saat fragment benar-benar terlihat
+        refreshPendingList()
+    }
 
-        dialog.show()
+    override fun onStart() {
+        super.onStart()
+        viewModel.loadAllAppointments()
+    }
+
+    private fun refreshPendingList() {
+        val pendingOnly = allAppointmentsCache.filter { it.status == "pending" }
+
+        // submit pending list — ini akan membuat card yang sudah di-accept/decline tetap terlihat
+        // sampai user keluar dan masuk kembali (karena kita hanya submit pending saat fragment dibuka)
+        adapter.submitList(pendingOnly)
+
+        // empty message handling
+        binding.tvEmptyMessage.visibility = if (pendingOnly.isEmpty()) View.VISIBLE else View.GONE
+        binding.rvAdminAppointments.visibility = if (pendingOnly.isEmpty()) View.GONE else View.VISIBLE
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

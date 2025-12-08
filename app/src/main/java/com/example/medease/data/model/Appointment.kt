@@ -19,8 +19,7 @@ data class Appointment(
 
     val note: String = "",
 
-    val isApproved: Boolean = false
-)
+
 //=======
 //    @ColumnInfo(name = "note")
 //    val note: String,
@@ -30,3 +29,7 @@ data class Appointment(
 //    @ColumnInfo(name = "status")
 //    var status: String = "pending"
 
+    val status: String = "pending",
+
+    val adminNote: String? = null
+)

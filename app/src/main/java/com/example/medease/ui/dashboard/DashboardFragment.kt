@@ -58,7 +58,7 @@ class DashboardFragment : Fragment() {
         binding.rvAppointments.adapter = adapter
 
         // OBSERVE VIEWMODEL
-        appointmentViewModel.appointments.observe(viewLifecycleOwner) { list ->
+        appointmentViewModel.userAppointments.observe(viewLifecycleOwner) { list ->
             adapter.updateData(list)
             binding.tvNoAppointments.visibility =
                 if (list.isEmpty()) View.VISIBLE else View.GONE
