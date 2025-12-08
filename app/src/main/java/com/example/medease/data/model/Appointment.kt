@@ -27,6 +27,6 @@ data class Appointment(
 //>>>>>>> davis/order-meds
 
     // NEW: status = pending / accepted / rejected
-    @ColumnInfo(name = "status")
-    var status: String = "pending"
-)
+//    @ColumnInfo(name = "status")
+//    var status: String = "pending"
+
