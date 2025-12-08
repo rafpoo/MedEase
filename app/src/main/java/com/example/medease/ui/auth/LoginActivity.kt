@@ -8,10 +8,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.medease.ui.doctor.DoctorDashboardActivity
 import com.example.medease.MainActivity
 import com.example.medease.R
-import com.example.medease.data.model.User
 import com.example.medease.database.viewModels.UserViewModel
 import com.google.firebase.auth.FirebaseAuth
 
