@@ -12,38 +12,49 @@ class AppointmentViewModel(private val repo: AppointmentRepository) : ViewModel(
     val appointments = MutableLiveData<List<Appointment>>()
     val selectedAppointment = MutableLiveData<Appointment?>()
 
+    /** Load all data for admin/user */
     fun loadAll() {
         viewModelScope.launch {
             appointments.value = repo.getAll()
         }
     }
 
+    /** Get appointment by ID */
     fun getById(id: Int) {
         viewModelScope.launch {
             selectedAppointment.value = repo.getById(id)
         }
     }
 
-    /** INSERT (tambah data baru) */
+    /** Add new appointment */
     fun insert(a: Appointment) {
         viewModelScope.launch {
             repo.insert(a)
-            loadAll()   // biar list langsung ke-refresh
+            loadAll()
         }
     }
 
+    /** Update entire object */
     fun update(a: Appointment) {
         viewModelScope.launch {
             repo.update(a)
-            loadAll()   // supaya perubahan langsung kelihatan
+            loadAll()
         }
     }
 
+    /** Delete */
     fun delete(a: Appointment) {
         viewModelScope.launch {
             repo.delete(a)
-            loadAll()   // refresh setelah delete
+            loadAll()
+        }
+    }
+
+    /** NEW: Update status only (accepted / rejected / pending) */
+    fun updateStatus(id: Int, status: String) {
+        viewModelScope.launch {
+            repo.updateStatus(id, status)
+            loadAll()   // refresh otomatis
         }
     }
 }
-
