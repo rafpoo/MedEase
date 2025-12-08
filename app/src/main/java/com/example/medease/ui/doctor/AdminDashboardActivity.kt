@@ -1,5 +1,6 @@
 package com.example.medease.ui.doctor
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -11,10 +12,14 @@ import com.example.medease.databinding.ActivityAdminDashboardBinding
 import com.example.medease.fragments.AppointmentsFragment
 import com.example.medease.fragments.CalendarFragment
 import com.example.medease.fragments.ScheduleFragment
+import com.example.medease.ui.auth.LoginActivity
+import com.google.firebase.auth.FirebaseAuth
 
 class AdminDashboardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAdminDashboardBinding
+    private val auth = FirebaseAuth.getInstance()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +65,13 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         binding.cardRequests.setOnClickListener {
             openFragmentFullScreen(AppointmentsFragment())
+        }
+
+        binding.cardLogout.setOnClickListener {
+            auth.signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
     }

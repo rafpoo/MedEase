@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.kapt")
     id("androidx.navigation.safeargs")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.gms.google-services")
 }
 
 secrets {
@@ -57,6 +58,12 @@ android {
 
 dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
+
+    // fire baseeeeee
+    implementation(platform("com.google.firebase:firebase-bom:34.6.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
+    
     implementation(libs.androidx.navigation.ui.ktx)
     val roomVersion = "2.6.0"
     implementation("androidx.room:room-runtime:$roomVersion")

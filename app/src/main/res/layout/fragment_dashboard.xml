@@ -26,10 +26,9 @@
         app:strokeWidth="3dp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtNamaUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hi, Rafael!"
         android:textColor="#ffffff"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -48,9 +47,9 @@
         android:textColor="#FED006"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintEnd_toEndOf="@+id/txtNamaUser"
+        app:layout_constraintStart_toStartOf="@+id/txtNamaUser"
+        app:layout_constraintTop_toBottomOf="@+id/txtNamaUser" />
 
     <!--    <Button-->
     <!--        android:id="@+id/btnOrderMeds"-->
