@@ -19,6 +19,6 @@ data class Appointment(
 
     val note: String = "",
 
-    val isDone: Boolean? = false
+    val isApproved: Boolean = false
 )
 
