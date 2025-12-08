@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.medease.MainActivity
 import com.example.medease.R
 import com.example.medease.database.viewModels.UserViewModel
-import com.example.medease.ui.doctor.AdminDashboardActivity
+import com.example.medease.ui.admin.AdminDashboardActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {

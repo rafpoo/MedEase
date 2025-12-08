@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medease.R
-import com.example.medease.database.TotalDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -36,8 +35,8 @@ class CalendarFragment : Fragment() {
         adapter = DailyScheduleAdapter(mutableListOf())
         recyclerView.adapter = adapter
 
-        val db = TotalDatabase.getInstance(requireContext())
-        val dao = db.appointmentDao()
+//        val db = TotalDatabase.getInstance(requireContext())
+//        val dao = db.appointmentDao()
 
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
 
@@ -47,22 +46,22 @@ class CalendarFragment : Fragment() {
 
             Log.d("CalendarFragment", "Cari tanggal: $selectedDate")
 
-            lifecycleScope.launch(Dispatchers.IO) {
-
-                val appointments = dao.getAcceptedAppointmentsByDate(selectedDate)
-
-                val scheduleList = appointments.map {
-                    ScheduleItem(
-                        it.category,
-                        it.time,
-                        it.note
-                    )
-                }
-
-                withContext(Dispatchers.Main) {
-                    adapter.updateData(scheduleList)
-                }
-            }
+//            lifecycleScope.launch(Dispatchers.IO) {
+//
+//                val appointments = dao.getAcceptedAppointmentsByDate(selectedDate)
+//
+//                val scheduleList = appointments.map {
+//                    ScheduleItem(
+//                        it.category,
+//                        it.time,
+//                        it.note
+//                    )
+//                }
+//
+//                withContext(Dispatchers.Main) {
+//                    adapter.updateData(scheduleList)
+//                }
+//            }
         }
 
         return view
