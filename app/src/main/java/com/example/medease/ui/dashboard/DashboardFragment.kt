@@ -65,17 +65,12 @@ class DashboardFragment : Fragment() {
         binding.cardBuatJanji.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_makeAppointmentFragment)
         }
-        binding.cardLihatKonsultasi.setOnClickListener {
-            findNavController().navigate(R.id.action_dashboardFragment_to_manageAppointmentFragment)
+
+        binding.cardProfil.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_profileFragment)
         }
-        binding.cardLogout.setOnClickListener {
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-        binding.cardKonsulOnline.setOnClickListener {
-            findNavController().navigate(R.id.action_dashboardFragment_to_KonsulOnlineFragment)
-        }
+
+
     }
 
     override fun onDestroyView() {

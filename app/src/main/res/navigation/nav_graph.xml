@@ -27,6 +27,11 @@
         <action
             android:id="@+id/action_dashboardFragment_to_KonsulOnlineFragment"
             app:destination="@id/konsulOnlineFragment"/>
+
+        <action
+            android:id="@+id/action_dashboardFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+
     </fragment>
 
     <!-- 💊 Order Obat -->
@@ -108,6 +113,13 @@
             android:name="chatId"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.medease.ui.profile.ProfileFragment"
+        android:label="Profil"
+        tools:layout="@layout/profile_fragment" />
+
 
 
 </navigation>

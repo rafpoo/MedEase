@@ -90,54 +90,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center">
 
-                <!-- Kartu 1 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:orientation="vertical">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cardLihatKonsultasi"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/white_btn_background">
-
-                        <ImageView
-                            android:id="@+id/imageView2_1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/circle_green" />
-
-                        <ImageView
-                            android:id="@+id/imageView9_1"
-                            android:layout_width="38dp"
-                            android:layout_height="46dp"
-                            android:contentDescription="@string/icon1"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2_1"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView2_1"
-                            app:layout_constraintStart_toStartOf="@+id/imageView2_1"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2_1"
-                            app:srcCompat="@drawable/list_konsul"
-                            app:tint="@color/white" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/textView3_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Lihat Konsultasi"
-                        android:textAlignment="center"
-                        android:textColor="#34346E"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <!-- Kartu 2 -->
+                <!-- Kartu 1 (Beli Obat) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -186,62 +139,7 @@
                         android:textSize="10sp" />
                 </LinearLayout>
 
-
-                <!-- Kartu 3 -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:orientation="vertical">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cardKonsulOnline"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/white_btn_background">
-
-                        <ImageView
-                            android:id="@+id/imageView2_3"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/circle_green" />
-
-                        <ImageView
-                            android:id="@+id/imageView9_3"
-                            android:layout_width="38dp"
-                            android:layout_height="46dp"
-                            android:contentDescription="@string/icon1"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2_3"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView2_3"
-                            app:layout_constraintStart_toStartOf="@+id/imageView2_3"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2_3"
-                            app:srcCompat="@drawable/konsul"
-                            app:tint="@color/white" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/textView3_3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Konsul Online"
-                        android:textAlignment="center"
-                        android:textColor="#34346E"
-                        android:textSize="10sp" />
-                </LinearLayout>
-            </TableRow>
-
-            <!-- ROW 2 -->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
-
-                <!-- Kartu 4 -->
+                <!-- Kartu 2 (Buat Janji) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -287,8 +185,15 @@
                         android:textColor="#34346E"
                         android:textSize="10sp" />
                 </LinearLayout>
+            </TableRow>
 
-                <!-- Kartu 5 -->
+            <!-- ROW 2 -->
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+                <!-- Kartu 3 (Prediksi WQI) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -335,7 +240,7 @@
                         android:textSize="10sp" />
                 </LinearLayout>
 
-                <!-- Kartu 6 -->
+                <!-- Kartu 4 (Profil — baru ditambahkan) -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -343,13 +248,15 @@
                     android:orientation="vertical">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cardLogout"
+                        android:id="@+id/cardProfil"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/white_btn_background">
+                        android:background="@drawable/white_btn_background"
+                        android:clickable="true"
+                        android:focusable="true">
 
                         <ImageView
-                            android:id="@+id/imageView2_6"
+                            android:id="@+id/imgProfilCircle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
@@ -360,29 +267,30 @@
                             app:srcCompat="@drawable/circle_green" />
 
                         <ImageView
-                            android:id="@+id/imageView9_6"
+                            android:id="@+id/imgProfilIcon"
                             android:layout_width="38dp"
                             android:layout_height="46dp"
-                            android:contentDescription="@string/icon1"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2_6"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView2_6"
-                            app:layout_constraintStart_toStartOf="@+id/imageView2_6"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2_6"
-                            app:srcCompat="@drawable/btn_6"
+                            android:contentDescription="icon profil"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgProfilCircle"
+                            app:layout_constraintEnd_toEndOf="@+id/imgProfilCircle"
+                            app:layout_constraintStart_toStartOf="@+id/imgProfilCircle"
+                            app:layout_constraintTop_toTopOf="@+id/imgProfilCircle"
+                            app:srcCompat="@drawable/ic_person"
                             app:tint="@color/white" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/textView3_6"
+                        android:id="@+id/txtProfil"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Logout"
+                        android:text="Profil"
                         android:textAlignment="center"
                         android:textColor="#34346E"
                         android:textSize="10sp" />
                 </LinearLayout>
             </TableRow>
         </TableLayout>
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
