@@ -1,5 +1,6 @@
 package com.example.medease.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ class ManageAppointmentAdapter(
         val tvDateTime: TextView = view.findViewById(R.id.tvDateTime)
         val btnEdit: Button = view.findViewById(R.id.btnEdit)
         val btnDelete: Button = view.findViewById(R.id.btnDelete)
+        val tvStatus: TextView = view.findViewById(R.id.tvStatus)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -32,11 +34,44 @@ class ManageAppointmentAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val appointment = appointments[position]
+
         holder.tvDoctor.text = appointment.doctor
         holder.tvDateTime.text = "${appointment.date} • ${appointment.time}"
 
         holder.btnEdit.setOnClickListener { onEdit(appointment) }
         holder.btnDelete.setOnClickListener { onDelete(appointment) }
+
+        when (appointment.status) {
+
+            "pending" -> {
+                holder.tvStatus.text = "Pending"
+                holder.tvStatus.setTextColor(Color.parseColor("#FFC107"))
+                holder.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.circle_pending, 0, 0, 0
+                )
+            }
+
+            "accepted" -> {
+                holder.tvStatus.text = "Accepted"
+                holder.tvStatus.setTextColor(Color.parseColor("#4CAF50"))
+                holder.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.circle_accepted, 0, 0, 0
+                )
+            }
+
+            "declined" -> {
+                holder.tvStatus.text = "Declined"
+                holder.tvStatus.setTextColor(Color.parseColor("#F44336"))
+                holder.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.circle_declined, 0, 0, 0
+                )
+            }
+
+            else -> {
+                holder.tvStatus.text = "Unknown"
+                holder.tvStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+            }
+        }
     }
 
     fun updateData(newList: List<Appointment>) {
