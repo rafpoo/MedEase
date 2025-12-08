@@ -182,7 +182,11 @@ class MakeAppointmentFragment : Fragment() {
         btnConfirm.setOnClickListener {
             val note = etNote.text.toString()
 
-            if (selectedCategory.isEmpty() || selectedDoctor.isEmpty() || selectedTime.isEmpty() || selectedDate.isEmpty()) {
+            if (selectedCategory.isEmpty() ||
+                selectedDoctor.isEmpty() ||
+                selectedTime.isEmpty() ||
+                selectedDate.isEmpty()
+            ) {
                 Toast.makeText(
                     requireContext(),
                     "Please complete all selections!",
@@ -191,7 +195,17 @@ class MakeAppointmentFragment : Fragment() {
                 return@setOnClickListener
             }
 
+            // 🔹 Ambil userId dari Firebase
+            val userId = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
+            if (userId == null) {
+                Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // 🔹 Buat appointment baru
             val newAppointment = Appointment(
+                id = "",                   // ID generated di Repository
+                userId = userId,           // 🔥 PENTING
                 doctor = selectedDoctor,
                 category = selectedCategory,
                 date = selectedDate,
@@ -199,7 +213,7 @@ class MakeAppointmentFragment : Fragment() {
                 note = note
             )
 
-            // PAKAI VIEWMODEL → ROOM
+            // 🔹 Kirim ke ViewModel untuk disimpan di Firebase
             viewModel.createAppointment(newAppointment) { success ->
                 if (success) {
                     Toast.makeText(
@@ -207,23 +221,19 @@ class MakeAppointmentFragment : Fragment() {
                         "Appointment Created Successfully!",
                         Toast.LENGTH_SHORT
                     ).show()
+
+                    findNavController().navigateUp()
+
                 } else {
                     Toast.makeText(
                         requireContext(),
-                        "Appointment Creation Failed!",
+                        "Failed to create appointment",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
             }
-
-            Toast.makeText(
-                requireContext(),
-                "Appointment Created Successfully!",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            findNavController().navigateUp()
         }
     }
+
 
 }

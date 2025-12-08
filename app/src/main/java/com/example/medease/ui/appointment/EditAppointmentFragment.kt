@@ -15,6 +15,7 @@ import com.example.medease.data.model.Appointment
 import com.example.medease.database.viewModels.AppointmentViewModel
 import com.example.medease.database.viewModels.AppointmentViewModelFactory
 import com.example.medease.database.repositories.AppointmentRepository
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -171,7 +172,9 @@ class EditAppointmentFragment : Fragment() {
     private fun saveChanges() {
         val note = etNote.text.toString()
 
-        if (selectedCategory.isEmpty() || selectedDoctor.isEmpty() || selectedTime.isEmpty() || selectedDate.isEmpty()) {
+        if (selectedCategory.isEmpty() || selectedDoctor.isEmpty() ||
+            selectedTime.isEmpty() || selectedDate.isEmpty()) {
+
             Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
             return
         }
@@ -182,20 +185,22 @@ class EditAppointmentFragment : Fragment() {
             category = selectedCategory,
             date = selectedDate,
             time = selectedTime,
-            note = note
+            note = note,
+            userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
         )
 
         viewModel.updateAppointment(updatedAppointment) { success ->
+            if (!isAdded) return@updateAppointment  // 🛑 Cegah crash jika fragment sudah detached
+
             if (success) {
                 Toast.makeText(requireContext(), "Update berhasil", Toast.LENGTH_SHORT).show()
+                findNavController().navigateUp()    // ⬅ Pindahkan ke sini
             } else {
                 Toast.makeText(requireContext(), "Update gagal", Toast.LENGTH_SHORT).show()
             }
         }
-
-        Toast.makeText(requireContext(), "Appointment updated!", Toast.LENGTH_SHORT).show()
-        findNavController().navigateUp()
     }
+
 
     private fun getCategoryIndex(category: String): Int {
         val list = doctorData.keys.toList()

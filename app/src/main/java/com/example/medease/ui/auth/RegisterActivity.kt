@@ -27,6 +27,7 @@ class RegisterActivity: AppCompatActivity() {
     private lateinit var registerButton: Button
     private lateinit var auth: FirebaseAuth
     private lateinit var userViewModel: UserViewModel
+    private lateinit var backToLoginButton: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +38,7 @@ class RegisterActivity: AppCompatActivity() {
         confirmPassword = findViewById<EditText>(R.id.etConfirmPassword)
         fullName = findViewById<EditText>(R.id.etFullName)
         etPhoneNumber = findViewById<EditText>(R.id.etPhoneNumber)
+        backToLoginButton = findViewById<Button>(R.id.btnBackToLogin)
 
         auth = Firebase.auth
 
@@ -71,6 +73,11 @@ class RegisterActivity: AppCompatActivity() {
                 )
                 registerUser(txtEmail, txtPassword, newUser)
             }
+        }
+
+        backToLoginButton.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
         }
     }
 

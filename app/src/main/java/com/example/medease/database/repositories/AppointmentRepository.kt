@@ -2,10 +2,12 @@ package com.example.medease.database.repositories
 
 import com.example.medease.data.model.Appointment
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 
 class AppointmentRepository {
     private val db = Firebase.firestore
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     private val collection = db.collection("appointments")
 
     fun getById(id: String, onResult: (Appointment?) -> Unit) {
@@ -26,11 +28,10 @@ class AppointmentRepository {
 
     fun addAppointment(app: Appointment, onResult: (Boolean) -> Unit) {
         val doc = collection.document()
-        val newAppointment = app.copy(id = doc.id)
+        val appointmentWithId = app.copy(id = doc.id)
+        val newApp = appointmentWithId.copy(userId = userId)
 
-        doc.set(newAppointment)
-        db.collection("appointments")
-            .add(app)
+        doc.set(newApp)
             .addOnSuccessListener { onResult(true) }
             .addOnFailureListener { onResult(false) }
     }
@@ -50,6 +51,7 @@ class AppointmentRepository {
 
     // Update (based on appointment.id)
     fun updateAppointment(appointment: Appointment, onResult: (Boolean) -> Unit) {
+        val updatedApp = appointment.copy(userId = userId)
         collection.document(appointment.id)
             .set(appointment)
             .addOnSuccessListener { onResult(true) }
