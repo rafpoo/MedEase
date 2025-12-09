@@ -19,6 +19,17 @@ data class Appointment(
 
     val note: String = "",
 
-    val isApproved: Boolean = false
-)
 
+//=======
+//    @ColumnInfo(name = "note")
+//    val note: String,
+//>>>>>>> davis/order-meds
+
+    // NEW: status = pending / accepted / rejected
+//    @ColumnInfo(name = "status")
+//    var status: String = "pending"
+
+    val status: String = "pending",
+
+    val adminNote: String? = null
+)

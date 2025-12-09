@@ -11,16 +11,47 @@ class AppointmentViewModel : ViewModel() {
 
     private val repo = AppointmentRepository()
 
-    private val _appointments = MutableLiveData<List<Appointment>>()
-    val appointments: LiveData<List<Appointment>> = _appointments
+    private val _userAppointments = MutableLiveData<List<Appointment>>()
+    val userAppointments: LiveData<List<Appointment>> = _userAppointments
 
     private val _appointment = MutableLiveData<Appointment?>()
     val appointment: LiveData<Appointment?> = _appointment
 
+    private val _allAppointments = MutableLiveData<List<Appointment>>()
+    val allAppointments: LiveData<List<Appointment>> = _allAppointments
+
+    private val _dailyAppointments = MutableLiveData<List<Appointment>>()
+    val dailyAppointments: LiveData<List<Appointment>> = _dailyAppointments
+
+    fun loadAppointmentsForDate(date: String) {
+        repo.getAcceptedAppointmentsByDate(date) { list ->
+            _dailyAppointments.postValue(list)
+        }
+    }
+
+    fun loadAllAppointments() {
+        repo.getAllAppointments { list ->
+            _allAppointments.postValue(list)
+        }
+    }
+
+    fun acceptAppointment(id: String, onResult: (Boolean) -> Unit) {
+        repo.acceptAppointment(id) { success ->
+            if (success) loadAllAppointments()
+            onResult(success)
+        }
+    }
+
+    fun declineAppointment(id: String, onResult: (Boolean) -> Unit) {
+        repo.declineAppointment(id) { success ->
+            if (success) loadAllAppointments()
+            onResult(success)
+        }
+    }
 
     fun loadAppointments(userId: String) {
         repo.getAppointmentsByUser(userId) {
-            _appointments.postValue(it)
+            _userAppointments.postValue(it)
         }
     }
 

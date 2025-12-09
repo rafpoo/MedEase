@@ -10,6 +10,32 @@ class AppointmentRepository {
     private val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     private val collection = db.collection("appointments")
 
+    fun getAllAppointments(onResult: (List<Appointment>) -> Unit) {
+        collection.get()
+            .addOnSuccessListener { result ->
+                val list = result.toObjects(Appointment::class.java)
+                onResult(list)
+            }
+            .addOnFailureListener {
+                onResult(emptyList())
+            }
+    }
+
+    fun acceptAppointment(id: String, onResult: (Boolean) -> Unit) {
+        collection.document(id)
+            .update("status", "accepted")
+            .addOnSuccessListener { onResult(true) }
+            .addOnFailureListener { onResult(false) }
+    }
+
+    fun declineAppointment(id: String, onResult: (Boolean) -> Unit) {
+        collection.document(id)
+            .update("status", "declined")
+            .addOnSuccessListener { onResult(true) }
+            .addOnFailureListener { onResult(false) }
+    }
+
+
     fun getById(id: String, onResult: (Appointment?) -> Unit) {
         collection.document(id).get()
             .addOnSuccessListener { doc ->
@@ -64,5 +90,21 @@ class AppointmentRepository {
             .delete()
             .addOnSuccessListener { onResult(true) }
             .addOnFailureListener { onResult(false) }
+    }
+
+    fun getAcceptedAppointmentsByDate(date: String, onResult: (List<Appointment>) -> Unit) {
+        collection
+            .whereEqualTo("date", date)
+            .whereEqualTo("status", "accepted")
+            .get()
+            .addOnSuccessListener { result ->
+                val appointments = result.mapNotNull { doc ->
+                    doc.toObject(Appointment::class.java).copy(id = doc.id)
+                }
+                onResult(appointments)
+            }
+            .addOnFailureListener { _ ->
+                onResult(emptyList())
+            }
     }
 }

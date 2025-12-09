@@ -383,55 +383,54 @@
             </TableRow>
         </TableLayout>
 
+        <!-- Banner + Daftar Appointment -->
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bannerContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_margin="32dp"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="16dp"
             android:background="@drawable/green_banner_background"
             app:layout_constraintTop_toBottomOf="@id/tableLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <!-- Judul -->
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 android:text="Daftar Appointment"
                 android:textColor="#FFFFFF"
                 android:textStyle="bold"
                 android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
 
-            <!-- RecyclerView untuk daftar appointment -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvAppointments"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:padding="8dp"
+                android:layout_height="0dp"
                 android:scrollbars="vertical"
                 app:layout_constraintTop_toBottomOf="@id/textView4"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-            <!-- Teks placeholder kalau tidak ada appointment -->
             <TextView
                 android:id="@+id/tvNoAppointments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:text="Tidak ada appointment hari ini"
                 android:textColor="#FFFFFF"
                 android:visibility="gone"
                 app:layout_constraintTop_toBottomOf="@id/textView4"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

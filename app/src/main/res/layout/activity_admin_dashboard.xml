@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.doctor.AdminDashboardActivity">
+    tools:context=".ui.admin.AdminDashboardActivity">
 
     <!-- Scrollable Dashboard (fixed height using weight) -->
     <ScrollView
@@ -58,7 +58,7 @@
                                 android:textSize="20sp" />
 
                             <TextView
-                                android:id="@+id/tv_doctor_name"
+                                android:id="@+id/tvDoctorName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
@@ -67,6 +67,17 @@
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
                         </LinearLayout>
+
+                        <ImageView
+                            android:id="@+id/btn_logout_admin"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            app:srcCompat="@drawable/btn_6"
+                            android:layout_gravity="end"
+                            android:padding="4dp"
+                            android:clickable="true"
+                            android:focusable="true" />
+
 
                     </LinearLayout>
                 </LinearLayout>

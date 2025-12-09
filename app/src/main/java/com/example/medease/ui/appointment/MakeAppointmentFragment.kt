@@ -14,6 +14,8 @@ import com.example.medease.data.model.Appointment
 import com.example.medease.database.repositories.AppointmentRepository
 import com.example.medease.database.viewModels.AppointmentViewModel
 import com.example.medease.database.viewModels.AppointmentViewModelFactory
+import com.example.medease.utils.showConfirmDialog
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -164,8 +166,10 @@ class MakeAppointmentFragment : Fragment() {
                 requireContext(),
                 { _, year, month, day ->
                     calendar.set(year, month, day)
-                    val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+
+                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                     selectedDate = sdf.format(calendar.time)
+
                     tvPickDate.text = selectedDate
                     tvPickDate.setTextColor(resources.getColor(R.color.black))
                 },
@@ -178,61 +182,54 @@ class MakeAppointmentFragment : Fragment() {
         }
     }
 
+
     private fun setupConfirmButton() {
         btnConfirm.setOnClickListener {
-            val note = etNote.text.toString()
 
-            if (selectedCategory.isEmpty() ||
-                selectedDoctor.isEmpty() ||
-                selectedTime.isEmpty() ||
-                selectedDate.isEmpty()
-            ) {
-                Toast.makeText(
-                    requireContext(),
-                    "Please complete all selections!",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
+            showConfirmDialog(requireContext()) {
 
-            // 🔹 Ambil userId dari Firebase
-            val userId = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser?.uid
-            if (userId == null) {
-                Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+                val note = etNote.text.toString()
 
-            // 🔹 Buat appointment baru
-            val newAppointment = Appointment(
-                id = "",                   // ID generated di Repository
-                userId = userId,           // 🔥 PENTING
-                doctor = selectedDoctor,
-                category = selectedCategory,
-                date = selectedDate,
-                time = selectedTime,
-                note = note
-            )
-
-            // 🔹 Kirim ke ViewModel untuk disimpan di Firebase
-            viewModel.createAppointment(newAppointment) { success ->
-                if (success) {
+                if (selectedCategory.isEmpty() ||
+                    selectedDoctor.isEmpty() ||
+                    selectedTime.isEmpty() ||
+                    selectedDate.isEmpty()
+                ) {
                     Toast.makeText(
                         requireContext(),
-                        "Appointment Created Successfully!",
+                        "Please complete all selections!",
                         Toast.LENGTH_SHORT
                     ).show()
+                    return@showConfirmDialog
+                }
 
-                    findNavController().navigateUp()
+                val userId = FirebaseAuth.getInstance().currentUser?.uid
+                if (userId == null) {
+                    Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
+                    return@showConfirmDialog
+                }
 
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Failed to create appointment",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                val newAppointment = Appointment(
+                    id = "",
+                    userId = userId,
+                    doctor = selectedDoctor,
+                    category = selectedCategory,
+                    date = selectedDate,
+                    time = selectedTime,
+                    note = note
+                )
+
+                viewModel.createAppointment(newAppointment) { success ->
+                    if (success) {
+                        Toast.makeText(requireContext(), "Appointment Created Successfully!", Toast.LENGTH_SHORT).show()
+                        findNavController().navigateUp()
+                    } else {
+                        Toast.makeText(requireContext(), "Failed to create appointment", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
+
     }
 
 

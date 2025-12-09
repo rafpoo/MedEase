@@ -12,9 +12,9 @@ class DailyScheduleAdapter(private var schedules: MutableList<ScheduleItem>) :
     RecyclerView.Adapter<DailyScheduleAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val patientName: TextView = view.findViewById(R.id.tv_patient_name)
-        val appointmentTime: TextView = view.findViewById(R.id.tv_appointment_time)
-        val notes: TextView = view.findViewById(R.id.tv_notes)
+        val patientName: TextView = view.findViewById(R.id.tvPatientName)
+        val appointmentTime: TextView = view.findViewById(R.id.tvDateTime)
+        val notes: TextView = view.findViewById(R.id.tvNotes)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,7 +27,7 @@ class DailyScheduleAdapter(private var schedules: MutableList<ScheduleItem>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = schedules[position]
-        holder.patientName.text = "Nama Pasien: ${item.patientName}"
+        holder.patientName.text = "Spesialis: ${item.patientName}"
         holder.appointmentTime.text = "Pukul: ${item.time}"
         holder.notes.text = "Catatan: ${item.notes}"
     }
