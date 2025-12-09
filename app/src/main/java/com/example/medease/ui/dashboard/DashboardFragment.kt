@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -51,7 +50,6 @@ class DashboardFragment : Fragment() {
         userViewModel = ViewModelProvider(this)
             .get(UserViewModel::class.java)
 
-
         // SETUP RECYCLER VIEW
         adapter = AppointmentAdapter(emptyList())
         binding.rvAppointments.layoutManager = LinearLayoutManager(requireContext())
@@ -68,7 +66,6 @@ class DashboardFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         val userId = auth.currentUser?.uid ?: ""
 
-
         // display nama
         txtNamaUser = binding.txtNamaUser
         userViewModel.loadCurrentUser()
@@ -77,11 +74,11 @@ class DashboardFragment : Fragment() {
         userViewModel.currentUser.observe(viewLifecycleOwner) { user ->
             if (user != null) {
                 Log.d("DashboardFragment", "Nama user: ${user.nama}")
-                txtNamaUser.setText(user.nama)
+                txtNamaUser.text = user.nama
             }
         }
 
-        // Navigasi
+        // Navigasi yang DIPERTAHANKAN
         binding.cardBeliObat.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_orderMedsFragment)
         }
@@ -91,15 +88,9 @@ class DashboardFragment : Fragment() {
         binding.cardLihatKonsultasi.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_manageAppointmentFragment)
         }
-        binding.cardLogout.setOnClickListener {
-            auth.signOut()
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
-        binding.cardKonsulOnline.setOnClickListener {
-            findNavController().navigate(R.id.action_dashboardFragment_to_KonsulOnlineFragment)
-        }
+
+        // ❌ cardKonsulOnline → DIHAPUS
+        // ❌ cardLogout → DIHAPUS
     }
 
     override fun onDestroyView() {
@@ -107,4 +98,3 @@ class DashboardFragment : Fragment() {
         _binding = null
     }
 }
-
