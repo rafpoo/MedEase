@@ -179,6 +179,56 @@
                         android:textSize="10sp" />
                 </LinearLayout>
 
+                <!-- Kartu 3 : Profil -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="15dp"
+                    android:orientation="vertical">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cardProfil"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/white_btn_background"
+                        android:clickable="true"
+                        android:focusable="true">
+
+                        <ImageView
+                            android:id="@+id/imgProfilCircle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/circle_green" />
+
+                        <ImageView
+                            android:id="@+id/imgProfilIcon"
+                            android:layout_width="38dp"
+                            android:layout_height="46dp"
+                            android:contentDescription="icon profil"
+                            app:layout_constraintBottom_toBottomOf="@+id/imgProfilCircle"
+                            app:layout_constraintEnd_toEndOf="@+id/imgProfilCircle"
+                            app:layout_constraintStart_toStartOf="@+id/imgProfilCircle"
+                            app:layout_constraintTop_toTopOf="@+id/imgProfilCircle"
+                            app:srcCompat="@drawable/ic_person"
+                            app:tint="@color/white" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/txtProfil"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Profil"
+                        android:textAlignment="center"
+                        android:textColor="#34346E"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+
             </TableRow>
 
 

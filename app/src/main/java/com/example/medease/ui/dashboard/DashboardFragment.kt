@@ -89,6 +89,11 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(R.id.action_dashboardFragment_to_manageAppointmentFragment)
         }
 
+        binding.cardProfil.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_profileFragment)
+        }
+
+
         // ❌ cardKonsulOnline → DIHAPUS
         // ❌ cardLogout → DIHAPUS
     }
