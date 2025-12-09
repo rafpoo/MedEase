@@ -20,6 +20,15 @@ class AppointmentViewModel : ViewModel() {
     private val _allAppointments = MutableLiveData<List<Appointment>>()
     val allAppointments: LiveData<List<Appointment>> = _allAppointments
 
+    private val _dailyAppointments = MutableLiveData<List<Appointment>>()
+    val dailyAppointments: LiveData<List<Appointment>> = _dailyAppointments
+
+    fun loadAppointmentsForDate(date: String) {
+        repo.getAcceptedAppointmentsByDate(date) { list ->
+            _dailyAppointments.postValue(list)
+        }
+    }
+
     fun loadAllAppointments() {
         repo.getAllAppointments { list ->
             _allAppointments.postValue(list)

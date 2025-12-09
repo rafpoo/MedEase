@@ -7,61 +7,51 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CalendarView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medease.R
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.medease.adapter.DailyAppointmentAdapter
+import com.example.medease.database.repositories.AppointmentRepository
+import com.example.medease.database.viewModels.AppointmentViewModel
+import com.example.medease.database.viewModels.AppointmentViewModelFactory
 
 class CalendarFragment : Fragment() {
 
     private lateinit var calendarView: CalendarView
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: DailyScheduleAdapter
+    private lateinit var adapter: DailyAppointmentAdapter
+    private lateinit var viewModel: AppointmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         val view = inflater.inflate(R.layout.fragment_doctor_calendar, container, false)
 
         calendarView = view.findViewById(R.id.calendarView)
         recyclerView = view.findViewById(R.id.recyclerViewDailySchedule)
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = DailyScheduleAdapter(mutableListOf())
+        adapter = DailyAppointmentAdapter(mutableListOf())
         recyclerView.adapter = adapter
 
-//        val db = TotalDatabase.getInstance(requireContext())
-//        val dao = db.appointmentDao()
+        // Inisialisasi ViewModel
+        val repository = AppointmentRepository()
+        val factory = AppointmentViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory)[AppointmentViewModel::class.java]
 
+        // Observe LiveData
+        viewModel.dailyAppointments.observe(viewLifecycleOwner) { list ->
+            adapter.updateData(list)
+        }
+
+        // Listener tanggal
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
-
             val realMonth = month + 1
-
             val selectedDate = String.format("%02d/%02d/%d", dayOfMonth, realMonth, year)
-
-            Log.d("CalendarFragment", "Cari tanggal: $selectedDate")
-
-//            lifecycleScope.launch(Dispatchers.IO) {
-//
-//                val appointments = dao.getAcceptedAppointmentsByDate(selectedDate)
-//
-//                val scheduleList = appointments.map {
-//                    ScheduleItem(
-//                        it.category,
-//                        it.time,
-//                        it.note
-//                    )
-//                }
-//
-//                withContext(Dispatchers.Main) {
-//                    adapter.updateData(scheduleList)
-//                }
-//            }
+            Log.d("CalendarFragment", "Selected date: $selectedDate")
+            viewModel.loadAppointmentsForDate(selectedDate)
         }
 
         return view

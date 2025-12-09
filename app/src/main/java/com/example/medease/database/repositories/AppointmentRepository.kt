@@ -91,4 +91,20 @@ class AppointmentRepository {
             .addOnSuccessListener { onResult(true) }
             .addOnFailureListener { onResult(false) }
     }
+
+    fun getAcceptedAppointmentsByDate(date: String, onResult: (List<Appointment>) -> Unit) {
+        collection
+            .whereEqualTo("date", date)
+            .whereEqualTo("status", "accepted")
+            .get()
+            .addOnSuccessListener { result ->
+                val appointments = result.mapNotNull { doc ->
+                    doc.toObject(Appointment::class.java).copy(id = doc.id)
+                }
+                onResult(appointments)
+            }
+            .addOnFailureListener { _ ->
+                onResult(emptyList())
+            }
+    }
 }

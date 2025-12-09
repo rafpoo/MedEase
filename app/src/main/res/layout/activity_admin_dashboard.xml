@@ -58,7 +58,7 @@
                                 android:textSize="20sp" />
 
                             <TextView
-                                android:id="@+id/tv_doctor_name"
+                                android:id="@+id/tvDoctorName"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="4dp"
