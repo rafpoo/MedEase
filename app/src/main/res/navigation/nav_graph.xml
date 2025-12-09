@@ -27,6 +27,12 @@
         <action
             android:id="@+id/action_dashboardFragment_to_KonsulOnlineFragment"
             app:destination="@id/konsulOnlineFragment"/>
+
+        <!-- FIXED PROFILE ACTION -->
+        <action
+            android:id="@+id/action_dashboardFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+
     </fragment>
 
     <!-- 💊 Order Obat -->
@@ -86,6 +92,7 @@
             app:argType="string" />
     </fragment>
 
+    <!-- 🟢 KONSULTASI ONLINE -->
     <fragment
         android:id="@+id/konsulOnlineFragment"
         android:name="com.example.medease.ui.appointment.KonsulOnlineFragment"
@@ -97,17 +104,21 @@
             app:destination="@id/chatRoomFragment" />
     </fragment>
 
-
-
+    <!-- 💬 Chat Room -->
     <fragment
         android:id="@+id/chatRoomFragment"
         android:name="com.example.medease.ui.appointment.ChatRoomFragment"
         android:label="Chat Room">
-
         <argument
             android:name="chatId"
             app:argType="string" />
     </fragment>
 
+    <!-- 🧍‍♂️ PROFILE PAGE (FRAGMENT BARU) -->
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.medease.ui.profile.ProfileFragment"
+        android:label="Profil"
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>
