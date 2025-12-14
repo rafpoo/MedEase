@@ -49,6 +49,14 @@ class WqiFragment : Fragment(R.layout.fragment_wqi) {
             })
         }
 
+        // ===== DEFAULT VALUES =====
+        sbPh.progress = 70        // 7.0
+        sbTemp.progress = 250    // 25.0
+
+        tvPh.text = "7.0"
+        tvTemp.text = "25.0"
+
+
         sbAmmonia.bind(100.0, tvAmmonia)   // 0.00 – 1.00
         sbBod.bind(10.0, tvBod)            // 0 – 10
         sbDo.bind(10.0, tvDo)              // 0 – 10
