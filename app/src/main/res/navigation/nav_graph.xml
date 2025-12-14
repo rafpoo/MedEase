@@ -33,6 +33,12 @@
             android:id="@+id/action_dashboardFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
 
+        <action
+            android:id="@+id/action_dashboardFragment_to_wqiFragment"
+            app:destination="@id/wqiFragment" />
+
+
+
     </fragment>
 
     <!-- 💊 Order Obat -->
@@ -120,5 +126,12 @@
         android:name="com.example.medease.ui.profile.ProfileFragment"
         android:label="Profil"
         tools:layout="@layout/fragment_profile" />
+
+    <!--    ML WQI   -->
+    <fragment
+        android:id="@+id/wqiFragment"
+        android:name="com.example.medease.ui.ml.WqiFragment"
+        android:label="WQI Prediction" />
+
 
 </navigation>
