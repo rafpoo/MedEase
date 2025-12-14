@@ -21,17 +21,21 @@ class WqiViewModel : ViewModel() {
         _loading.value = true
 
         ApiClient.apiService.predictWqi(request)
-            .enqueue(object: Callback<WqiResponse> {
-                override fun onResponse(call: Call<WqiResponse>, response: Response<WqiResponse>) {
+            .enqueue(object : Callback<WqiResponse> {
+
+                override fun onResponse(
+                    call: Call<WqiResponse>,
+                    response: Response<WqiResponse>
+                ) {
                     _loading.value = false
                     _result.value = response.body()
                 }
 
-                override fun onFailure(call: Call<WqiResponse?>, t: Throwable) {
+                override fun onFailure(call: Call<WqiResponse>, t: Throwable) {
                     _loading.value = false
                     _result.value = null
                 }
-
             })
     }
+
 }

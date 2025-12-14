@@ -1,21 +1,212 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scrollWqi"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btnPredict"
+    <LinearLayout
+        android:id="@+id/containerWqi"
+        android:orientation="vertical"
+        android:padding="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Predict WQI"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvResult"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Result"
-        android:textSize="18sp"
-        android:paddingTop="16dp"/>
+        <!-- AMMONIA -->
+        <TextView
+            android:id="@+id/tvAmmoniaLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ammonia" />
 
-</LinearLayout>
+        <SeekBar
+            android:id="@+id/sbAmmonia"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/tvAmmoniaValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0.0" />
+
+        <!-- BOD -->
+        <TextView
+            android:id="@+id/tvBodLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="BOD" />
+
+        <SeekBar
+            android:id="@+id/sbBod"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/tvBodValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0.0" />
+
+        <!-- DISSOLVED OXYGEN -->
+        <TextView
+            android:id="@+id/tvDoLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dissolved Oxygen" />
+
+        <SeekBar
+            android:id="@+id/sbDo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100" />
+
+        <TextView
+            android:id="@+id/tvDoValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0.0" />
+
+        <!-- pH -->
+        <TextView
+            android:id="@+id/tvPhLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="pH" />
+
+        <SeekBar
+            android:id="@+id/sbPh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="140" />
+
+        <TextView
+            android:id="@+id/tvPhValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="7.0" />
+
+        <!-- TEMPERATURE -->
+        <TextView
+            android:id="@+id/tvTempLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Temperature (°C)" />
+
+        <SeekBar
+            android:id="@+id/sbTemp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="500" />
+
+        <TextView
+            android:id="@+id/tvTempValue"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="25.0" />
+
+        <ProgressBar
+            android:id="@+id/progressLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            style="?android:attr/progressBarStyleLarge"/>
+
+
+        <!-- BUTTON -->
+        <Button
+            android:id="@+id/btnPredict"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Predict WQI" />
+
+        <!-- RESULT -->
+        <TextView
+            android:id="@+id/tvResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Result"
+            android:textSize="18sp"
+            android:paddingTop="16dp" />
+
+        <!-- EXPLANATION SECTION -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#FFFFFF">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Water Quality Classification"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:paddingBottom="12dp" />
+
+                <TextView
+                    android:text="Excellent"
+                    android:textStyle="bold"
+                    android:textColor="#2E7D32"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Kualitas air sangat baik, aman untuk hampir semua keperluan termasuk konsumsi dan ekosistem sensitif."
+                    android:paddingBottom="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Good"
+                    android:textStyle="bold"
+                    android:textColor="#388E3C"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Kualitas air baik, aman untuk sebagian besar aktivitas dan kehidupan akuatik."
+                    android:paddingBottom="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Fair"
+                    android:textStyle="bold"
+                    android:textColor="#F9A825"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Kualitas air cukup, masih dapat digunakan namun mulai menunjukkan tanda pencemaran ringan."
+                    android:paddingBottom="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Marginal"
+                    android:textStyle="bold"
+                    android:textColor="#D32F2F"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:text="Kualitas air kurang baik, berpotensi berbahaya bagi lingkungan dan perlu pengolahan sebelum digunakan."
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

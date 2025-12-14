@@ -61,6 +61,7 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
     implementation(libs.androidx.navigation.fragment.ktx)
+    implementation("androidx.cardview:cardview:1.0.0")
 
     // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
