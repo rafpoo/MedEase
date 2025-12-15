@@ -133,5 +133,31 @@
         android:name="com.example.medease.ui.ml.WqiFragment"
         android:label="WQI Prediction" />
 
+    <fragment
+        android:id="@+id/manageDoctorFragment"
+        android:name="com.example.medease.fragments.ManageDoctorFragment">
+
+        <action
+            android:id="@+id/action_manageDoctorFragment_to_addDoctorFragment"
+            app:destination="@id/addDoctorFragment" />
+
+        <action
+            android:id="@+id/action_manageDoctorFragment_to_editDoctorFragment"
+            app:destination="@id/editDoctorFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addDoctorFragment"
+        android:name="com.example.medease.fragments.AddDoctorFragment" />
+
+    <fragment
+        android:id="@+id/editDoctorFragment"
+        android:name="com.example.medease.fragments.EditDoctorFragment">
+        <argument
+            android:name="doctorId"
+            app:argType="string" />
+    </fragment>
+
+
 
 </navigation>
