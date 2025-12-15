@@ -37,7 +37,7 @@ class ManageAppointmentAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val appointment = appointments[position]
 
-        holder.tvDoctor.text = appointment.doctor
+        holder.tvDoctor.text = appointment.doctorName
         holder.tvDateTime.text = "${appointment.date} • ${appointment.time}"
         holder.tvNote.text = appointment.note
 

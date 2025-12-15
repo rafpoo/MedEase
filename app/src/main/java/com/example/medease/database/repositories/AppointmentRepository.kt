@@ -107,4 +107,24 @@ class AppointmentRepository {
                 onResult(emptyList())
             }
     }
+
+    fun getBookedTimes(
+        doctorId: String,
+        date: String,
+        onResult: (List<String>) -> Unit
+    ) {
+        db.collection("appointments")
+            .whereEqualTo("doctorId", doctorId)
+            .whereEqualTo("date", date)
+            .get()
+            .addOnSuccessListener {
+                val bookedTimes = it.documents.mapNotNull { doc ->
+                    doc.getString("time")
+                }
+                onResult(bookedTimes)
+            }
+            .addOnFailureListener {
+                onResult(emptyList())
+            }
+    }
 }
