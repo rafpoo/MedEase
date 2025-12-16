@@ -39,11 +39,14 @@ class DoctorRepository {
     }
 
     fun addDoctor(doctor: Doctor, onResult: (Boolean) -> Unit) {
-        db.collection("doctors")
-            .add(doctor)
+        val docRef = db.collection("doctors").document()
+        val doctorWithId = doctor.copy(id = docRef.id)
+
+        docRef.set(doctorWithId)
             .addOnSuccessListener { onResult(true) }
             .addOnFailureListener { onResult(false) }
     }
+
 
     fun updateDoctor(doctor: Doctor, onResult: (Boolean) -> Unit) {
         db.collection("doctors")

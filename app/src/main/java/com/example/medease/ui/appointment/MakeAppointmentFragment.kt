@@ -16,6 +16,7 @@ import com.example.medease.database.repositories.AppointmentRepository
 import com.example.medease.database.repositories.DoctorRepository
 import com.example.medease.database.viewModels.AppointmentViewModel
 import com.example.medease.database.viewModels.AppointmentViewModelFactory
+import com.example.medease.utils.getDayName
 import com.example.medease.utils.showConfirmDialog
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
@@ -141,12 +142,12 @@ class MakeAppointmentFragment : Fragment() {
 
     private fun loadAvailableTimes() {
         val doctor = selectedDoctor ?: return
-        val date = selectedDate
+        val dayName = getDayName(selectedDate)
 
-        repository.getBookedTimes(doctor.id, date) { booked ->
-            val availableTimes = doctor.schedules.filter {
-                it !in booked
-            }
+        repository.getBookedTimes(doctor.id, selectedDate) { booked ->
+            val availableTimes = doctor.schedules
+                .filter { it.day == dayName && it.time !in booked }
+                .map { it.time }
 
             spinnerTime.adapter = ArrayAdapter(
                 requireContext(),
@@ -157,12 +158,13 @@ class MakeAppointmentFragment : Fragment() {
             if (availableTimes.isEmpty()) {
                 Toast.makeText(
                     requireContext(),
-                    "Doctor fully booked on this date",
+                    "Doctor fully booked on this day",
                     Toast.LENGTH_SHORT
                 ).show()
             }
         }
     }
+
 
 
     private fun setupDatePicker() {

@@ -10,6 +10,7 @@ import com.example.medease.R
 import com.example.medease.adapter.AdminDoctorAdapter
 import com.example.medease.database.viewModels.DoctorViewModel
 import com.example.medease.databinding.FragmentManageDoctorBinding
+import com.example.medease.utils.showConfirmDialog
 
 class ManageDoctorFragment : Fragment(R.layout.fragment_manage_doctor) {
 
@@ -23,23 +24,44 @@ class ManageDoctorFragment : Fragment(R.layout.fragment_manage_doctor) {
         binding = FragmentManageDoctorBinding.bind(view)
         viewModel = ViewModelProvider(this)[DoctorViewModel::class.java]
 
+
         adapter = AdminDoctorAdapter(
             onEdit = { doctor ->
-                Toast.makeText(requireContext(), "Edit ${doctor.name}", Toast.LENGTH_SHORT).show()
-                // nanti bisa buka EditDoctorFragment
-            },
-            onDelete = { doctor ->
-                viewModel.deleteDoctor(doctor.id) { success ->
-                    if (success) {
-                        Toast.makeText(requireContext(), "Doctor deleted", Toast.LENGTH_SHORT).show()
-                        viewModel.loadDoctors()
+                val fragment = EditDoctorFragment().apply {
+                    arguments = Bundle().apply {
+                        putString("doctor_id", doctor.id)
                     }
                 }
+
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .addToBackStack(null)
+                    .commit()
+            },
+            onDelete = { doctor ->
+                showConfirmDialog(
+                    requireActivity(),
+                    "Are you sure you want to delete this doctor?"
+                ) {
+                    viewModel.deleteDoctor(doctor.id) { success ->
+                        if (success) {
+                            Toast.makeText(requireContext(), "Doctor deleted", Toast.LENGTH_SHORT).show()
+                            viewModel.loadDoctors()
+                        }
+                    }
+                }
+
             }
         )
 
         binding.rvDoctors.layoutManager = LinearLayoutManager(requireContext())
         binding.rvDoctors.adapter = adapter
+        binding.fabAddDoctor.setOnClickListener {
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, AddDoctorFragment())
+                .addToBackStack(null)
+                .commit()
+        }
 
         viewModel.doctors.observe(viewLifecycleOwner) {
             adapter.submitList(it)

@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medease.data.model.Doctor
 import com.example.medease.databinding.ItemDoctorAdminBinding
+import com.google.android.material.chip.Chip
 
 class AdminDoctorAdapter(
     private val onEdit: (Doctor) -> Unit,
@@ -29,6 +30,7 @@ class AdminDoctorAdapter(
             parent,
             false
         )
+
         return ViewHolder(binding)
     }
 
@@ -47,13 +49,20 @@ class AdminDoctorAdapter(
             binding.tvDoctorName.text = doctor.name
             binding.tvDoctorCategory.text = doctor.category
 
-            binding.btnEdit.setOnClickListener {
-                onEdit(doctor)
+            // 🔥 RESET CHIP GROUP
+            binding.chipGroupSchedules.removeAllViews()
+
+            doctor.schedules.forEach { schedule ->
+                val chip = Chip(binding.root.context).apply {
+                    text = "${schedule.day} • ${schedule.time}"
+                    isClickable = false
+                    isCheckable = false
+                }
+                binding.chipGroupSchedules.addView(chip)
             }
 
-            binding.btnDelete.setOnClickListener {
-                onDelete(doctor)
-            }
+            binding.btnEdit.setOnClickListener { onEdit(doctor) }
+            binding.btnDelete.setOnClickListener { onDelete(doctor) }
         }
     }
 }

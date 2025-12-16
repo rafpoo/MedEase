@@ -8,14 +8,13 @@
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="12dp">
 
-
+        <!-- Doctor Name -->
         <TextView
             android:id="@+id/tvDoctorName"
             android:layout_width="wrap_content"
@@ -24,7 +23,7 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-
+        <!-- Category -->
         <TextView
             android:id="@+id/tvDoctorCategory"
             android:layout_width="wrap_content"
@@ -33,20 +32,35 @@
             android:textColor="#666666"
             android:layout_marginBottom="8dp" />
 
+        <!-- Schedules Label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Available Schedules"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp" />
+
+        <!-- 🔥 SCHEDULE CHIP GROUP -->
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chipGroupSchedules"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:singleLine="false"
+            app:chipSpacing="6dp"
+            android:layout_marginBottom="8dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
-
+            android:gravity="end"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Edit" />
-
 
             <Button
                 android:id="@+id/btnDelete"
@@ -57,7 +71,6 @@
                 android:backgroundTint="@android:color/holo_red_dark"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
-
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -17,6 +17,7 @@ import com.example.medease.database.viewModels.AppointmentViewModel
 import com.example.medease.database.viewModels.AppointmentViewModelFactory
 import com.example.medease.database.repositories.AppointmentRepository
 import com.example.medease.database.repositories.DoctorRepository
+import com.example.medease.utils.getDayName
 import com.example.medease.utils.showConfirmDialog
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
@@ -154,18 +155,28 @@ class EditAppointmentFragment : Fragment() {
 
     private fun loadAvailableTimesForEdit(appointment: Appointment) {
         val doctor = selectedDoctor ?: return
+        val dayName = getDayName(selectedDate)
+
         appointmentRepo.getBookedTimes(doctor.id, selectedDate) { booked ->
-            val availableTimes = doctor.schedules.filter {
-                it !in booked || it == appointment.time
-            }
+            val availableTimes = doctor.schedules
+                .filter {
+                    it.day == dayName &&
+                            (it.time !in booked || it.time == appointment.time)
+                }
+                .map { it.time }
+
             spinnerTime.adapter = ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_dropdown_item,
                 availableTimes
             )
-            spinnerTime.setSelection(availableTimes.indexOf(appointment.time))
+
+            spinnerTime.setSelection(
+                availableTimes.indexOf(appointment.time)
+            )
         }
     }
+
 
     private fun loadDoctorsAndPrefill(appointment: Appointment) {
         doctorRepo.getAllDoctors { doctors ->

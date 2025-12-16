@@ -53,13 +53,29 @@ class AppointmentRepository {
     }
 
     fun addAppointment(app: Appointment, onResult: (Boolean) -> Unit) {
-        val doc = collection.document()
-        val appointmentWithId = app.copy(id = doc.id)
-        val newApp = appointmentWithId.copy(userId = userId)
+        val docRef = collection.document(
+            "${app.doctorId}_${app.date}_${app.time}"
+        )
 
-        doc.set(newApp)
-            .addOnSuccessListener { onResult(true) }
-            .addOnFailureListener { onResult(false) }
+        db.runTransaction { transaction ->
+            val snapshot = transaction.get(docRef)
+
+            if (snapshot.exists()) {
+                throw Exception("Slot already booked")
+            }
+
+            val finalApp = app.copy(
+                id = docRef.id,
+                userId = userId,
+                status = "pending"
+            )
+
+            transaction.set(docRef, finalApp)
+        }.addOnSuccessListener {
+            onResult(true)
+        }.addOnFailureListener { e ->
+            onResult(false)
+        }
     }
 
     // Read (get appointments for user)
@@ -79,7 +95,7 @@ class AppointmentRepository {
     fun updateAppointment(appointment: Appointment, onResult: (Boolean) -> Unit) {
         val updatedApp = appointment.copy(userId = userId)
         collection.document(appointment.id)
-            .set(appointment)
+            .set(updatedApp)
             .addOnSuccessListener { onResult(true) }
             .addOnFailureListener { onResult(false) }
     }
@@ -113,13 +129,14 @@ class AppointmentRepository {
         date: String,
         onResult: (List<String>) -> Unit
     ) {
-        db.collection("appointments")
+        collection
             .whereEqualTo("doctorId", doctorId)
             .whereEqualTo("date", date)
+            .whereEqualTo("status", "accepted")
             .get()
-            .addOnSuccessListener {
-                val bookedTimes = it.documents.mapNotNull { doc ->
-                    doc.getString("time")
+            .addOnSuccessListener { result ->
+                val bookedTimes = result.documents.mapNotNull {
+                    it.getString("time")
                 }
                 onResult(bookedTimes)
             }
@@ -127,4 +144,5 @@ class AppointmentRepository {
                 onResult(emptyList())
             }
     }
+
 }
