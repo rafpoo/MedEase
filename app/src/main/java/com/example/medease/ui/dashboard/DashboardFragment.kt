@@ -93,6 +93,10 @@ class DashboardFragment : Fragment() {
             findNavController().navigate(R.id.action_dashboardFragment_to_profileFragment)
         }
 
+        binding.cardPrediksiWQI.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_wqiFragment)
+        }
+
 
         // ❌ cardKonsulOnline → DIHAPUS
         // ❌ cardLogout → DIHAPUS

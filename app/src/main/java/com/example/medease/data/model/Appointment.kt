@@ -1,35 +1,15 @@
 package com.example.medease.data.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-
 data class Appointment(
     val id: String = "",
-
     val userId: String = "",
-
-    val doctor: String = "",
-
+    val doctorId: String = "",
+    val doctorName: String = "",
     val category: String = "",
-
-    val date: String = "",
-
+    val date: String = "",      // "dd/MM/yyyy"
     val time: String = "",
-
     val note: String = "",
-
-
-//=======
-//    @ColumnInfo(name = "note")
-//    val note: String,
-//>>>>>>> davis/order-meds
-
-    // NEW: status = pending / accepted / rejected
-//    @ColumnInfo(name = "status")
-//    var status: String = "pending"
-
-    val status: String = "pending",
-
-    val adminNote: String? = null
+    val status: String = "pending"
 )
+
+

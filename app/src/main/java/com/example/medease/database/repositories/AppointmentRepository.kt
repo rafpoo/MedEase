@@ -10,6 +10,14 @@ class AppointmentRepository {
     private val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     private val collection = db.collection("appointments")
 
+    private fun safeId(value: String): String {
+        return value
+            .replace("/", "-")
+            .replace(":", "-")
+            .replace(" ", "")
+    }
+
+
     fun getAllAppointments(onResult: (List<Appointment>) -> Unit) {
         collection.get()
             .addOnSuccessListener { result ->
@@ -53,14 +61,39 @@ class AppointmentRepository {
     }
 
     fun addAppointment(app: Appointment, onResult: (Boolean) -> Unit) {
-        val doc = collection.document()
-        val appointmentWithId = app.copy(id = doc.id)
-        val newApp = appointmentWithId.copy(userId = userId)
 
-        doc.set(newApp)
-            .addOnSuccessListener { onResult(true) }
-            .addOnFailureListener { onResult(false) }
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+            ?: throw IllegalStateException("User not logged in")
+
+        val safeDate = safeId(app.date)
+        val safeTime = safeId(app.time)
+
+        val docId = "${app.doctorId}_${safeDate}_${safeTime}"
+        val docRef = collection.document(docId)
+
+        db.runTransaction { transaction ->
+            val snapshot = transaction.get(docRef)
+
+            if (snapshot.exists()) {
+                throw Exception("Slot already booked")
+            }
+
+            val finalApp = app.copy(
+                id = docRef.id,
+                userId = userId,
+                status = "pending"
+            )
+
+            transaction.set(docRef, finalApp)
+        }.addOnSuccessListener {
+            onResult(true)
+        }.addOnFailureListener {
+            onResult(false)
+        }
     }
+
+
+
 
     // Read (get appointments for user)
     fun getAppointmentsByUser(userId: String, onResult: (List<Appointment>) -> Unit) {
@@ -79,7 +112,7 @@ class AppointmentRepository {
     fun updateAppointment(appointment: Appointment, onResult: (Boolean) -> Unit) {
         val updatedApp = appointment.copy(userId = userId)
         collection.document(appointment.id)
-            .set(appointment)
+            .set(updatedApp)
             .addOnSuccessListener { onResult(true) }
             .addOnFailureListener { onResult(false) }
     }
@@ -107,4 +140,26 @@ class AppointmentRepository {
                 onResult(emptyList())
             }
     }
+
+    fun getBookedTimes(
+        doctorId: String,
+        date: String,
+        onResult: (List<String>) -> Unit
+    ) {
+        collection
+            .whereEqualTo("doctorId", doctorId)
+            .whereEqualTo("date", date)
+            .whereEqualTo("status", "accepted")
+            .get()
+            .addOnSuccessListener { result ->
+                val bookedTimes = result.documents.mapNotNull {
+                    it.getString("time")
+                }
+                onResult(bookedTimes)
+            }
+            .addOnFailureListener {
+                onResult(emptyList())
+            }
+    }
+
 }

@@ -28,7 +28,7 @@ class AppointmentAdapter(private var appointments: List<Appointment>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val appointment = appointments[position]
-        holder.tvDoctor.text = appointment.doctor
+        holder.tvDoctor.text = appointment.doctorName
         holder.tvCategory.text = appointment.category
         holder.tvDateTime.text = "${appointment.date} • ${appointment.time}"
         holder.tvNote.text = appointment.note
