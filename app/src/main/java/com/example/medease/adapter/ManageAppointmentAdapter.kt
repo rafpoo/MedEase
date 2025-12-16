@@ -20,10 +20,10 @@ class ManageAppointmentAdapter(
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvDoctor: TextView = view.findViewById(R.id.tvDoctor)
         val tvDateTime: TextView = view.findViewById(R.id.tvDateTime)
-        val btnEdit: Button = view.findViewById(R.id.btnEdit)
-        val btnDelete: Button = view.findViewById(R.id.btnDelete)
         val tvStatus: TextView = view.findViewById(R.id.tvStatus)
         val tvNote: TextView = view.findViewById(R.id.tvNote)
+        val btnEdit: Button = view.findViewById(R.id.btnEdit)
+        val btnDelete: Button = view.findViewById(R.id.btnDelete)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -37,23 +37,45 @@ class ManageAppointmentAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val appointment = appointments[position]
 
-        holder.tvDoctor.text = appointment.doctor
-        holder.tvDateTime.text = "${appointment.date} • ${appointment.time}"
-        holder.tvNote.text = appointment.note
+        // 🔹 Doctor info
+        holder.tvDoctor.text =
+            "${appointment.doctorName} • ${appointment.category}"
 
+        // 🔹 Date & time
+        holder.tvDateTime.text =
+            "${appointment.date} • ${appointment.time}"
+
+        // 🔹 Note
+        holder.tvNote.text =
+            appointment.note.ifBlank { "-" }
+
+        // 🔹 Delete (selalu boleh)
         holder.btnDelete.setOnClickListener {
-            showConfirmDialog(holder.itemView.context, "Hapus appointment ini?") {
+            showConfirmDialog(
+                holder.itemView.context,
+                "Hapus appointment ini?"
+            ) {
                 onDelete(appointment)
             }
         }
 
+        // 🔹 Edit hanya jika pending
+        val editable = appointment.status == "pending"
+        holder.btnEdit.isEnabled = editable
+        holder.btnEdit.alpha = if (editable) 1f else 0.4f
+
         holder.btnEdit.setOnClickListener {
-            showConfirmDialog(holder.itemView.context, "Edit appointment ini?") {
+            if (!editable) return@setOnClickListener
+
+            showConfirmDialog(
+                holder.itemView.context,
+                "Edit appointment ini?"
+            ) {
                 onEdit(appointment)
             }
         }
 
-
+        // 🔹 Status UI
         when (appointment.status) {
 
             "pending" -> {
@@ -82,6 +104,7 @@ class ManageAppointmentAdapter(
 
             else -> {
                 holder.tvStatus.text = "Unknown"
+                holder.tvStatus.setTextColor(Color.GRAY)
                 holder.tvStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
             }
         }
@@ -92,3 +115,4 @@ class ManageAppointmentAdapter(
         notifyDataSetChanged()
     }
 }
+

@@ -11,6 +11,7 @@ import com.example.medease.R
 import com.example.medease.databinding.ActivityAdminDashboardBinding
 import com.example.medease.fragments.AppointmentsFragment
 import com.example.medease.fragments.CalendarFragment
+import com.example.medease.fragments.ManageDoctorFragment
 import com.example.medease.fragments.ScheduleFragment
 import com.example.medease.ui.auth.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -68,6 +69,7 @@ class AdminDashboardActivity : AppCompatActivity() {
             openFragmentFullScreen(AppointmentsFragment())
         }
         binding.btnLogoutAdmin.setOnClickListener {
+            auth.signOut()
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
@@ -80,6 +82,16 @@ class AdminDashboardActivity : AppCompatActivity() {
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+        }
+
+        binding.cardManageDoctor.setOnClickListener {
+            binding.scrollViewDashboard.visibility = View.GONE
+            binding.fragmentContainer.visibility = View.VISIBLE
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ManageDoctorFragment())
+                .addToBackStack(null)
+                .commit()
         }
 
     }
