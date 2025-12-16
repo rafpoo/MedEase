@@ -13,6 +13,7 @@ import com.example.medease.adapter.AdminAppointmentAdapter
 import com.example.medease.data.model.Appointment
 import com.example.medease.database.viewModels.AppointmentViewModel
 import com.example.medease.databinding.FragmentDoctorAppointmentsBinding
+import com.example.medease.utils.showConfirmDialog
 
 class AppointmentsFragment : Fragment() {
 
@@ -35,13 +36,17 @@ class AppointmentsFragment : Fragment() {
 
         adapter = AdminAppointmentAdapter(
             onAccept = { appointment ->
-                viewModel.acceptAppointment(appointment.id) { success ->
-                    if (success) Toast.makeText(requireContext(), "Appointment accepted", Toast.LENGTH_SHORT).show()
+                showConfirmDialog(requireActivity()) {
+                    viewModel.acceptAppointment(appointment.id) { success ->
+                        if (success) Toast.makeText(requireContext(), "Appointment accepted", Toast.LENGTH_SHORT).show()
+                    }
                 }
             },
             onDecline = { appointment ->
-                viewModel.declineAppointment(appointment.id) { success ->
-                    if (success) Toast.makeText(requireContext(), "Appointment declined", Toast.LENGTH_SHORT).show()
+                showConfirmDialog(requireActivity()) {
+                    viewModel.declineAppointment(appointment.id) { success ->
+                        if (success) Toast.makeText(requireContext(), "Appointment declined", Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         )

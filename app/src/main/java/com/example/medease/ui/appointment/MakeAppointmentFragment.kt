@@ -144,10 +144,12 @@ class MakeAppointmentFragment : Fragment() {
         val doctor = selectedDoctor ?: return
         val dayName = getDayName(selectedDate)
 
-        repository.getBookedTimes(doctor.id, selectedDate) { booked ->
+        repository.getBookedTimes(doctor.id, selectedDate) { bookedTimes ->
+
             val availableTimes = doctor.schedules
-                .filter { it.day == dayName && it.time !in booked }
+                .filter { it.day == dayName }
                 .map { it.time }
+                .filter { it !in bookedTimes }
 
             spinnerTime.adapter = ArrayAdapter(
                 requireContext(),
@@ -164,6 +166,7 @@ class MakeAppointmentFragment : Fragment() {
             }
         }
     }
+
 
 
 

@@ -10,6 +10,14 @@ class AppointmentRepository {
     private val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     private val collection = db.collection("appointments")
 
+    private fun safeId(value: String): String {
+        return value
+            .replace("/", "-")
+            .replace(":", "-")
+            .replace(" ", "")
+    }
+
+
     fun getAllAppointments(onResult: (List<Appointment>) -> Unit) {
         collection.get()
             .addOnSuccessListener { result ->
@@ -53,9 +61,15 @@ class AppointmentRepository {
     }
 
     fun addAppointment(app: Appointment, onResult: (Boolean) -> Unit) {
-        val docRef = collection.document(
-            "${app.doctorId}_${app.date}_${app.time}"
-        )
+
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+            ?: throw IllegalStateException("User not logged in")
+
+        val safeDate = safeId(app.date)
+        val safeTime = safeId(app.time)
+
+        val docId = "${app.doctorId}_${safeDate}_${safeTime}"
+        val docRef = collection.document(docId)
 
         db.runTransaction { transaction ->
             val snapshot = transaction.get(docRef)
@@ -73,10 +87,13 @@ class AppointmentRepository {
             transaction.set(docRef, finalApp)
         }.addOnSuccessListener {
             onResult(true)
-        }.addOnFailureListener { e ->
+        }.addOnFailureListener {
             onResult(false)
         }
     }
+
+
+
 
     // Read (get appointments for user)
     fun getAppointmentsByUser(userId: String, onResult: (List<Appointment>) -> Unit) {

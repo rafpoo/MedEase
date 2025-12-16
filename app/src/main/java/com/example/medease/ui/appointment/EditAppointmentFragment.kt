@@ -158,12 +158,11 @@ class EditAppointmentFragment : Fragment() {
         val dayName = getDayName(selectedDate)
 
         appointmentRepo.getBookedTimes(doctor.id, selectedDate) { booked ->
+
             val availableTimes = doctor.schedules
-                .filter {
-                    it.day == dayName &&
-                            (it.time !in booked || it.time == appointment.time)
-                }
+                .filter { it.day == dayName }
                 .map { it.time }
+                .filter { it !in booked || it == appointment.time }
 
             spinnerTime.adapter = ArrayAdapter(
                 requireContext(),
