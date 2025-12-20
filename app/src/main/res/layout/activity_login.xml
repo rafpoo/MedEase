@@ -3,56 +3,87 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp"
-    android:gravity="center"
-    android:background="#FFFFFF">
+    android:padding="32dp"
+    android:background="#E5FCFB">
 
-    <!-- Big title -->
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="MEDEASE"
-        android:textSize="36sp"
-        android:textStyle="bold"
-        android:textColor="#2E7D32"
-        android:layout_marginBottom="40dp"
-        android:fontFamily="sans-serif-medium"
-        android:gravity="center" />
+        android:orientation="vertical"
+        android:layout_marginTop="88dp"
+        android:layout_marginBottom="28dp">
 
-    <!-- Username input -->
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MedEase"
+            android:textSize="38sp"
+            android:textStyle="bold"
+            android:textColor="@color/teal_700"
+            android:letterSpacing="0.04"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Solusi Digital Layanan Klinik"
+            android:textSize="16sp"
+            android:textColor="@color/teal_600"
+            android:layout_marginTop="8dp"
+            android:letterSpacing="0.02" />
+    </LinearLayout>
+
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="Username"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:background="@drawable/bg_outline_button"
+        android:paddingHorizontal="12dp"
+        android:textColor="@color/black"
+        android:textColorHint="#888"
+        android:layout_marginTop="12dp" />
 
-    <!-- Password input -->
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:hint="Password"
         android:inputType="textPassword"
+        android:background="@drawable/bg_outline_button"
+        android:paddingHorizontal="12dp"
+        android:textColor="@color/black"
+        android:textColorHint="#888"
         android:layout_marginTop="16dp" />
 
-    <!-- Login button -->
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_weight="0.05" />
+
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Login"
-        android:layout_marginTop="24dp" />
+        android:layout_height="48dp"
+        android:text="Masuk"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:backgroundTint="@color/teal_600"
+        android:textAllCaps="false"
+        android:elevation="4dp" />
 
-    <!-- Register button -->
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Register"
+        android:layout_height="48dp"
+        android:text="Daftar Akun"
+        android:textColor="@color/teal_600"
+        android:textStyle="bold"
+        android:backgroundTint="@color/white"
+        android:textAllCaps="false"
         android:layout_marginTop="12dp"
-        android:backgroundTint="#388E3C"
-        android:textColor="#FFFFFF" />
+        android:elevation="0dp" />
 
 </LinearLayout>

@@ -39,43 +39,75 @@ class MakeAppointmentFragment : Fragment() {
     private var selectedTime = ""
     private var selectedDate = ""
 
-    // Data kategori, dokter, jam & deskripsi
     private val doctorData = mapOf(
-        "General Practitioner" to mapOf(
+        "Dokter Umum" to mapOf(
             "Dr. Sarah Tan" to listOf("09:00 - 09:30", "09:30 - 10:00", "10:00 - 10:30"),
             "Dr. Agus Wirawan" to listOf("13:00 - 13:30", "13:30 - 14:00", "14:00 - 14:30")
         ),
-        "Dentist" to mapOf(
+        "Dokter Gigi" to mapOf(
             "Dr. Budi Santoso" to listOf("19:00 - 19:30", "19:30 - 20:00", "20:00 - 20:30"),
             "Dr. Rina Kurnia" to listOf("20:30 - 21:00", "21:00 - 21:30")
         ),
-        "Cardiologist" to mapOf(
+        "Dokter Jantung" to mapOf(
             "Dr. Lisa Kusuma" to listOf("08:00 - 08:30", "08:30 - 09:00", "09:00 - 09:30")
         ),
-        "Pediatrician" to mapOf(
+        "Dokter Anak" to mapOf(
             "Dr. Dita Melani" to listOf("10:00 - 10:30", "10:30 - 11:00"),
             "Dr. Andi Wirawan" to listOf("11:00 - 11:30", "11:30 - 12:00")
         )
     )
 
     private val doctorInfo = mapOf(
-        "Dr. Sarah Tan" to DoctorProfile("Dr. Sarah Tan", "General Practitioner",
-            "Experienced GP specializing in preventive medicine and teleconsultation.", R.drawable.ic_doctor),
-        "Dr. Agus Wirawan" to DoctorProfile("Dr. Agus Wirawan", "General Practitioner",
-            "10+ years experience handling general health and chronic illness management.", R.drawable.ic_doctor),
-        "Dr. Budi Santoso" to DoctorProfile("Dr. Budi Santoso", "Dentist",
-            "Expert in dental surgery and smile reconstruction. Known for gentle touch.", R.drawable.ic_doctor),
-        "Dr. Rina Kurnia" to DoctorProfile("Dr. Rina Kurnia", "Dentist",
-            "Professional aesthetic dentist specializing in veneers & whitening.", R.drawable.ic_doctor),
-        "Dr. Lisa Kusuma" to DoctorProfile("Dr. Lisa Kusuma", "Cardiologist",
-            "Heart specialist with focus on non-invasive cardiac care and diagnostics.", R.drawable.ic_doctor),
-        "Dr. Dita Melani" to DoctorProfile("Dr. Dita Melani", "Pediatrician",
-            "Caring pediatrician passionate about children’s growth and nutrition.", R.drawable.ic_doctor),
-        "Dr. Andi Wirawan" to DoctorProfile("Dr. Andi Wirawan", "Pediatrician",
-            "Friendly pediatrician focusing on early development and immunization.", R.drawable.ic_doctor)
+        "Dr. Sarah Tan" to DoctorProfile(
+            "Dr. Sarah Tan",
+            "Dokter Umum",
+            "Dokter umum berpengalaman dengan fokus pada pencegahan penyakit dan telekonsultasi.",
+            R.drawable.ic_doctor
+        ),
+        "Dr. Agus Wirawan" to DoctorProfile(
+            "Dr. Agus Wirawan",
+            "Dokter Umum",
+            "Pengalaman lebih dari 10 tahun menangani kesehatan umum dan penyakit kronis.",
+            R.drawable.ic_doctor
+        ),
+        "Dr. Budi Santoso" to DoctorProfile(
+            "Dr. Budi Santoso",
+            "Dokter Gigi",
+            "Ahli bedah gigi dan rekonstruksi senyum dengan sentuhan yang lembut.",
+            R.drawable.ic_doctor
+        ),
+        "Dr. Rina Kurnia" to DoctorProfile(
+            "Dr. Rina Kurnia",
+            "Dokter Gigi",
+            "Dokter gigi estetika profesional spesialis veneer dan pemutihan gigi.",
+            R.drawable.ic_doctor
+        ),
+        "Dr. Lisa Kusuma" to DoctorProfile(
+            "Dr. Lisa Kusuma",
+            "Dokter Jantung",
+            "Spesialis jantung dengan fokus perawatan dan diagnosis non-invasif.",
+            R.drawable.ic_doctor
+        ),
+        "Dr. Dita Melani" to DoctorProfile(
+            "Dr. Dita Melani",
+            "Dokter Anak",
+            "Dokter anak yang peduli dengan tumbuh kembang dan nutrisi anak.",
+            R.drawable.ic_doctor
+        ),
+        "Dr. Andi Wirawan" to DoctorProfile(
+            "Dr. Andi Wirawan",
+            "Dokter Anak",
+            "Dokter anak ramah dengan fokus perkembangan dini dan imunisasi.",
+            R.drawable.ic_doctor
+        )
     )
 
-    data class DoctorProfile(val name: String, val category: String, val description: String, val imageRes: Int)
+    data class DoctorProfile(
+        val name: String,
+        val category: String,
+        val description: String,
+        val imageRes: Int
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,17 +120,12 @@ class MakeAppointmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //inisiasi view model
         val appContext = requireContext().applicationContext
-
-        val db = TotalDatabase.getInstance(appContext)  // pakai singleton
+        val db = TotalDatabase.getInstance(appContext)
         val repository = AppointmentRepository(db.appointmentDao())
-
         val factory = AppointmentViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[AppointmentViewModel::class.java]
 
-
-        // Inisialisasi View dari layout
         spinnerCategory = view.findViewById(R.id.spinnerCategory)
         spinnerDoctor = view.findViewById(R.id.spinnerDoctor)
         spinnerTime = view.findViewById(R.id.spinnerTime)
@@ -119,13 +146,15 @@ class MakeAppointmentFragment : Fragment() {
 
     private fun setupSpinners() {
         val categories = doctorData.keys.toList()
-        spinnerCategory.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories)
+        spinnerCategory.adapter =
+            ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories)
 
         spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedCategory = categories[position]
                 val doctors = doctorData[selectedCategory]?.keys?.toList() ?: listOf()
-                spinnerDoctor.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, doctors)
+                spinnerDoctor.adapter =
+                    ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, doctors)
                 spinnerTime.adapter = null
                 layoutDoctorInfo.visibility = View.GONE
             }
@@ -137,7 +166,8 @@ class MakeAppointmentFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedDoctor = spinnerDoctor.selectedItem.toString()
                 val times = doctorData[selectedCategory]?.get(selectedDoctor) ?: listOf()
-                spinnerTime.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, times)
+                spinnerTime.adapter =
+                    ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, times)
 
                 doctorInfo[selectedDoctor]?.let { profile ->
                     layoutDoctorInfo.visibility = View.VISIBLE
@@ -155,6 +185,7 @@ class MakeAppointmentFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedTime = spinnerTime.selectedItem.toString()
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
@@ -166,10 +197,8 @@ class MakeAppointmentFragment : Fragment() {
                 requireContext(),
                 { _, year, month, day ->
                     calendar.set(year, month, day)
-
                     val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                     selectedDate = sdf.format(calendar.time)
-
                     tvPickDate.text = selectedDate
                     tvPickDate.setTextColor(resources.getColor(R.color.black))
                 },
@@ -182,7 +211,6 @@ class MakeAppointmentFragment : Fragment() {
         }
     }
 
-
     private fun setupConfirmButton() {
         btnConfirm.setOnClickListener {
             val note = etNote.text.toString()
@@ -190,7 +218,7 @@ class MakeAppointmentFragment : Fragment() {
             if (selectedCategory.isEmpty() || selectedDoctor.isEmpty() || selectedTime.isEmpty() || selectedDate.isEmpty()) {
                 Toast.makeText(
                     requireContext(),
-                    "Please complete all selections!",
+                    "Harap lengkapi semua pilihan!",
                     Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
@@ -204,17 +232,15 @@ class MakeAppointmentFragment : Fragment() {
                 note = note
             )
 
-            // PAKAI VIEWMODEL → ROOM
             viewModel.insert(newAppointment)
 
             Toast.makeText(
                 requireContext(),
-                "Appointment Created Successfully!",
+                "Janji temu berhasil dibuat!",
                 Toast.LENGTH_SHORT
             ).show()
 
             findNavController().navigateUp()
         }
     }
-
 }

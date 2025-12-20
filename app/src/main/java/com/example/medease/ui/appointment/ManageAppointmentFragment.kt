@@ -54,7 +54,7 @@ class ManageAppointmentFragment : Fragment() {
             },
             onDelete = { appointment ->
                 viewModel.delete(appointment)
-                Toast.makeText(requireContext(), "Appointment deleted", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Janji temu berhasil dihapus", Toast.LENGTH_SHORT).show()
             }
         )
 
