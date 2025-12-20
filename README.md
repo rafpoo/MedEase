@@ -1,28 +1,26 @@
-MedEase
-- kelompok g - 
+MedEase <br />
+- kelompok G -  <br />
 
-Rafael Nicholas Po (92399)
-Benedict Bryan H.P. (94709)
-Davis Ariel (94994)
-Ezequiel Emeraldo (159857)
+Rafael Nicholas Po (92399) <br />
+Benedict Bryan H.P. (94709) <br />
+Davis Ariel (94994) <br />
+Ezequiel Emeraldo (159857) <br />
 
-Aplikasi kami merupakan aplikasi medis yang memudahkan user untuk melakukan reservasi dan konsultasi online pada suatu klinik.
+Aplikasi kami merupakan aplikasi medis yang memudahkan user untuk melakukan reservasi dan konsultasi online pada suatu klinik. <br />
 
-Untuk login sebagai user = gunakan username: user, password: 12345
-untuk login sebagai dokter = gunakan username: doctor, password: 12345
+Untuk login sebagai user, lakukan register terlebih dahulu menggunakan email, lalu login dengan kredensial yang sudah di-register. <br />
+untuk login sebagai admin = gunakan username: admin@medease.com, password: 1234567890
 
 Fitur-fitur user:
 - Lihat konsultasi
 - Buat janji
 - Beli obat
-- Konsul online
+- Water quality index machine learning model
 - Logout
 
-Fitur-fitur dokter:
+Fitur-fitur admin:
 - Lihat jadwal harian
-- Konsultasi pasien
-- Reservasi pasien
+- Reservasi pasien (Approve / reject)
 - Profil 
-- Mailbox 
 - Kalender
 
