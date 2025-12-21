@@ -1,5 +1,6 @@
 package com.example.medease.ui.admin
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.OnBackPressedCallback
@@ -10,14 +11,17 @@ import com.example.medease.R
 import com.example.medease.databinding.ActivityAdminDashboardBinding
 import com.example.medease.fragments.AppointmentsFragment
 import com.example.medease.fragments.CalendarFragment
+import com.example.medease.fragments.ManageDoctorFragment
 import com.example.medease.fragments.ScheduleFragment
-import android.content.Intent
-import com.example.medease.ui.login.LoginActivity
+import com.example.medease.ui.auth.LoginActivity
+import com.google.firebase.auth.FirebaseAuth
 
 
 class AdminDashboardActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAdminDashboardBinding
+    private val auth = FirebaseAuth.getInstance()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,12 +69,30 @@ class AdminDashboardActivity : AppCompatActivity() {
             openFragmentFullScreen(AppointmentsFragment())
         }
         binding.btnLogoutAdmin.setOnClickListener {
+            auth.signOut()
             val intent = Intent(this, LoginActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
 
 
+
+        binding.cardLogout.setOnClickListener {
+            auth.signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
+        }
+
+        binding.cardManageDoctor.setOnClickListener {
+            binding.scrollViewDashboard.visibility = View.GONE
+            binding.fragmentContainer.visibility = View.VISIBLE
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, ManageDoctorFragment())
+                .addToBackStack(null)
+                .commit()
+        }
 
     }
 

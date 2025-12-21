@@ -28,9 +28,16 @@
             android:id="@+id/action_dashboardFragment_to_KonsulOnlineFragment"
             app:destination="@id/konsulOnlineFragment"/>
 
+        <!-- FIXED PROFILE ACTION -->
         <action
             android:id="@+id/action_dashboardFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+
+        <action
+            android:id="@+id/action_dashboardFragment_to_wqiFragment"
+            app:destination="@id/wqiFragment" />
+
+
 
     </fragment>
 
@@ -88,9 +95,10 @@
         tools:layout="@layout/fragment_edit_appointment">
         <argument
             android:name="appointmentId"
-            app:argType="integer" />
+            app:argType="string" />
     </fragment>
 
+    <!-- 🟢 KONSULTASI ONLINE -->
     <fragment
         android:id="@+id/konsulOnlineFragment"
         android:name="com.example.medease.ui.appointment.KonsulOnlineFragment"
@@ -102,23 +110,53 @@
             app:destination="@id/chatRoomFragment" />
     </fragment>
 
-
-
+    <!-- 💬 Chat Room -->
     <fragment
         android:id="@+id/chatRoomFragment"
         android:name="com.example.medease.ui.appointment.ChatRoomFragment"
         android:label="Chat Room">
-
         <argument
             android:name="chatId"
             app:argType="string" />
     </fragment>
 
+    <!-- 🧍‍♂️ PROFILE PAGE (FRAGMENT BARU) -->
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.medease.ui.profile.ProfileFragment"
         android:label="Profil"
-        tools:layout="@layout/profile_fragment" />
+        tools:layout="@layout/fragment_profile" />
+
+    <!--    ML WQI   -->
+    <fragment
+        android:id="@+id/wqiFragment"
+        android:name="com.example.medease.ui.ml.WqiFragment"
+        android:label="WQI Prediction" />
+
+    <fragment
+        android:id="@+id/manageDoctorFragment"
+        android:name="com.example.medease.fragments.ManageDoctorFragment">
+
+        <action
+            android:id="@+id/action_manageDoctorFragment_to_addDoctorFragment"
+            app:destination="@id/addDoctorFragment" />
+
+        <action
+            android:id="@+id/action_manageDoctorFragment_to_editDoctorFragment"
+            app:destination="@id/editDoctorFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addDoctorFragment"
+        android:name="com.example.medease.fragments.AddDoctorFragment" />
+
+    <fragment
+        android:id="@+id/editDoctorFragment"
+        android:name="com.example.medease.fragments.EditDoctorFragment">
+        <argument
+            android:name="doctorId"
+            app:argType="string" />
+    </fragment>
 
 
 

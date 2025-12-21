@@ -11,10 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.medease.R
 import com.example.medease.data.model.Appointment
-import com.example.medease.database.AppointmentViewModel
-import com.example.medease.database.AppointmentViewModelFactory
-import com.example.medease.database.TotalDatabase
-import com.example.medease.repository.AppointmentRepository
+import com.example.medease.data.model.Doctor
+import com.example.medease.database.repositories.AppointmentRepository
+import com.example.medease.database.repositories.DoctorRepository
+import com.example.medease.database.viewModels.AppointmentViewModel
+import com.example.medease.database.viewModels.AppointmentViewModelFactory
+import com.example.medease.utils.getDayName
+import com.example.medease.utils.showConfirmDialog
+import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,47 +39,16 @@ class MakeAppointmentFragment : Fragment() {
     private lateinit var layoutDoctorInfo: LinearLayout
 
     private var selectedCategory = ""
-    private var selectedDoctor = ""
+//    private var selectedDoctor = ""
     private var selectedTime = ""
     private var selectedDate = ""
 
-    // Data kategori, dokter, jam & deskripsi
-    private val doctorData = mapOf(
-        "General Practitioner" to mapOf(
-            "Dr. Sarah Tan" to listOf("09:00 - 09:30", "09:30 - 10:00", "10:00 - 10:30"),
-            "Dr. Agus Wirawan" to listOf("13:00 - 13:30", "13:30 - 14:00", "14:00 - 14:30")
-        ),
-        "Dentist" to mapOf(
-            "Dr. Budi Santoso" to listOf("19:00 - 19:30", "19:30 - 20:00", "20:00 - 20:30"),
-            "Dr. Rina Kurnia" to listOf("20:30 - 21:00", "21:00 - 21:30")
-        ),
-        "Cardiologist" to mapOf(
-            "Dr. Lisa Kusuma" to listOf("08:00 - 08:30", "08:30 - 09:00", "09:00 - 09:30")
-        ),
-        "Pediatrician" to mapOf(
-            "Dr. Dita Melani" to listOf("10:00 - 10:30", "10:30 - 11:00"),
-            "Dr. Andi Wirawan" to listOf("11:00 - 11:30", "11:30 - 12:00")
-        )
-    )
+    private val doctorRepo = DoctorRepository()
+    private val repository = AppointmentRepository()
+    private val factory = AppointmentViewModelFactory(repository)
 
-    private val doctorInfo = mapOf(
-        "Dr. Sarah Tan" to DoctorProfile("Dr. Sarah Tan", "General Practitioner",
-            "Experienced GP specializing in preventive medicine and teleconsultation.", R.drawable.ic_doctor),
-        "Dr. Agus Wirawan" to DoctorProfile("Dr. Agus Wirawan", "General Practitioner",
-            "10+ years experience handling general health and chronic illness management.", R.drawable.ic_doctor),
-        "Dr. Budi Santoso" to DoctorProfile("Dr. Budi Santoso", "Dentist",
-            "Expert in dental surgery and smile reconstruction. Known for gentle touch.", R.drawable.ic_doctor),
-        "Dr. Rina Kurnia" to DoctorProfile("Dr. Rina Kurnia", "Dentist",
-            "Professional aesthetic dentist specializing in veneers & whitening.", R.drawable.ic_doctor),
-        "Dr. Lisa Kusuma" to DoctorProfile("Dr. Lisa Kusuma", "Cardiologist",
-            "Heart specialist with focus on non-invasive cardiac care and diagnostics.", R.drawable.ic_doctor),
-        "Dr. Dita Melani" to DoctorProfile("Dr. Dita Melani", "Pediatrician",
-            "Caring pediatrician passionate about children’s growth and nutrition.", R.drawable.ic_doctor),
-        "Dr. Andi Wirawan" to DoctorProfile("Dr. Andi Wirawan", "Pediatrician",
-            "Friendly pediatrician focusing on early development and immunization.", R.drawable.ic_doctor)
-    )
-
-    data class DoctorProfile(val name: String, val category: String, val description: String, val imageRes: Int)
+    private var selectedDoctor: Doctor? = null
+    private var allDoctors: List<Doctor> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -87,14 +60,6 @@ class MakeAppointmentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        //inisiasi view model
-        val appContext = requireContext().applicationContext
-
-        val db = TotalDatabase.getInstance(appContext)  // pakai singleton
-        val repository = AppointmentRepository(db.appointmentDao())
-
-        val factory = AppointmentViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[AppointmentViewModel::class.java]
 
 
@@ -113,19 +78,31 @@ class MakeAppointmentFragment : Fragment() {
         layoutDoctorInfo = view.findViewById(R.id.layoutDoctorInfo)
 
         setupSpinners()
+        loadCategories()
         setupDatePicker()
         setupConfirmButton()
     }
 
     private fun setupSpinners() {
-        val categories = doctorData.keys.toList()
+        val categories = allDoctors.map { it.category }.distinct()
         spinnerCategory.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories)
 
         spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                selectedCategory = categories[position]
-                val doctors = doctorData[selectedCategory]?.keys?.toList() ?: listOf()
-                spinnerDoctor.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, doctors)
+
+                selectedCategory = parent?.getItemAtPosition(position).toString()
+
+                doctorRepo.getDoctorsByCategory(selectedCategory) { doctors ->
+                    allDoctors = doctors
+                    spinnerDoctor.adapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        doctors.map { it.name }
+                    )
+                }
+
+                selectedDoctor = null
+                selectedTime = ""
                 spinnerTime.adapter = null
                 layoutDoctorInfo.visibility = View.GONE
             }
@@ -135,21 +112,25 @@ class MakeAppointmentFragment : Fragment() {
 
         spinnerDoctor.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                selectedDoctor = spinnerDoctor.selectedItem.toString()
-                val times = doctorData[selectedCategory]?.get(selectedDoctor) ?: listOf()
-                spinnerTime.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, times)
+                if (allDoctors.isEmpty()) return
+                selectedDoctor = allDoctors[position]
 
-                doctorInfo[selectedDoctor]?.let { profile ->
-                    layoutDoctorInfo.visibility = View.VISIBLE
-                    imgDoctor.setImageResource(profile.imageRes)
-                    tvDoctorName.text = profile.name
-                    tvDoctorCategory.text = profile.category
-                    tvDoctorDesc.text = profile.description
+                if (selectedDate.isNotEmpty()) {
+                    loadAvailableTimes()
                 }
+
+                tvDoctorName.text = selectedDoctor!!.name
+                tvDoctorCategory.text = selectedDoctor!!.category
+                tvDoctorDesc.text = selectedDoctor!!.description
+                layoutDoctorInfo.visibility = View.VISIBLE
+
+                spinnerTime.adapter = null
+                selectedTime = ""
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+
 
         spinnerTime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -159,6 +140,36 @@ class MakeAppointmentFragment : Fragment() {
         }
     }
 
+    private fun loadAvailableTimes() {
+        val doctor = selectedDoctor ?: return
+        val dayName = getDayName(selectedDate)
+
+        repository.getBookedTimes(doctor.id, selectedDate) { bookedTimes ->
+
+            val availableTimes = doctor.schedules
+                .filter { it.day == dayName }
+                .map { it.time }
+                .filter { it !in bookedTimes }
+
+            spinnerTime.adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                availableTimes
+            )
+
+            if (availableTimes.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    "Doctor fully booked on this day",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
+
+
+
+
     private fun setupDatePicker() {
         tvPickDate.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -166,9 +177,15 @@ class MakeAppointmentFragment : Fragment() {
                 requireContext(),
                 { _, year, month, day ->
                     calendar.set(year, month, day)
-                    val sdf = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+
+                    val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                     selectedDate = sdf.format(calendar.time)
+
                     tvPickDate.text = selectedDate
+
+                    if (selectedDoctor != null) {
+                        loadAvailableTimes()
+                    }
                     tvPickDate.setTextColor(resources.getColor(R.color.black))
                 },
                 calendar.get(Calendar.YEAR),
@@ -180,38 +197,88 @@ class MakeAppointmentFragment : Fragment() {
         }
     }
 
-    private fun setupConfirmButton() {
-        btnConfirm.setOnClickListener {
-            val note = etNote.text.toString()
+    private fun loadCategories() {
+        doctorRepo.getAllDoctors { doctors ->
+            allDoctors = doctors
 
-            if (selectedCategory.isEmpty() || selectedDoctor.isEmpty() || selectedTime.isEmpty() || selectedDate.isEmpty()) {
-                Toast.makeText(
-                    requireContext(),
-                    "Please complete all selections!",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
+            if (doctors.isEmpty()) {
+                // Jika doctors collection kosong
+                Toast.makeText(requireContext(), "No doctors available. Please try again later.", Toast.LENGTH_LONG).show()
+
+                // Nonaktifkan spinner dan tombol confirm
+                spinnerCategory.isEnabled = false
+                spinnerDoctor.isEnabled = false
+                spinnerTime.isEnabled = false
+                btnConfirm.isEnabled = false
+
+                // Bersihkan adapter spinner
+                spinnerCategory.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listOf<String>())
+                spinnerDoctor.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listOf<String>())
+                spinnerTime.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, listOf<String>())
+                return@getAllDoctors
             }
 
-            val newAppointment = Appointment(
-                doctor = selectedDoctor,
-                category = selectedCategory,
-                date = selectedDate,
-                time = selectedTime,
-                note = note
-            )
-
-            // PAKAI VIEWMODEL → ROOM
-            viewModel.insert(newAppointment)
-
-            Toast.makeText(
+            val categories = doctors.map { it.category }.distinct()
+            spinnerCategory.adapter = ArrayAdapter(
                 requireContext(),
-                "Appointment Created Successfully!",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            findNavController().navigateUp()
+                android.R.layout.simple_spinner_dropdown_item,
+                categories
+            )
         }
     }
+
+
+
+
+    private fun setupConfirmButton() {
+        btnConfirm.setOnClickListener {
+
+            showConfirmDialog(requireContext()) {
+
+                val note = etNote.text.toString()
+
+                if (selectedCategory.isEmpty() ||
+                    selectedDoctor == null ||
+                    selectedTime.isEmpty() ||
+                    selectedDate.isEmpty()
+                ) {
+                    Toast.makeText(
+                        requireContext(),
+                        "Please complete all selections!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return@showConfirmDialog
+                }
+
+                val userId = FirebaseAuth.getInstance().currentUser?.uid
+                if (userId == null) {
+                    Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
+                    return@showConfirmDialog
+                }
+
+                val newAppointment = Appointment(
+                    id = "",
+                    userId = userId,
+                    doctorId = selectedDoctor!!.id,
+                    doctorName = selectedDoctor!!.name,
+                    category = selectedCategory,
+                    date = selectedDate,
+                    time = selectedTime,
+                    note = note
+                )
+
+                viewModel.createAppointment(newAppointment) { success ->
+                    if (success) {
+                        Toast.makeText(requireContext(), "Appointment Created Successfully!", Toast.LENGTH_SHORT).show()
+                        findNavController().navigateUp()
+                    } else {
+                        Toast.makeText(requireContext(), "Failed to create appointment", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+    }
+
 
 }

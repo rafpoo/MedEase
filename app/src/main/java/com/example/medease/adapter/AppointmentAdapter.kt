@@ -1,5 +1,6 @@
 package com.example.medease.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,7 @@ class AppointmentAdapter(private var appointments: List<Appointment>) :
         val tvCategory: TextView = itemView.findViewById(R.id.tvCategory)
         val tvDateTime: TextView = itemView.findViewById(R.id.tvDateTime)
         val tvNote: TextView = itemView.findViewById(R.id.tvNote)
+        val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,10 +28,42 @@ class AppointmentAdapter(private var appointments: List<Appointment>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val appointment = appointments[position]
-        holder.tvDoctor.text = appointment.doctor
+        holder.tvDoctor.text = appointment.doctorName
         holder.tvCategory.text = appointment.category
         holder.tvDateTime.text = "${appointment.date} • ${appointment.time}"
         holder.tvNote.text = appointment.note
+
+        when (appointment.status) {
+
+            "pending" -> {
+                holder.tvStatus.text = "Pending"
+                holder.tvStatus.setTextColor(Color.parseColor("#FFC107"))
+                holder.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.circle_pending, 0, 0, 0
+                )
+            }
+
+            "accepted" -> {
+                holder.tvStatus.text = "Accepted"
+                holder.tvStatus.setTextColor(Color.parseColor("#4CAF50"))
+                holder.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.circle_accepted, 0, 0, 0
+                )
+            }
+
+            "declined" -> {
+                holder.tvStatus.text = "Declined"
+                holder.tvStatus.setTextColor(Color.parseColor("#F44336"))
+                holder.tvStatus.setCompoundDrawablesWithIntrinsicBounds(
+                    R.drawable.circle_declined, 0, 0, 0
+                )
+            }
+
+            else -> {
+                holder.tvStatus.text = "Unknown"
+                holder.tvStatus.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+            }
+        }
     }
 
     override fun getItemCount() = appointments.size

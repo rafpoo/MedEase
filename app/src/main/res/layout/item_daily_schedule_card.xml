@@ -15,16 +15,16 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/tv_patient_name"
+            android:id="@+id/tvPatientName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nama Pasien: John Doe"
+            android:text="Spesialis: Dentist"
             android:textColor="#333333"
             android:textSize="16sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/tv_appointment_time"
+            android:id="@+id/tvDateTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pukul: 10:00 - 11:00"
@@ -33,7 +33,7 @@
             android:layout_marginTop="4dp" />
 
         <TextView
-            android:id="@+id/tv_notes"
+            android:id="@+id/tvNotes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Catatan: Konsultasi rutin"

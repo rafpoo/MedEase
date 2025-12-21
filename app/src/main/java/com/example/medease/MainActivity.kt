@@ -11,11 +11,15 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.medease.database.viewModels.UserViewModel
 import com.example.medease.databinding.ActivityMainBinding
+import com.example.medease.ui.auth.LoginActivity
 import com.google.android.material.appbar.MaterialToolbar
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
+    private lateinit var auth: FirebaseAuth
 
     private val viewModel by lazy {
         ViewModelProvider(this)
@@ -51,6 +55,17 @@ class MainActivity : AppCompatActivity() {
         // Jika kamu ingin bottom nav / drawer, baru gunakan:
         // toolbar.setupWithNavController(navController)
         // tapi untuk toolbar saja, setupActionBarWithNavController lebih tepat
+    }
+
+    override fun onStart() {
+        super.onStart()
+        auth = FirebaseAuth.getInstance()
+        val currentUser = auth.currentUser
+        if (currentUser == null) {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

@@ -10,11 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.medease.adapter.ManageAppointmentAdapter
-import com.example.medease.database.AppointmentViewModel
-import com.example.medease.database.AppointmentViewModelFactory
-import com.example.medease.database.TotalDatabase
+import com.example.medease.database.viewModels.AppointmentViewModel
+import com.example.medease.database.viewModels.AppointmentViewModelFactory
+import com.example.medease.database.repositories.AppointmentRepository
 import com.example.medease.databinding.FragmentManageAppointmentBinding
-import com.example.medease.repository.AppointmentRepository
+import com.google.firebase.auth.FirebaseAuth
 
 class ManageAppointmentFragment : Fragment() {
 
@@ -23,6 +23,7 @@ class ManageAppointmentFragment : Fragment() {
 
     private lateinit var viewModel: AppointmentViewModel
     private lateinit var adapter: ManageAppointmentAdapter
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,11 +38,7 @@ class ManageAppointmentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // 🔹 Init ViewModel
-        val appContext = requireContext().applicationContext
-        val db = TotalDatabase.getInstance(appContext)
-        val repo = AppointmentRepository(db.appointmentDao())
-        val factory = AppointmentViewModelFactory(repo)
-        viewModel = ViewModelProvider(this, factory)[AppointmentViewModel::class.java]
+        viewModel = ViewModelProvider(this)[AppointmentViewModel::class.java]
 
         // 🔹 Setup RecyclerView
         adapter = ManageAppointmentAdapter(
@@ -53,8 +50,11 @@ class ManageAppointmentFragment : Fragment() {
                 findNavController().navigate(action)
             },
             onDelete = { appointment ->
-                viewModel.delete(appointment)
-                Toast.makeText(requireContext(), "Appointment deleted", Toast.LENGTH_SHORT).show()
+                viewModel.deleteAppointment(appointment) { success ->
+                    if (success) {
+                        Toast.makeText(requireContext(), "Appointment deleted", Toast.LENGTH_SHORT).show()
+                    }
+                }
             }
         )
 
@@ -62,13 +62,20 @@ class ManageAppointmentFragment : Fragment() {
         binding.rvManageAppointments.adapter = adapter
 
         // 🔹 Observe data dari ViewModel
-        viewModel.appointments.observe(viewLifecycleOwner) { list ->
+        viewModel.userAppointments.observe(viewLifecycleOwner) { list ->
             adapter.updateData(list)
             binding.tvNoData.visibility = if (list.isEmpty()) View.VISIBLE else View.GONE
         }
 
         // 🔹 Load data pertama
-        viewModel.loadAll()
+        auth = FirebaseAuth.getInstance()
+        val userId = auth.currentUser?.uid ?: ""
+
+        if (userId.isNotEmpty()) {
+            viewModel.loadAppointments(userId)
+        } else {
+            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDestroyView() {

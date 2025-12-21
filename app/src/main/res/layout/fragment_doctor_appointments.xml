@@ -33,12 +33,22 @@
             android:layout_marginTop="4dp" />
     </LinearLayout>
 
-    <!-- RecyclerView GANTIKAN ScrollView -->
+    <!-- RecyclerView untuk daftar appointment admin -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_appointments"
+        android:id="@+id/rvAdminAppointments"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"/>
+    <TextView
+        android:id="@+id/tvEmptyMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Belum ada reservasi"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:padding="24dp"
+        android:textColor="#888888"
+        android:visibility="gone" />
 
 </LinearLayout>

@@ -8,339 +8,380 @@
     android:background="#009688"
     tools:context=".MainActivity">
 
+    <!-- FOTO PROFIL -->
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profileImage"
         android:layout_width="120dp"
         android:layout_height="120dp"
-        android:contentDescription="Foto profil"
         android:scaleType="centerCrop"
         android:src="@drawable/profil"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.062"
         app:shapeAppearanceOverlay="@style/CircleImageStyle"
         app:strokeColor="@color/white"
-        app:strokeWidth="3dp" />
+        app:strokeWidth="3dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.06" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/txtNamaUser"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hi, Rafael!"
-        android:textColor="#ffffff"
+        android:textColor="#FFFFFF"
         android:textSize="22sp"
         android:textStyle="bold"
         android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/profileImage"
-        app:layout_constraintTop_toBottomOf="@+id/profileImage"
-        app:layout_constraintStart_toStartOf="@+id/profileImage"
-        tools:layout_editor_absoluteY="172dp" />
+        app:layout_constraintTop_toBottomOf="@id/profileImage"
+        app:layout_constraintStart_toStartOf="@id/profileImage"
+        app:layout_constraintEnd_toEndOf="@id/profileImage" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
         android:text="Selamat Pagi"
         android:textColor="#FED006"
         android:textSize="36sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/txtNamaUser"
+        app:layout_constraintStart_toStartOf="@id/txtNamaUser"
+        app:layout_constraintEnd_toEndOf="@id/txtNamaUser" />
 
-    <!--    <Button-->
-    <!--        android:id="@+id/btnOrderMeds"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:backgroundTint="@color/teal_700"-->
-    <!--        android:paddingHorizontal="24dp"-->
-    <!--        android:paddingVertical="12dp"-->
-    <!--        android:text="Pesan Obat Sekarang"-->
-    <!--        android:textAllCaps="false"-->
-    <!--        android:textColor="@android:color/white"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/profileImage"-->
-    <!--        app:layout_constraintEnd_toEndOf="@+id/profileImage"-->
-    <!--        app:layout_constraintStart_toStartOf="@+id/profileImage" />-->
-
+    <!-- AREA BAWAH -->
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottomContainer"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="32dp"
         android:background="@drawable/bottom_background_light_green"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/textView2"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-        <TableLayout
-            android:id="@+id/tableLayout"
+        <!-- SCROLL AGAR RESPONSIF -->
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
-            <!-- ROW 1 -->
-            <TableRow
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
-
-                <!-- Kartu 1 (Beli Obat) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:orientation="vertical">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cardBeliObat"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/white_btn_background"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <ImageView
-                            android:id="@+id/imageView2_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/circle_green" />
-
-                        <ImageView
-                            android:id="@+id/imageView9_2"
-                            android:layout_width="38dp"
-                            android:layout_height="46dp"
-                            android:contentDescription="@string/icon1"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2_2"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView2_2"
-                            app:layout_constraintStart_toStartOf="@+id/imageView2_2"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2_2"
-                            app:srcCompat="@drawable/btn_1"
-                            app:tint="@color/white" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/textView3_2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Beli Obat"
-                        android:textAlignment="center"
-                        android:textColor="#34346E"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <!-- Kartu 2 (Buat Janji) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:orientation="vertical">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cardBuatJanji"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/white_btn_background">
-
-                        <ImageView
-                            android:id="@+id/imageView2_4"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/circle_green" />
-
-                        <ImageView
-                            android:id="@+id/imageView9_4"
-                            android:layout_width="38dp"
-                            android:layout_height="46dp"
-                            android:contentDescription="@string/icon1"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2_4"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView2_4"
-                            app:layout_constraintStart_toStartOf="@+id/imageView2_4"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2_4"
-                            app:srcCompat="@drawable/tambah_appointment"
-                            app:tint="@color/white" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/textView3_4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Buat Janji"
-                        android:textAlignment="center"
-                        android:textColor="#34346E"
-                        android:textSize="10sp" />
-                </LinearLayout>
-            </TableRow>
-
-            <!-- ROW 2 -->
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center">
-
-                <!-- Kartu 3 (Prediksi WQI) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:orientation="vertical">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cardPrediksiWQI"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/white_btn_background">
-
-                        <ImageView
-                            android:id="@+id/imageView2_5"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/circle_green" />
-
-                        <ImageView
-                            android:id="@+id/imageView9_5"
-                            android:layout_width="38dp"
-                            android:layout_height="46dp"
-                            android:contentDescription="@string/icon1"
-                            app:layout_constraintBottom_toBottomOf="@+id/imageView2_5"
-                            app:layout_constraintEnd_toEndOf="@+id/imageView2_5"
-                            app:layout_constraintStart_toStartOf="@+id/imageView2_5"
-                            app:layout_constraintTop_toTopOf="@+id/imageView2_5"
-                            app:srcCompat="@drawable/water_drop_24px"
-                            app:tint="@color/white" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/textView3_5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Prediksi WQI"
-                        android:textAlignment="center"
-                        android:textColor="#34346E"
-                        android:textSize="10sp" />
-                </LinearLayout>
-
-                <!-- Kartu 4 (Profil — baru ditambahkan) -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:orientation="vertical">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/cardProfil"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/white_btn_background"
-                        android:clickable="true"
-                        android:focusable="true">
-
-                        <ImageView
-                            android:id="@+id/imgProfilCircle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="8dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/circle_green" />
-
-                        <ImageView
-                            android:id="@+id/imgProfilIcon"
-                            android:layout_width="38dp"
-                            android:layout_height="46dp"
-                            android:contentDescription="icon profil"
-                            app:layout_constraintBottom_toBottomOf="@+id/imgProfilCircle"
-                            app:layout_constraintEnd_toEndOf="@+id/imgProfilCircle"
-                            app:layout_constraintStart_toStartOf="@+id/imgProfilCircle"
-                            app:layout_constraintTop_toTopOf="@+id/imgProfilCircle"
-                            app:srcCompat="@drawable/ic_person"
-                            app:tint="@color/white" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <TextView
-                        android:id="@+id/txtProfil"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Profil"
-                        android:textAlignment="center"
-                        android:textColor="#34346E"
-                        android:textSize="10sp" />
-                </LinearLayout>
-            </TableRow>
-        </TableLayout>
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="32dp"
-            android:background="@drawable/green_banner_background"
-            app:layout_constraintTop_toBottomOf="@id/tableLayout"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <!-- Judul -->
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:text="Daftar Appointment"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="vertical"
+                android:paddingBottom="24dp">
 
-            <!-- RecyclerView untuk daftar appointment -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvAppointments"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:padding="8dp"
-                android:scrollbars="vertical"
-                app:layout_constraintTop_toBottomOf="@id/textView4"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                <!-- GRID MENU -->
+                <GridLayout
+                    android:id="@+id/gridMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="3"
+                    android:padding="16dp">
 
-            <!-- Teks placeholder kalau tidak ada appointment -->
-            <TextView
-                android:id="@+id/tvNoAppointments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Tidak ada appointment hari ini"
-                android:textColor="#FFFFFF"
-                android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@id/textView4"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    <!-- ===== KARTU 1 ===== -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="8dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cardLihatKonsultasi"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:background="@drawable/white_btn_background"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:id="@+id/bgIcon"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:srcCompat="@drawable/circle_green" />
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:srcCompat="@drawable/list_konsul"
+                                app:tint="@color/white" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Lihat Konsultasi"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="#34346E"
+                            android:paddingTop="4dp" />
+                    </LinearLayout>
+
+                    <!-- ===== KARTU 2 ===== -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="8dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cardBeliObat"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:background="@drawable/white_btn_background"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:id="@+id/bgIcon2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:srcCompat="@drawable/circle_green" />
+
+                            <ImageView
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:srcCompat="@drawable/btn_1"
+                                app:tint="@color/white" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Beli Obat"
+                            android:textAlignment="center"
+                            android:textSize="12sp"
+                            android:textColor="#34346E"
+                            android:paddingTop="4dp" />
+                    </LinearLayout>
+
+                    <!-- ===== KARTU 3 ===== -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:padding="8dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/cardProfil"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:background="@drawable/white_btn_background"
+                            android:clickable="true"
+                            android:focusable="true">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:srcCompat="@drawable/circle_green" />
+
+                            <ImageView
+                                android:layout_width="38dp"
+                                android:layout_height="46dp"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:srcCompat="@drawable/ic_person"
+                                app:tint="@color/white" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Profil"
+                            android:textAlignment="center"
+                            android:textColor="#34346E"
+                            android:textSize="12sp" />
+                    </LinearLayout>
+
+                    <!-- ===== BARIS 2 (CENTERED) ===== -->
+                    <!-- ===== BARIS 2 (CENTERED 2 CARD) ===== -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_columnSpan="3"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+
+                        <!-- Buat Janji -->
+                        <LinearLayout
+                            android:layout_width="140dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="8dp">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/cardBuatJanji"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:background="@drawable/white_btn_background"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:srcCompat="@drawable/circle_green" />
+
+                                <ImageView
+                                    android:layout_width="38dp"
+                                    android:layout_height="46dp"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:srcCompat="@drawable/tambah_appointment"
+                                    app:tint="@color/white" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <TextView
+                                android:text="Buat Janji"
+                                android:textAlignment="center"
+                                android:textSize="12sp"
+                                android:textColor="#34346E"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                        <!-- Prediksi WQI -->
+                        <LinearLayout
+                            android:layout_width="140dp"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="center"
+                            android:padding="8dp">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:id="@+id/cardPrediksiWQI"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
+                                android:background="@drawable/white_btn_background"
+                                android:clickable="true"
+                                android:focusable="true">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:srcCompat="@drawable/circle_green" />
+
+                                <ImageView
+                                    android:layout_width="38dp"
+                                    android:layout_height="46dp"
+                                    app:layout_constraintTop_toTopOf="parent"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:srcCompat="@drawable/water_drop_24px"
+                                    app:tint="@color/white" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                            <TextView
+                                android:text="Prediksi WQI"
+                                android:textAlignment="center"
+                                android:textSize="12sp"
+                                android:textColor="#34346E"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+
+
+                    <!-- Spacer agar grid genap -->
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_columnWeight="1" />
+
+                </GridLayout>
+
+                <!-- BANNER APPOINTMENT -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/bannerContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="32dp"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="16dp"
+                    android:background="@drawable/green_banner_background">
+
+
+                <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Daftar Appointment"
+                        android:textColor="#FFFFFF"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!-- ✅ INI YANG HILANG -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvAppointments"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        app:layout_constraintTop_toBottomOf="@id/textView4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+
+                    <!-- ✅ INI JUGA WAJIB -->
+                    <TextView
+                        android:id="@+id/tvNoAppointments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tidak ada appointment hari ini"
+                        android:textColor="#FFFFFF"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toBottomOf="@id/textView4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
