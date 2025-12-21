@@ -10,6 +10,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -18,23 +19,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.medease.R
 import com.example.medease.databinding.FragmentOrderMedsBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.io.Serializable
 
 class OrderMedsFragment : Fragment() {
     private var _binding: FragmentOrderMedsBinding? = null
     private val binding get() = _binding!!
 
-    private val allMeds = listOf(
-        Med("Paracetamol 500mg", "Obat penurun panas dan pereda nyeri", 15000),
-        Med("Amoxicillin 500mg", "Antibiotik untuk infeksi bakteri", 35000),
-        Med("Vitamin C 1000mg", "Suplemen daya tahan tubuh", 50000),
-        Med("Ibuprofen 200mg", "Pereda nyeri dan antiinflamasi", 25000),
-        Med("Obat Batuk Sirup", "Sirup untuk batuk berdahak", 28000),
-        Med("Antasida", "Untuk meredakan sakit maag", 10000),
-        Med("Cetirizine 10mg", "Antihistamin untuk alergi", 20000)
-    )
+    private val firestore = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
-    private var filteredMeds = allMeds.toMutableList()
+    private var allMeds = mutableListOf<Med>()
+    private var filteredMeds = mutableListOf<Med>()
     private val cart = mutableMapOf<Med, Int>()
 
     override fun onCreateView(
@@ -49,6 +46,10 @@ class OrderMedsFragment : Fragment() {
         val adapter = MedAdapter(filteredMeds, ::onMedClick)
         binding.rvMeds.layoutManager = LinearLayoutManager(requireContext())
         binding.rvMeds.adapter = adapter
+
+        // 🔥 Load medicines dan cart dari Firestore
+        loadMedicinesFromFirestore(adapter)
+        loadCartFromFirestore()
 
         // 🔍 Fitur pencarian
         binding.searchBar.addTextChangedListener(object : TextWatcher {
@@ -69,6 +70,148 @@ class OrderMedsFragment : Fragment() {
         binding.btnCheckout.setOnClickListener {
             showCartBottomSheet()
         }
+    }
+
+    // 🔥 Load medicines dari Firestore
+    private fun loadMedicinesFromFirestore(adapter: MedAdapter) {
+        firestore.collection("medicines")
+            .get()
+            .addOnSuccessListener { documents ->
+                if (documents.isEmpty) {
+                    // Jika belum ada data, init data default
+                    initDefaultMedicines()
+                } else {
+                    allMeds.clear()
+                    for (doc in documents) {
+                        val med = Med(
+                            id = doc.id,
+                            name = doc.getString("name") ?: "",
+                            desc = doc.getString("desc") ?: "",
+                            price = (doc.getLong("price") ?: 0).toInt(),
+                            stock = (doc.getLong("stock") ?: 0).toInt()
+                        )
+                        allMeds.add(med)
+                    }
+                    filteredMeds.clear()
+                    filteredMeds.addAll(allMeds)
+                    adapter.notifyDataSetChanged()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Gagal memuat obat: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    // 🔥 Init data obat default (hanya sekali)
+    private fun initDefaultMedicines() {
+        val defaultMeds = listOf(
+            hashMapOf("name" to "Paracetamol 500mg", "desc" to "Obat penurun panas dan pereda nyeri", "price" to 15000, "stock" to 100),
+            hashMapOf("name" to "Amoxicillin 500mg", "desc" to "Antibiotik untuk infeksi bakteri", "price" to 35000, "stock" to 50),
+            hashMapOf("name" to "Vitamin C 1000mg", "desc" to "Suplemen daya tahan tubuh", "price" to 50000, "stock" to 200),
+            hashMapOf("name" to "Ibuprofen 200mg", "desc" to "Pereda nyeri dan antiinflamasi", "price" to 25000, "stock" to 80),
+            hashMapOf("name" to "Obat Batuk Sirup", "desc" to "Sirup untuk batuk berdahak", "price" to 28000, "stock" to 60),
+            hashMapOf("name" to "Antasida", "desc" to "Untuk meredakan sakit maag", "price" to 10000, "stock" to 150),
+            hashMapOf("name" to "Cetirizine 10mg", "desc" to "Antihistamin untuk alergi", "price" to 20000, "stock" to 120)
+        )
+
+        defaultMeds.forEach { med ->
+            firestore.collection("medicines").add(med)
+        }
+
+        Toast.makeText(requireContext(), "Data obat berhasil diinisialisasi", Toast.LENGTH_SHORT).show()
+    }
+
+    // 🔥 Load cart dari Firestore
+    private fun loadCartFromFirestore() {
+        val userId = auth.currentUser?.uid ?: return
+
+        firestore.collection("carts")
+            .document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    cart.clear()
+                    val items = document.get("items") as? List<HashMap<String, Any>> ?: emptyList()
+
+                    items.forEach { item ->
+                        val id = item["id"] as? String ?: ""
+                        val name = item["name"] as? String ?: ""
+                        val desc = item["desc"] as? String ?: ""
+                        val price = (item["price"] as? Long)?.toInt() ?: 0
+                        val stock = (item["stock"] as? Long)?.toInt() ?: 0
+                        val qty = (item["quantity"] as? Long)?.toInt() ?: 0
+
+                        val med = Med(id, name, desc, price, stock)
+                        cart[med] = qty
+                    }
+
+                    updateCartCount()
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Gagal memuat keranjang: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    // 🔥 Simpan cart ke Firestore
+    private fun saveCartToFirestore() {
+        val userId = auth.currentUser?.uid ?: return
+
+        val cartItems = cart.map { (med, qty) ->
+            hashMapOf(
+                "id" to med.id,
+                "name" to med.name,
+                "desc" to med.desc,
+                "price" to med.price,
+                "stock" to med.stock,
+                "quantity" to qty
+            )
+        }
+
+        val cartData = hashMapOf(
+            "userId" to userId,
+            "items" to cartItems,
+            "updatedAt" to System.currentTimeMillis()
+        )
+
+        firestore.collection("carts")
+            .document(userId)
+            .set(cartData)
+            .addOnSuccessListener {
+                // Berhasil disimpan
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(requireContext(), "Gagal menyimpan keranjang: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    // 🔥 Hapus cart dari Firestore
+    private fun clearCartFromFirestore() {
+        val userId = auth.currentUser?.uid ?: return
+
+        firestore.collection("carts")
+            .document(userId)
+            .delete()
+    }
+
+    // 🔥 Update stok obat di Firestore setelah checkout
+    private fun updateMedicineStock() {
+        cart.forEach { (med, qty) ->
+            val newStock = med.stock - qty
+            if (newStock >= 0) {
+                firestore.collection("medicines")
+                    .document(med.id)
+                    .update("stock", newStock)
+                    .addOnFailureListener { e ->
+                        Toast.makeText(requireContext(), "Gagal update stok: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
+        }
+    }
+
+    // Update cart count
+    private fun updateCartCount() {
+        binding.tvCartCount.text = "${cart.values.sum()} item"
     }
 
     // 🛒 Fungsi untuk menampilkan keranjang di BottomSheet
@@ -98,15 +241,19 @@ class OrderMedsFragment : Fragment() {
             layoutCartButtons.visibility = View.VISIBLE
 
             val adapterCart = CartAdapter(cart) {
-                binding.tvCartCount.text = "${cart.values.sum()} item"
+                updateCartCount()
                 tvTotalItem.text = "Total: ${cart.values.sum()} item"
                 val totalHargaBaru = cart.entries.sumOf { it.key.price * it.value }
                 tvTotalPrice.text = "Total Harga: Rp$totalHargaBaru"
+
+                // 🔥 Simpan perubahan ke Firestore
+                saveCartToFirestore()
 
                 if (cart.isEmpty()) {
                     rvCart.visibility = View.GONE
                     tvEmptyCart.visibility = View.VISIBLE
                     layoutCartButtons.visibility = View.GONE
+                    clearCartFromFirestore()
                 }
             }
 
@@ -125,6 +272,14 @@ class OrderMedsFragment : Fragment() {
             val bundle = Bundle()
             bundle.putSerializable("cartData", HashMap(cart))
 
+            // 🔥 Update stok obat
+            updateMedicineStock()
+
+            // 🔥 Hapus cart dari Firestore setelah checkout
+            clearCartFromFirestore()
+            cart.clear()
+            updateCartCount()
+
             findNavController().navigate(R.id.action_orderMeds_to_checkout, bundle)
         }
 
@@ -137,6 +292,7 @@ class OrderMedsFragment : Fragment() {
         val tvName = dialogView.findViewById<TextView>(R.id.tvMedName)
         val tvDesc = dialogView.findViewById<TextView>(R.id.tvMedDesc)
         val tvPrice = dialogView.findViewById<TextView>(R.id.tvMedPrice)
+        val tvStock = dialogView.findViewById<TextView>(R.id.tvMedStock)
         val etQty = dialogView.findViewById<EditText>(R.id.etQuantity)
         val btnInc = dialogView.findViewById<Button>(R.id.btnIncrease)
         val btnDec = dialogView.findViewById<Button>(R.id.btnDecrease)
@@ -146,11 +302,18 @@ class OrderMedsFragment : Fragment() {
         tvName.text = med.name
         tvDesc.text = med.desc
         tvPrice.text = "Rp${med.price}"
+        tvStock.text = "Stok: ${med.stock}"
 
         var qty = 1
         etQty.setText(qty.toString())
 
-        btnInc.setOnClickListener { etQty.setText((++qty).toString()) }
+        btnInc.setOnClickListener {
+            if (qty < med.stock) {
+                etQty.setText((++qty).toString())
+            } else {
+                Toast.makeText(requireContext(), "Stok tidak cukup", Toast.LENGTH_SHORT).show()
+            }
+        }
         btnDec.setOnClickListener { if (qty > 1) etQty.setText((--qty).toString()) }
 
         val dialog = AlertDialog.Builder(requireContext())
@@ -158,8 +321,19 @@ class OrderMedsFragment : Fragment() {
             .create()
 
         btnAdd.setOnClickListener {
-            cart[med] = (cart[med] ?: 0) + qty
-            binding.tvCartCount.text = "${cart.values.sum()} item"
+            val currentCartQty = cart[med] ?: 0
+            if (currentCartQty + qty > med.stock) {
+                Toast.makeText(requireContext(), "Stok tidak mencukupi!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            cart[med] = currentCartQty + qty
+            updateCartCount()
+
+            // 🔥 Simpan ke Firestore
+            saveCartToFirestore()
+
+            Toast.makeText(requireContext(), "Ditambahkan ke keranjang", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
@@ -173,7 +347,13 @@ class OrderMedsFragment : Fragment() {
     }
 
     // 🧾 Data class dan adapter
-    data class Med(val name: String, val desc: String, val price: Int) : Serializable
+    data class Med(
+        val id: String = "",
+        val name: String,
+        val desc: String,
+        val price: Int,
+        val stock: Int = 0
+    ) : Serializable
 
     class MedAdapter(
         private val items: List<Med>,
@@ -195,11 +375,13 @@ class OrderMedsFragment : Fragment() {
         class MedVH(v: View) : RecyclerView.ViewHolder(v) {
             private val tvName: TextView = v.findViewById(R.id.tvMedName)
             private val tvPrice: TextView = v.findViewById(R.id.tvMedPrice)
+            private val tvStock: TextView = v.findViewById(R.id.tvMedStock)
             private val btnDetail: Button = v.findViewById(R.id.btnDetail)
 
             fun bind(med: Med, onClick: (Med) -> Unit) {
                 tvName.text = med.name
                 tvPrice.text = "Rp${med.price}"
+                tvStock.text = "Stok: ${med.stock}"
                 btnDetail.setOnClickListener { onClick(med) }
             }
         }
@@ -242,15 +424,22 @@ class OrderMedsFragment : Fragment() {
                 tvQty.text = qty.toString()
 
                 btnInc.setOnClickListener {
-                    cart[med] = (cart[med] ?: 0) + 1
-                    tvQty.text = cart[med].toString()
-                    onQuantityChanged()
+                    val currentQty = cart[med] ?: 0
+                    if (currentQty < med.stock) {
+                        cart[med] = currentQty + 1
+                        tvQty.text = cart[med].toString()
+                        onQuantityChanged()
+                    }
                 }
 
                 btnDec.setOnClickListener {
                     val current = (cart[med] ?: 0) - 1
-                    if (current <= 0) cart.remove(med)
-                    else cart[med] = current
+                    if (current <= 0) {
+                        cart.remove(med)
+                    } else {
+                        cart[med] = current
+                        tvQty.text = current.toString()
+                    }
                     onQuantityChanged()
                 }
             }

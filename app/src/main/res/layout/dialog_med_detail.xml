@@ -45,6 +45,17 @@
         android:textSize="18sp"
         android:textColor="@color/teal_600"
         android:gravity="center"
+        android:layout_marginBottom="8dp" />
+
+    <!-- ✅ TAMBAHAN: TextView untuk stok -->
+    <TextView
+        android:id="@+id/tvMedStock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Stok: 0"
+        android:textSize="14sp"
+        android:textColor="#666"
+        android:gravity="center"
         android:layout_marginBottom="20dp" />
 
     <!-- Quantity Selector -->
