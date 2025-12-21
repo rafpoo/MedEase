@@ -4,20 +4,22 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.medease.databinding.FragmentProfileBinding
 import com.example.medease.ui.auth.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
+import com.google.firebase.firestore.SetOptions
 import java.io.ByteArrayOutputStream
 
 class ProfileFragment : Fragment() {
@@ -25,7 +27,6 @@ class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
-    private val storage = Firebase.storage
 
     private val RC_GALLERY = 100
     private val RC_CAMERA = 200
@@ -46,24 +47,34 @@ class ProfileFragment : Fragment() {
     }
 
     private fun setupListeners() {
-
         binding.btnChangePhoto.setOnClickListener {
             showPhotoPicker()
         }
 
         binding.btnSave.setOnClickListener {
-            val name = binding.edtName.text.toString()
-            val phone = binding.edtPhone.text.toString()
+            val name = binding.edtName.text.toString().trim()
+            val phone = binding.edtPhone.text.toString().trim()
+
+            if (name.isEmpty()) {
+                Toast.makeText(requireContext(), "Nama tidak boleh kosong", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
             val userId = auth.currentUser?.uid ?: return@setOnClickListener
 
             db.collection("users").document(userId)
                 .update(
                     mapOf(
-                        "name" to name,
-                        "phone" to phone
+                        "nama" to name,
+                        "noHp" to phone
                     )
                 )
+                .addOnSuccessListener {
+                    Toast.makeText(requireContext(), "Profil berhasil diperbarui", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(requireContext(), "Gagal update profil", Toast.LENGTH_SHORT).show()
+                }
         }
 
         binding.btnLogout.setOnClickListener {
@@ -81,14 +92,18 @@ class ProfileFragment : Fragment() {
             .get()
             .addOnSuccessListener { doc ->
                 if (doc.exists()) {
-                    binding.edtName.setText(doc.getString("name"))
-                    binding.edtEmail.setText(doc.getString("email"))
-                    binding.edtPhone.setText(doc.getString("phone"))
+                    binding.edtName.setText(doc.getString("nama") ?: "")
+                    binding.edtEmail.setText(doc.getString("email") ?: "")
+                    binding.edtPhone.setText(doc.getString("noHp") ?: "")
 
-                    val photoUrl = doc.getString("photoUrl")
-                    if (!photoUrl.isNullOrEmpty()) {
+                    val base64 = doc.getString("picture")
+                    if (!base64.isNullOrEmpty()) {
+                        val bytes = Base64.decode(base64, Base64.DEFAULT)
+                        val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+
                         Glide.with(requireContext())
-                            .load(photoUrl)
+                            .load(bitmap)
+                            .circleCrop()
                             .into(binding.imgProfile)
                     }
                 }
@@ -124,49 +139,39 @@ class ProfileFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode != Activity.RESULT_OK) return
-
         val userId = auth.currentUser?.uid ?: return
 
         when (requestCode) {
             RC_GALLERY -> {
-                val uri = data?.data
-                binding.imgProfile.setImageURI(uri)
-                if (uri != null) uploadPhoto(uri, userId)
+                val uri = data?.data ?: return
+                val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, uri)
+                saveBitmapToFirestore(bitmap, userId)
             }
 
             RC_CAMERA -> {
-                val bmp = data?.extras?.get("data") as Bitmap
-                binding.imgProfile.setImageBitmap(bmp)
-
-                val baos = ByteArrayOutputStream()
-                bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-                uploadByteArray(baos.toByteArray(), userId)
+                val bitmap = data?.extras?.get("data") as? Bitmap ?: return
+                saveBitmapToFirestore(bitmap, userId)
             }
         }
     }
 
-    private fun uploadPhoto(uri: Uri, userId: String) {
-        val ref = storage.reference.child("profile/$userId.jpg")
+    // ================= BASE64 CORE =================
 
-        ref.putFile(uri)
-            .continueWithTask { ref.downloadUrl }
-            .addOnSuccessListener { url ->
-                savePhotoUrl(url.toString(), userId)
-            }
-    }
+    private fun saveBitmapToFirestore(bitmap: Bitmap, userId: String) {
+        val resized = Bitmap.createScaledBitmap(bitmap, 256, 256, true)
 
-    private fun uploadByteArray(bytes: ByteArray, userId: String) {
-        val ref = storage.reference.child("profile/$userId.jpg")
+        val baos = ByteArrayOutputStream()
+        resized.compress(Bitmap.CompressFormat.JPEG, 60, baos)
+        val base64 = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT)
 
-        ref.putBytes(bytes)
-            .continueWithTask { ref.downloadUrl }
-            .addOnSuccessListener { url ->
-                savePhotoUrl(url.toString(), userId)
-            }
-    }
-
-    private fun savePhotoUrl(url: String, userId: String) {
         db.collection("users").document(userId)
-            .update("photoUrl", url)
+            .set(mapOf("picture" to base64), SetOptions.merge())
+            .addOnSuccessListener {
+                Toast.makeText(requireContext(), "Foto profil diperbarui", Toast.LENGTH_SHORT).show()
+                binding.imgProfile.setImageBitmap(resized)
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "Gagal menyimpan foto", Toast.LENGTH_SHORT).show()
+            }
     }
 }
