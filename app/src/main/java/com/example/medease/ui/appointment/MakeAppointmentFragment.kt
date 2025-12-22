@@ -62,9 +62,7 @@ class MakeAppointmentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val appContext = requireContext().applicationContext
-        val db = TotalDatabase.getInstance(appContext)
-        val repository = AppointmentRepository(db.appointmentDao())
+        val repository = AppointmentRepository()
         val factory = AppointmentViewModelFactory(repository)
 
         viewModel = ViewModelProvider(this, factory)[AppointmentViewModel::class.java]

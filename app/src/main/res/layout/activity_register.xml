@@ -51,7 +51,20 @@
         android:id="@+id/etRegisterUsername"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:hint="Username"
+        android:hint="Email"
+        android:inputType="textPersonName"
+        android:background="@drawable/bg_outline_button"
+        android:paddingHorizontal="12dp"
+        android:textColor="@color/black"
+        android:textColorHint="#888"
+        android:layout_marginTop="16dp"/>
+
+
+    <EditText
+        android:id="@+id/etPhoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:hint="Nomor telepon"
         android:inputType="textPersonName"
         android:background="@drawable/bg_outline_button"
         android:paddingHorizontal="12dp"
