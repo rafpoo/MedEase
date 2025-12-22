@@ -38,7 +38,7 @@
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:hint="Username"
+        android:hint="Email"
         android:inputType="textPersonName"
         android:background="@drawable/bg_outline_button"
         android:paddingHorizontal="12dp"
