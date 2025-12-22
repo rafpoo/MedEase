@@ -1,5 +1,6 @@
 package com.example.medease.database.repositories
 
+import android.util.Log
 import com.example.medease.data.model.Appointment
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -159,6 +160,27 @@ class AppointmentRepository {
             }
             .addOnFailureListener {
                 onResult(emptyList())
+            }
+    }
+
+    fun getAllAppointmentsForAdmin(
+        callback: (List<Appointment>) -> Unit
+    ) {
+        db.collection("appointments")
+            .whereEqualTo("status", "accepted")
+            .addSnapshotListener { snapshot, error ->
+
+                if (error != null) {
+                    Log.e("Firestore", "Error", error)
+                    callback(emptyList())
+                    return@addSnapshotListener
+                }
+
+                val list = snapshot?.documents?.mapNotNull {
+                    it.toObject(Appointment::class.java)?.copy(id = it.id)
+                } ?: emptyList()
+
+                callback(list)
             }
     }
 
