@@ -121,7 +121,9 @@
             android:id="@+id/btnPredict"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Predict WQI" />
+            android:text="Predict WQI"
+            android:backgroundTint="@color/teal_400"
+            android:textColor="@android:color/white"/>
 
         <!-- RESULT -->
         <TextView

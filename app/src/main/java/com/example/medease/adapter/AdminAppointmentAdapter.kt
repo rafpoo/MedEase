@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medease.data.model.Appointment
+import com.example.medease.database.repositories.UserRepository
 import com.example.medease.databinding.ItemAppointmentAdminBinding
 
 class AdminAppointmentAdapter(
@@ -19,7 +20,8 @@ class AdminAppointmentAdapter(
         : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: Appointment) {
-            binding.tvUserName.text = data.userId
+            binding.tvDoctorName.text = data.doctorName
+            binding.tvUserName.text = data.userName
             binding.tvDate.text = data.date
             binding.tvTime.text = data.time
             binding.tvDescription.text = data.note

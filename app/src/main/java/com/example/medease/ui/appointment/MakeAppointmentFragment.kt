@@ -14,6 +14,7 @@ import com.example.medease.data.model.Appointment
 import com.example.medease.data.model.Doctor
 import com.example.medease.database.repositories.AppointmentRepository
 import com.example.medease.database.repositories.DoctorRepository
+import com.example.medease.database.repositories.UserRepository
 import com.example.medease.database.viewModels.AppointmentViewModel
 import com.example.medease.database.viewModels.AppointmentViewModelFactory
 import com.example.medease.utils.getDayName
@@ -44,11 +45,13 @@ class MakeAppointmentFragment : Fragment() {
     private var selectedDate = ""
 
     private val doctorRepo = DoctorRepository()
+    private val userRepository = UserRepository()
     private val repository = AppointmentRepository()
     private val factory = AppointmentViewModelFactory(repository)
 
     private var selectedDoctor: Doctor? = null
     private var allDoctors: List<Doctor> = emptyList()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,10 +63,12 @@ class MakeAppointmentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val repository = AppointmentRepository()
+        val factory = AppointmentViewModelFactory(repository)
+
         viewModel = ViewModelProvider(this, factory)[AppointmentViewModel::class.java]
 
-
-        // Inisialisasi View dari layout
         spinnerCategory = view.findViewById(R.id.spinnerCategory)
         spinnerDoctor = view.findViewById(R.id.spinnerDoctor)
         spinnerTime = view.findViewById(R.id.spinnerTime)
@@ -115,6 +120,7 @@ class MakeAppointmentFragment : Fragment() {
                 if (allDoctors.isEmpty()) return
                 selectedDoctor = allDoctors[position]
 
+
                 if (selectedDate.isNotEmpty()) {
                     loadAvailableTimes()
                 }
@@ -136,6 +142,7 @@ class MakeAppointmentFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 selectedTime = spinnerTime.selectedItem.toString()
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
@@ -160,7 +167,7 @@ class MakeAppointmentFragment : Fragment() {
             if (availableTimes.isEmpty()) {
                 Toast.makeText(
                     requireContext(),
-                    "Doctor fully booked on this day",
+                    "Jadwal dokter sudah penuh pada hari ini!",
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -177,10 +184,8 @@ class MakeAppointmentFragment : Fragment() {
                 requireContext(),
                 { _, year, month, day ->
                     calendar.set(year, month, day)
-
                     val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                     selectedDate = sdf.format(calendar.time)
-
                     tvPickDate.text = selectedDate
 
                     if (selectedDoctor != null) {
@@ -203,7 +208,7 @@ class MakeAppointmentFragment : Fragment() {
 
             if (doctors.isEmpty()) {
                 // Jika doctors collection kosong
-                Toast.makeText(requireContext(), "No doctors available. Please try again later.", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Tidak ada dokter tersedia. Coba lagi nanti.", Toast.LENGTH_LONG).show()
 
                 // Nonaktifkan spinner dan tombol confirm
                 spinnerCategory.isEnabled = false
@@ -244,7 +249,7 @@ class MakeAppointmentFragment : Fragment() {
                 ) {
                     Toast.makeText(
                         requireContext(),
-                        "Please complete all selections!",
+                        "Tolong isi semua pilihan!",
                         Toast.LENGTH_SHORT
                     ).show()
                     return@showConfirmDialog
@@ -252,33 +257,42 @@ class MakeAppointmentFragment : Fragment() {
 
                 val userId = FirebaseAuth.getInstance().currentUser?.uid
                 if (userId == null) {
-                    Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "User belum login", Toast.LENGTH_SHORT).show()
                     return@showConfirmDialog
                 }
+                userRepository.fetchCurrentUser { user ->
+                    if (user == null) {
+                        Toast.makeText(requireContext(), "User tidak ditemukan", Toast.LENGTH_SHORT).show()
+                        return@fetchCurrentUser
+                    }
 
-                val newAppointment = Appointment(
-                    id = "",
-                    userId = userId,
-                    doctorId = selectedDoctor!!.id,
-                    doctorName = selectedDoctor!!.name,
-                    category = selectedCategory,
-                    date = selectedDate,
-                    time = selectedTime,
-                    note = note
-                )
+                    val newAppointment = Appointment(
+                        id = "",
+                        userId = userId,
+                        userName = user.nama ?: "",
+                        doctorId = selectedDoctor!!.id,
+                        doctorName = selectedDoctor!!.name,
+                        category = selectedCategory,
+                        date = selectedDate,
+                        time = selectedTime,
+                        note = note
+                    )
 
-                viewModel.createAppointment(newAppointment) { success ->
-                    if (success) {
-                        Toast.makeText(requireContext(), "Appointment Created Successfully!", Toast.LENGTH_SHORT).show()
-                        findNavController().navigateUp()
-                    } else {
-                        Toast.makeText(requireContext(), "Failed to create appointment", Toast.LENGTH_SHORT).show()
+                    viewModel.createAppointment(newAppointment) { success ->
+                        if (success) {
+                            Toast.makeText(requireContext(), "Appointment berhasil dibuat", Toast.LENGTH_SHORT).show()
+                            findNavController().navigateUp()
+                        } else {
+                            Toast.makeText(requireContext(), "Gagal membuat appointment", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
+
             }
         }
 
     }
+
 
 
 }

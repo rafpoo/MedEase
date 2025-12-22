@@ -52,7 +52,7 @@ class ManageAppointmentFragment : Fragment() {
             onDelete = { appointment ->
                 viewModel.deleteAppointment(appointment) { success ->
                     if (success) {
-                        Toast.makeText(requireContext(), "Appointment deleted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Appointment berhasil dihapus", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -74,7 +74,7 @@ class ManageAppointmentFragment : Fragment() {
         if (userId.isNotEmpty()) {
             viewModel.loadAppointments(userId)
         } else {
-            Toast.makeText(requireContext(), "User not logged in", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "User belum login", Toast.LENGTH_SHORT).show()
         }
     }
 

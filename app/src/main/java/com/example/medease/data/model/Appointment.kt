@@ -3,6 +3,7 @@ package com.example.medease.data.model
 data class Appointment(
     val id: String = "",
     val userId: String = "",
+    val userName: String = "",
     val doctorId: String = "",
     val doctorName: String = "",
     val category: String = "",
