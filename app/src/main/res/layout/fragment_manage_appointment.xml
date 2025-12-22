@@ -10,7 +10,7 @@
     <!-- 🔹 Judul -->
     <TextView
         android:id="@+id/tvTitle"
-        android:text="Manage Appointments"
+        android:text="Mengatur Janji"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginTop="12dp"
@@ -28,7 +28,7 @@
     <!-- 🔹 Pesan kalau kosong -->
     <TextView
         android:id="@+id/tvNoData"
-        android:text="Belum ada appointment"
+        android:text="Belum ada janji temu"
         android:textColor="@android:color/darker_gray"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
