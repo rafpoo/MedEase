@@ -19,12 +19,22 @@
             android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nama Pasien"
+            android:text="Nama Dokter"
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#222222"/>
 
         <!-- Detail -->
+        <TextView
+            android:id="@+id/tvDoctorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Pasien"
+            android:layout_marginTop="6dp"
+            android:textStyle="bold"
+            android:textColor="#555555"
+            android:textSize="14sp" />
+
         <TextView
             android:id="@+id/tvDescription"
             android:layout_width="wrap_content"

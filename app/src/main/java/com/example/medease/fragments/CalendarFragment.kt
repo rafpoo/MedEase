@@ -15,6 +15,7 @@ import com.example.medease.adapter.DailyAppointmentAdapter
 import com.example.medease.database.repositories.AppointmentRepository
 import com.example.medease.database.viewModels.AppointmentViewModel
 import com.example.medease.database.viewModels.AppointmentViewModelFactory
+import java.util.Calendar
 
 class CalendarFragment : Fragment() {
 
@@ -46,13 +47,21 @@ class CalendarFragment : Fragment() {
             adapter.updateData(list)
         }
 
-        // Listener tanggal
+
+        val calendar = Calendar.getInstance()
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val year = calendar.get(Calendar.YEAR)
+
+        val today = String.format("%02d/%02d/%d", day, month, year)
+        viewModel.loadAppointmentsForDate(today)
+
         calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
             val realMonth = month + 1
             val selectedDate = String.format("%02d/%02d/%d", dayOfMonth, realMonth, year)
-            Log.d("CalendarFragment", "Selected date: $selectedDate")
             viewModel.loadAppointmentsForDate(selectedDate)
         }
+
 
         return view
     }

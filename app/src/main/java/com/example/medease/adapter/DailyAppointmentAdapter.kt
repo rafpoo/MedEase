@@ -16,6 +16,7 @@ class DailyAppointmentAdapter(
         val tvPatientName: TextView = view.findViewById(R.id.tvPatientName)
         val tvDateTime: TextView = view.findViewById(R.id.tvDateTime)
         val tvNotes: TextView = view.findViewById(R.id.tvNotes)
+        val tvDoctorName: TextView = view.findViewById(R.id.tvDoctorName)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -30,7 +31,8 @@ class DailyAppointmentAdapter(
         val appointment = appointments[position]
 
         // Gunakan ID sesuai layout asli
-        holder.tvPatientName.text = "Spesialis: ${appointment.category ?: "Tidak diketahui"}"
+        holder.tvPatientName.text = "Pasien: ${appointment.userName ?: "-"}"
+        holder.tvDoctorName.text = appointment.doctorName ?: "-"
         holder.tvDateTime.text = "Pukul: ${appointment.time ?: "-"}"
         holder.tvNotes.text = "Catatan: ${appointment.note ?: "-"}"
     }

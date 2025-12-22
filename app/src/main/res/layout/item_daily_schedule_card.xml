@@ -15,12 +15,21 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/tvDoctorName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nama Dokter"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/tvPatientName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Spesialis: Dentist"
+            android:text="Nama Pasien"
             android:textColor="#333333"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:textStyle="bold" />
 
         <TextView

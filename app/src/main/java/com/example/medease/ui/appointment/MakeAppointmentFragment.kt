@@ -14,6 +14,7 @@ import com.example.medease.data.model.Appointment
 import com.example.medease.data.model.Doctor
 import com.example.medease.database.repositories.AppointmentRepository
 import com.example.medease.database.repositories.DoctorRepository
+import com.example.medease.database.repositories.UserRepository
 import com.example.medease.database.viewModels.AppointmentViewModel
 import com.example.medease.database.viewModels.AppointmentViewModelFactory
 import com.example.medease.utils.getDayName
@@ -44,6 +45,7 @@ class MakeAppointmentFragment : Fragment() {
     private var selectedDate = ""
 
     private val doctorRepo = DoctorRepository()
+    private val userRepository = UserRepository()
     private val repository = AppointmentRepository()
     private val factory = AppointmentViewModelFactory(repository)
 
@@ -258,26 +260,34 @@ class MakeAppointmentFragment : Fragment() {
                     Toast.makeText(requireContext(), "User belum login", Toast.LENGTH_SHORT).show()
                     return@showConfirmDialog
                 }
+                userRepository.fetchCurrentUser { user ->
+                    if (user == null) {
+                        Toast.makeText(requireContext(), "User tidak ditemukan", Toast.LENGTH_SHORT).show()
+                        return@fetchCurrentUser
+                    }
 
-                val newAppointment = Appointment(
-                    id = "",
-                    userId = userId,
-                    doctorId = selectedDoctor!!.id,
-                    doctorName = selectedDoctor!!.name,
-                    category = selectedCategory,
-                    date = selectedDate,
-                    time = selectedTime,
-                    note = note
-                )
+                    val newAppointment = Appointment(
+                        id = "",
+                        userId = userId,
+                        userName = user.nama ?: "",
+                        doctorId = selectedDoctor!!.id,
+                        doctorName = selectedDoctor!!.name,
+                        category = selectedCategory,
+                        date = selectedDate,
+                        time = selectedTime,
+                        note = note
+                    )
 
-                viewModel.createAppointment(newAppointment) { success ->
-                    if (success) {
-                        Toast.makeText(requireContext(), "Appointment berhasil dibuat!", Toast.LENGTH_SHORT).show()
-                        findNavController().navigateUp()
-                    } else {
-                        Toast.makeText(requireContext(), "Gagal membuat appointment", Toast.LENGTH_SHORT).show()
+                    viewModel.createAppointment(newAppointment) { success ->
+                        if (success) {
+                            Toast.makeText(requireContext(), "Appointment berhasil dibuat", Toast.LENGTH_SHORT).show()
+                            findNavController().navigateUp()
+                        } else {
+                            Toast.makeText(requireContext(), "Gagal membuat appointment", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
+
             }
         }
 
