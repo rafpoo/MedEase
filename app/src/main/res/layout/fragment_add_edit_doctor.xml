@@ -1,128 +1,166 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F5FAFA"
+    android:padding="20dp">
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:layout_height="match_parent"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="6dp"
+        app:cardUseCompatPadding="true">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Doctor Information"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
-
-        <!-- Doctor Name -->
-        <com.google.android.material.textfield.TextInputLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Doctor Name"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etName"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tambah Data Dokter"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="@color/teal_700"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp" />
+
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fillViewport="true"
+                android:scrollbars="none">
 
-        <!-- Category -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:hint="Category"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etCategory"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+                    <!-- Nama Dokter -->
+                    <TextView
+                        android:text="Nama Dokter"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
 
-        <!-- Description -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:hint="Description"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+                    <EditText
+                        android:id="@+id/etName"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:hint="Masukkan nama dokter"
+                        android:background="@drawable/bg_outline_button"
+                        android:paddingHorizontal="12dp"
+                        android:layout_marginBottom="16dp"/>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etDescription"
+                    <!-- Kategori -->
+                    <TextView
+                        android:text="Kategori / Spesialis"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:id="@+id/etCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:hint="Contoh: Dokter Umum"
+                        android:background="@drawable/bg_outline_button"
+                        android:paddingHorizontal="12dp"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Deskripsi -->
+                    <TextView
+                        android:text="Deskripsi Dokter"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <EditText
+                        android:id="@+id/etDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:hint="Tuliskan deskripsi singkat dokter"
+                        android:background="@drawable/bg_outline_button"
+                        android:padding="12dp"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:layout_marginBottom="16dp"/>
+
+                    <!-- Jadwal -->
+                    <TextView
+                        android:text="Jadwal Praktik"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <!-- Hari (Material Dropdown) -->
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                        android:layout_marginBottom="12dp">
+
+                        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                            android:id="@+id/spinnerDay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Pilih Hari"
+                            android:inputType="none"/>
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <!-- Jam -->
+                    <EditText
+                        android:id="@+id/etSchedule"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:hint="Jam praktik (contoh: 09:00)"
+                        android:inputType="time"
+                        android:background="@drawable/bg_outline_button"
+                        android:paddingHorizontal="12dp"
+                        android:layout_marginBottom="8dp"/>
+
+                    <!-- Button tambah jadwal -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnAddSchedule"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tambah Jadwal"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/white"
+                        android:backgroundTint="@color/teal_400"
+                        android:layout_marginBottom="12dp"
+                        style="@style/Widget.Material3.Button"/>
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupSchedules"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:singleSelection="false"/>
+                </LinearLayout>
+            </ScrollView>
+
+            <!-- Simpan -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnSave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minLines="3"
-                android:gravity="top" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:text="Simpan Data Dokter"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:backgroundTint="@color/teal_400"
+                style="@style/Widget.Material3.Button"
+                android:layout_marginTop="12dp"/>
 
-        <!-- Schedule Input -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Doctor Schedules"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
-
-            <com.google.android.material.textfield.MaterialAutoCompleteTextView
-                android:id="@+id/spinnerDay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Day"
-                android:inputType="none" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Add time (ex: 09:00)"
-            style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etSchedule"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="time" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddSchedule"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Schedule"
-            android:layout_marginTop="8dp"
-            style="@style/Widget.Material3.Button" />
-
-        <!-- ChipGroup -->
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroupSchedules"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:singleSelection="false"
-            app:selectionRequired="false" />
-
-        <!-- Save Button -->
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSave"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Save Doctor"
-            android:layout_marginTop="24dp"
-            style="@style/Widget.Material3.Button" />
-
-    </LinearLayout>
-</ScrollView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</LinearLayout>
