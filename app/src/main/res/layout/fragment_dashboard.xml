@@ -120,8 +120,9 @@
                             android:layout_height="wrap_content"
                             android:text="Lihat Konsultasi"
                             android:textAlignment="center"
-                            android:textSize="12sp"
-                            android:textColor="#34346E"
+                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:textColor="@color/teal_400"
                             android:paddingTop="4dp" />
                     </LinearLayout>
 
@@ -168,8 +169,9 @@
                             android:layout_height="wrap_content"
                             android:text="Beli Obat"
                             android:textAlignment="center"
-                            android:textSize="12sp"
-                            android:textColor="#34346E"
+                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:textColor="@color/teal_400"
                             android:paddingTop="4dp" />
                     </LinearLayout>
 
@@ -215,8 +217,10 @@
                             android:layout_height="wrap_content"
                             android:text="Profil"
                             android:textAlignment="center"
-                            android:textColor="#34346E"
-                            android:textSize="12sp" />
+                            android:textStyle="bold"
+                            android:textSize="13sp"
+                            android:textColor="@color/teal_400"
+                            android:paddingTop="4dp" />
                     </LinearLayout>
 
                     <!-- ===== BARIS 2 (CENTERED) ===== -->
@@ -265,12 +269,14 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:text="Buat Janji"
                                 android:textAlignment="center"
-                                android:textSize="12sp"
-                                android:textColor="#34346E"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                                android:textStyle="bold"
+                                android:textSize="13sp"
+                                android:textColor="@color/teal_400"
+                                android:paddingTop="4dp" />
                         </LinearLayout>
 
                         <!-- Prediksi WQI -->
@@ -310,12 +316,14 @@
                             </androidx.constraintlayout.widget.ConstraintLayout>
 
                             <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:text="Prediksi WQI"
                                 android:textAlignment="center"
-                                android:textSize="12sp"
-                                android:textColor="#34346E"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"/>
+                                android:textStyle="bold"
+                                android:textSize="13sp"
+                                android:textColor="@color/teal_400"
+                                android:paddingTop="4dp" />
                         </LinearLayout>
 
                     </LinearLayout>
@@ -358,6 +366,7 @@
                         android:id="@+id/rvAppointments"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:paddingTop="10dp"
                         android:nestedScrollingEnabled="false"
                         app:layout_constraintTop_toBottomOf="@id/textView4"
                         app:layout_constraintStart_toStartOf="parent"

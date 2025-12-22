@@ -1,89 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="32dp"
+    android:fillViewport="true"
     android:background="#E5FCFB">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="88dp"
-        android:layout_marginBottom="28dp">
+        android:padding="24dp">
 
+        <!-- Title -->
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="MedEase"
-            android:textSize="38sp"
+            android:textSize="36sp"
             android:textStyle="bold"
             android:textColor="@color/teal_700"
             android:letterSpacing="0.04"
-            android:fontFamily="sans-serif-medium" />
+            android:fontFamily="sans-serif-medium"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="72dp" />
 
         <TextView
+            android:id="@+id/tvSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Solusi Digital Layanan Klinik"
             android:textSize="16sp"
             android:textColor="@color/teal_600"
-            android:layout_marginTop="8dp"
-            android:letterSpacing="0.02" />
-    </LinearLayout>
+            android:letterSpacing="0.02"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp" />
 
-    <EditText
-        android:id="@+id/etUsername"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Email"
-        android:inputType="textPersonName"
-        android:background="@drawable/bg_outline_button"
-        android:paddingHorizontal="12dp"
-        android:textColor="@color/black"
-        android:textColorHint="#888"
-        android:layout_marginTop="12dp" />
+        <!-- Email -->
+        <EditText
+            android:id="@+id/etUsername"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:background="@drawable/bg_outline_button"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888"
+            app:layout_constraintTop_toBottomOf="@id/tvSubtitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="40dp" />
 
-    <EditText
-        android:id="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:background="@drawable/bg_outline_button"
-        android:paddingHorizontal="12dp"
-        android:textColor="@color/black"
-        android:textColorHint="#888"
-        android:layout_marginTop="16dp" />
+        <!-- Password -->
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:background="@drawable/bg_outline_button"
+            android:paddingHorizontal="12dp"
+            android:textColor="@color/black"
+            android:textColorHint="#888"
+            app:layout_constraintTop_toBottomOf="@id/etUsername"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:layout_weight="0.05" />
+        <!-- Login -->
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:text="Masuk"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/teal_600"
+            android:elevation="4dp"
+            app:layout_constraintTop_toBottomOf="@id/etPassword"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="28dp" />
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Masuk"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:backgroundTint="@color/teal_600"
-        android:textAllCaps="false"
-        android:elevation="4dp" />
+        <!-- Register -->
+        <Button
+            android:id="@+id/btnRegister"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:text="Daftar Akun"
+            android:textColor="@color/teal_600"
+            android:textStyle="bold"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/white"
+            android:elevation="0dp"
+            app:layout_constraintTop_toBottomOf="@id/btnLogin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="32dp" />
 
-    <Button
-        android:id="@+id/btnRegister"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Daftar Akun"
-        android:textColor="@color/teal_600"
-        android:textStyle="bold"
-        android:backgroundTint="@color/white"
-        android:textAllCaps="false"
-        android:layout_marginTop="12dp"
-        android:elevation="0dp" />
-
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
