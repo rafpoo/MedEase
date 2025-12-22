@@ -45,7 +45,7 @@
     <fragment
         android:id="@+id/orderMedsFragment"
         android:name="com.example.medease.ui.order.OrderMedsFragment"
-        android:label="Order Obat">
+        android:label="Beli Obat">
         <action
             android:id="@+id/action_orderMeds_to_checkout"
             app:destination="@id/checkoutFragment" />
@@ -79,7 +79,7 @@
     <fragment
         android:id="@+id/manageAppointmentFragment"
         android:name="com.example.medease.ui.appointment.ManageAppointmentFragment"
-        android:label="Manage Appointment"
+        android:label="Lihat Janji"
         tools:layout="@layout/fragment_manage_appointment">
 
         <action
@@ -131,7 +131,7 @@
     <fragment
         android:id="@+id/wqiFragment"
         android:name="com.example.medease.ui.ml.WqiFragment"
-        android:label="WQI Prediction" />
+        android:label="Prediksi WQI" />
 
     <fragment
         android:id="@+id/manageDoctorFragment"
