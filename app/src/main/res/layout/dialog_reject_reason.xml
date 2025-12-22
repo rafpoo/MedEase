@@ -22,19 +22,23 @@
             android:id="@+id/rb_not_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tidak sesuai bidang saya" />
+            android:text="Tidak sesuai bidang saya"
+            android:buttonTint="#1CB2A8"/>
 
         <RadioButton
             android:id="@+id/rb_full_schedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Jadwal saya sudah penuh" />
+            android:text="Jadwal saya sudah penuh"
+            android:buttonTint="#1CB2A8"/>
 
         <RadioButton
             android:id="@+id/rb_unavailable"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Saya sedang tidak tersedia" />
+            android:text="Saya sedang tidak tersedia"
+            android:buttonTint="#1CB2A8"/>
     </RadioGroup>
+
 
 </LinearLayout>
